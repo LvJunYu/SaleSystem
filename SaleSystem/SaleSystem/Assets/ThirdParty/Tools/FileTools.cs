@@ -2,7 +2,7 @@
 using System.Text;
 using UnityEngine;
 
-namespace DataTool
+namespace MyTools
 {
     public static class FileTools
     {

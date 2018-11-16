@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-namespace DataTool
+namespace MyTools
 {
-    public class SaveDataManager : Singleton<SaveDataManager>
+    public class DataManager : Singleton<DataManager>
     {
         private static readonly string s_userSaveDataFileName = "saveData";
         private string _saveFilePath;
@@ -13,12 +13,12 @@ namespace DataTool
             _saveFilePath = string.Format("{0}/{1}", Application.persistentDataPath, s_userSaveDataFileName);
         }
 
-        public T LoadData<T>() where T : UserDataBase
+        public T LoadData<T>() where T : DataBase
         {
             return LoadData<T>(_saveFilePath);
         }
 
-        public T LoadData<T>(string filePath) where T : UserDataBase
+        public T LoadData<T>(string filePath) where T : DataBase
         {
             string saveDataFileContent;
             if (!FileTools.TryReadFileToString(filePath, out saveDataFileContent))
@@ -26,17 +26,17 @@ namespace DataTool
                 return null;
             }
 
-            SaveDataHolder<T> holder = new SaveDataHolder<T>();
+            DataHolder<T> holder = new DataHolder<T>();
             holder.Deserialize(saveDataFileContent);
             return holder.UserData;
         }
 
-        public void SaveData<T>(T userData, Version version) where T : UserDataBase
+        public void SaveData<T>(T userData, Version version) where T : DataBase
         {
             SaveData(userData, version, _saveFilePath);
         }
 
-        public void SaveData<T>(T userData, Version version, string filePath) where T : UserDataBase
+        public void SaveData<T>(T userData, Version version, string filePath) where T : DataBase
         {
             if (null == userData)
             {
@@ -44,7 +44,7 @@ namespace DataTool
                 return;
             }
 
-            SaveDataHolder<T> holder = new SaveDataHolder<T>(version, System.DateTime.UtcNow, userData);
+            DataHolder<T> holder = new DataHolder<T>(version, System.DateTime.UtcNow, userData);
             FileTools.WriteStringToFile(holder.Serialize(), filePath);
         }
 

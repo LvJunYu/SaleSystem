@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-namespace DataTool
+namespace MyTools
 {
-    public class SaveDataHolder<T> where T : UserDataBase
+    public class DataHolder<T> where T : DataBase
     {
-        private System.Version _appVersion;
-        private System.DateTime _saveTime;
+        private Version _appVersion;
+        private DateTime _saveTime;
         private T _userData;
 
         public T UserData
@@ -14,9 +15,9 @@ namespace DataTool
             get { return _userData; }
         }
 
-        public SaveDataHolder () { }
+        public DataHolder () { }
 
-        public SaveDataHolder (System.Version appVersion, System.DateTime saveTime, T data)
+        public DataHolder (Version appVersion, DateTime saveTime, T data)
         {
             _appVersion = appVersion;
             _saveTime = saveTime;
@@ -42,8 +43,8 @@ namespace DataTool
             {
                 Debug.LogError ("Deserialze save data failed");
             }
-            _appVersion = new System.Version (strList[0]);
-            _saveTime = Newtonsoft.Json.JsonConvert.DeserializeObject<System.DateTime> (strList [1]);
+            _appVersion = new Version (strList[0]);
+            _saveTime = Newtonsoft.Json.JsonConvert.DeserializeObject<DateTime> (strList [1]);
             _userData = Newtonsoft.Json.JsonConvert.DeserializeObject<T> (strList [2]);
         }
     }
