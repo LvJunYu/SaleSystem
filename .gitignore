@@ -2,3 +2,5 @@ SaleSystem/SaleSystem/Library/
 SaleSystem/SaleSystem/SaleSystem.sln
 SaleSystem/SaleSystem/Temp/
 SaleSystem/SaleSystem/.idea/
+SaleSystem/SaleSystem/Assembly-CSharp.csproj
+SaleSystem/SaleSystem/Assembly-CSharp-Editor.csproj
