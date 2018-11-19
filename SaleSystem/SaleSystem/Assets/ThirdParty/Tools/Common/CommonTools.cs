@@ -3,7 +3,7 @@ using Object = UnityEngine.Object;
 
 namespace MyTools
 {
-    public abstract class CommonTools
+    public static class CommonTools
     {
         public static GameObject InstantiateObject(Object asset)
         {
@@ -59,15 +59,6 @@ namespace MyTools
             trans.localScale = Vector3.one;
         }
 
-        public static void SetActive(GameObject go, bool value)
-        {
-            if (go == null)
-            {
-                return;
-            }
-            go.SetActive(value);
-        }
-
         public static Transform FindChildDeep(Transform root,string name)
         {
             if (root == null)
@@ -95,5 +86,30 @@ namespace MyTools
             }
             return t;
         }
+        
+        public static void SetActiveEx(this GameObject go, bool value)
+        {
+            if (go != null && go.activeSelf != value)
+            {
+                go.SetActive(value);
+            }
+        }
+
+        public static void SetActiveEx(this Component com, bool value)
+        {
+            if (com != null && com.gameObject && com.gameObject.activeSelf != value)
+            {
+                com.gameObject.SetActive(value);
+            }
+        }
+
+        public static void SetEnableEx(this MonoBehaviour com, bool value)
+        {
+            if (com != null)
+            {
+                com.enabled = value;
+            }
+        }
+
     }
 }

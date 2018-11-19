@@ -1,4 +1,7 @@
-﻿using UITools;
+﻿using System;
+using System.Collections.Generic;
+using MyTools;
+using UITools;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,11 +27,6 @@ namespace Sale
             ProcessUIAutoSetup();
         }
 
-        public void ShowAppView()
-        {
-//            OpenUI<UICtrlTaskbar>();
-        }
-
         public override T OpenUI<T>(object value = null)
         {
             if (UIRoot == null) return null;
@@ -41,6 +39,13 @@ namespace Sale
 
             return base.OpenUI<T>(value);
         }
+   
+        public static void ShowPopupDialog(string msg, string title = null,
+            params KeyValuePair<string, Action>[] btnParam)
+        {
+            Messenger<string, string, KeyValuePair<string, Action>[]>.Broadcast(EMessengerType.ShowDialog, msg, title,
+                btnParam);
+        }
     }
 
     public enum EUIGroupType
@@ -49,6 +54,7 @@ namespace Sale
         MainUI,
         Pop1,
         Pop2,
+        PopUpDialog,
         Max
     }
 }

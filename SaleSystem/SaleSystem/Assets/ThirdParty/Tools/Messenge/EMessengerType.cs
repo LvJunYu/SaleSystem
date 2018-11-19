@@ -2,6 +2,7 @@
 {
     public static class EMessengerType
     {
-        public static int NextId;
+        private static int _nextId;
+        public static readonly int ShowDialog = _nextId++;
     }
 }

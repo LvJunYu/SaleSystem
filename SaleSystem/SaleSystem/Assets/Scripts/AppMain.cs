@@ -5,7 +5,7 @@ namespace Sale
 {
     public class AppMain : MonoBehaviour
     {
-        internal static AppMain Instance;
+        public static AppMain Instance;
         private UIEventSystem _eventSystem;
         private bool _run;
 
@@ -20,6 +20,7 @@ namespace Sale
             _eventSystem.Init();
             _eventSystem.Trans.SetParent(transform);
             gameObject.AddComponent<SocialGUIManager>();
+            SocialGUIManager.Instance.OpenUI<UICtrlLogin>();
             _run = true;
         }
 

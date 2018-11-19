@@ -1,0 +1,27 @@
+
+YouChiLun.png
+size: 1024,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+右机关上
+  rotate: true
+  xy: 485, 2
+  size: 100, 379
+  orig: 100, 379
+  offset: 0, 0
+  index: -1
+右机关下
+  rotate: true
+  xy: 2, 8
+  size: 94, 481
+  orig: 94, 481
+  offset: 0, 0
+  index: -1
+齿轮
+  rotate: false
+  xy: 866, 21
+  size: 81, 81
+  orig: 81, 81
+  offset: 0, 0
+  index: -1

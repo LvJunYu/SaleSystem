@@ -1,4 +1,6 @@
 ﻿using MyTools;
+using Sale;
+using UnityEngine;
 
 namespace UITools
 {
@@ -21,6 +23,10 @@ namespace UITools
             base.OnDestroy();
             _cachedView = null;
         }
-        
+
+        public void Init(RectTransform parent)
+        {
+            Init(parent, Vector3.zero, SocialGUIManager.Instance.UIRoot);
+        }
     }
 }

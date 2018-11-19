@@ -1,0 +1,55 @@
+
+DreamLand.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+jingtanhao
+  rotate: false
+  xy: 345, 19
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+shou
+  rotate: false
+  xy: 230, 15
+  size: 113, 74
+  orig: 113, 74
+  offset: 0, 0
+  index: -1
+上身
+  rotate: false
+  xy: 447, 84
+  size: 184, 126
+  orig: 184, 126
+  offset: 0, 0
+  index: -1
+下身
+  rotate: false
+  xy: 796, 133
+  size: 83, 77
+  orig: 83, 77
+  offset: 0, 0
+  index: -1
+地球
+  rotate: false
+  xy: 2, 2
+  size: 226, 208
+  orig: 226, 208
+  offset: 0, 0
+  index: -1
+外扩
+  rotate: false
+  xy: 230, 91
+  size: 215, 119
+  orig: 215, 119
+  offset: 0, 0
+  index: -1
+门
+  rotate: false
+  xy: 633, 51
+  size: 161, 159
+  orig: 161, 159
+  offset: 0, 0
+  index: -1

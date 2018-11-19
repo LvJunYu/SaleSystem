@@ -61,7 +61,7 @@ namespace UITools
             //缓存Item
             _cachedUIItemParent = new GameObject(_trans.name + "|CachedUIItemParent").transform;
             _cachedUIItemParent.SetParent(parent);
-            CommonTools.SetActive(_cachedUIItemParent.gameObject, false);
+            _cachedUIItemParent.SetActiveEx(false);
         }
 
         protected virtual void InitUICanvas(int sortOrder)

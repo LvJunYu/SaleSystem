@@ -1,0 +1,34 @@
+
+Workshop.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+图层 1
+  rotate: true
+  xy: 2, 2
+  size: 244, 301
+  orig: 244, 301
+  offset: 0, 0
+  index: -1
+图层 19
+  rotate: false
+  xy: 305, 150
+  size: 88, 96
+  orig: 88, 96
+  offset: 0, 0
+  index: -1
+齿轮大
+  rotate: false
+  xy: 305, 74
+  size: 69, 74
+  orig: 69, 74
+  offset: 0, 0
+  index: -1
+齿轮小
+  rotate: false
+  xy: 395, 183
+  size: 64, 63
+  orig: 64, 63
+  offset: 0, 0
+  index: -1

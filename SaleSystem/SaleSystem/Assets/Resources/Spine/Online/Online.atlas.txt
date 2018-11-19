@@ -1,0 +1,41 @@
+
+Online.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1
+  rotate: false
+  xy: 412, 175
+  size: 84, 71
+  orig: 84, 71
+  offset: 0, 0
+  index: -1
+内齿轮大
+  rotate: false
+  xy: 412, 115
+  size: 59, 58
+  orig: 59, 58
+  offset: 0, 0
+  index: -1
+内齿轮小
+  rotate: false
+  xy: 412, 71
+  size: 43, 42
+  orig: 43, 42
+  offset: 0, 0
+  index: -1
+图层3
+  rotate: false
+  xy: 211, 24
+  size: 199, 222
+  orig: 199, 222
+  offset: 0, 0
+  index: -1
+盖子
+  rotate: true
+  xy: 2, 2
+  size: 244, 207
+  orig: 244, 207
+  offset: 0, 0
+  index: -1
