@@ -20,7 +20,6 @@ namespace Sale
             _eventSystem.Init();
             _eventSystem.Trans.SetParent(transform);
             gameObject.AddComponent<SocialGUIManager>();
-            SocialGUIManager.Instance.OpenUI<UICtrlLogin>();
             _run = true;
         }
 

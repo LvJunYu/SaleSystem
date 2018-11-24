@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace Sale
 {
-    [UIAutoSetup(EUIAutoSetupType.Create)]
+    [UIAutoSetup]
     public class UICtrlMainApp : UICtrlGenericBase<UIViewMainApp>
     {
         private string[] PointInAnimNames = {"Adventure", "Workshop", "World", "OnLineOpen"};
@@ -30,6 +30,8 @@ namespace Sale
         {
             base.OnViewCreated();
             _cachedView.LeftChiLun.SetActiveEx(false);
+            _cachedView.RecordBtn.onClick.AddListener(OnRecordBtn);
+            _cachedView.QueryBtn.onClick.AddListener(OnQueryBtn);
             CreateStartSequence();
             CreateCommonSequences();
             for (int i = 0; i < (int) EBtnType.Max; i++)
@@ -60,7 +62,7 @@ namespace Sale
 
         protected override void InitGroupId()
         {
-            _groupId = (int) EUIGroupType.Pop2;
+            _groupId = (int) EUIGroupType.MainUI;
         }
 
         public override void OnUpdate()
@@ -68,6 +70,15 @@ namespace Sale
             UpdateRabbitEye();
             UpdateWind();
             UpdateChiLun();
+        }
+
+        private void OnQueryBtn()
+        {
+        }
+
+        private void OnRecordBtn()
+        {
+            SocialGUIManager.Instance.OpenUI<UICtrlRecord>();
         }
 
         private void UpdateChiLun()

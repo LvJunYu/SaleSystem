@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Sale
 {
-    [UIAutoSetup]
+    [UIAutoSetup(EUIAutoSetupType.Show)]
     public class UICtrlLogin : UICtrlGenericBase<UIViewLogin>
     {
         protected override void InitGroupId()

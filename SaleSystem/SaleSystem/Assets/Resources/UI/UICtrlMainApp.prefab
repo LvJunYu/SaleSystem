@@ -160,7 +160,6 @@ GameObject:
   m_Component:
   - component: {fileID: 224924737059614104}
   - component: {fileID: 222518871739600276}
-  - component: {fileID: 114318668700686438}
   - component: {fileID: 114617363336032960}
   m_Layer: 5
   m_Name: Wind1
@@ -180,7 +179,6 @@ GameObject:
   - component: {fileID: 222518749742090574}
   - component: {fileID: 114974791734208476}
   - component: {fileID: 114425404042160492}
-  - component: {fileID: 114113782299963648}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -290,7 +288,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1541555818996936
 GameObject:
   m_ObjectHideFlags: 1
@@ -410,7 +408,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1688503779606076
 GameObject:
   m_ObjectHideFlags: 1
@@ -693,17 +691,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114113782299963648
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1365909771690484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114186759950857322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -864,17 +851,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114318668700686438
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1353795800907190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114336152890707352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1159,7 +1135,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u4E16 \u754C"
+  m_Text: "\u5F55 \u5165"
 --- !u!114 &114480450161714192
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1415,6 +1391,8 @@ MonoBehaviour:
   - {fileID: 224223885961838020}
   - {fileID: 224367765579184684}
   - {fileID: 224634119394526240}
+  RecordBtn: {fileID: 114367492694986234}
+  QueryBtn: {fileID: 114240513547388870}
 --- !u!114 &114679522332911756
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1636,7 +1614,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u8054 \u673A"
+  m_Text: "\u67E5 \u8BE2"
 --- !u!114 &114909117275615474
 MonoBehaviour:
   m_ObjectHideFlags: 1

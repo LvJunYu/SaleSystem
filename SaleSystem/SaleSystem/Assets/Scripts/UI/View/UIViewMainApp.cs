@@ -1,6 +1,7 @@
 ﻿using Spine.Unity;
 using UITools;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Sale
 {
@@ -17,5 +18,7 @@ namespace Sale
         public RectTransform RightDownChiLunRtf;
         public RectTransform RabbitEye;
         public RectTransform[] Winds;
+        public Button RecordBtn;
+        public Button QueryBtn;
     }
 }
