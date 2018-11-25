@@ -8,6 +8,29 @@ namespace Sale
     {
         private List<Room> _rooms;
 
+        protected override void OnViewCreated()
+        {
+            base.OnViewCreated();
+            _cachedView.CreateRoomRecordBtn.onClick.AddListener(CreateRoomRecordBtn);
+            _cachedView.UpdateRoomRecordBtn.onClick.AddListener(UpdateRoomRecordBtn);
+            _cachedView.ChangeRoomBtn.onClick.AddListener(ChangeRoomBtn);
+        }
+
+        private void ChangeRoomBtn()
+        {
+            SocialGUIManager.Instance.OpenUI<UICtrlChangeRoom>();
+        }
+
+        private void UpdateRoomRecordBtn()
+        {
+            SocialGUIManager.ShowPopupDialog("开发中");
+        }
+
+        private void CreateRoomRecordBtn()
+        {
+            SocialGUIManager.Instance.OpenUI<UICtrlCreateNew>();
+        }
+
         public override void Open()
         {
             base.Open();
@@ -15,7 +38,7 @@ namespace Sale
             RefreshView();
         }
 
-        private void RefreshView()
+        public void RefreshView()
         {
             _cachedView.GridDataScrollers[(int) Menu].SetItemCount(_rooms.Count);
         }
@@ -40,6 +63,11 @@ namespace Sale
                     item.Unload();
                 }
             }
+        }
+
+        public void OnRoomRecordChanged()
+        {
+            _cachedView.GridDataScrollers[(int) Menu].RefreshCurrent();
         }
     }
 }

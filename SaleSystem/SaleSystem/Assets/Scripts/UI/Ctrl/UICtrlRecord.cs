@@ -1,4 +1,5 @@
-﻿using UITools;
+﻿using MyTools;
+using UITools;
 
 namespace Sale
 {
@@ -41,6 +42,29 @@ namespace Sale
         protected override void InitGroupId()
         {
             _groupId = (int) EUIGroupType.Pop1;
+        }
+
+        protected override void InitEventListener()
+        {
+            base.InitEventListener();
+            RegisterEvent(EMessengerType.OnRoomChanged, OnRoomChanged);
+            RegisterEvent(EMessengerType.OnRoomRecordChanged, OnRoomRecordChanged);
+        }
+
+        private void OnRoomRecordChanged()
+        {
+            if (_isOpen && _curMenu == EMenu.Room)
+            {
+                ((UPCtrlRecordRoom) _curMenuCtrl).OnRoomRecordChanged();
+            }
+        }
+
+        private void OnRoomChanged()
+        {
+            if (_isOpen && _curMenu == EMenu.Room)
+            {
+                ((UPCtrlRecordRoom) _curMenuCtrl).RefreshView();
+            }
         }
 
         private void ClickMenu(int idx, bool open)

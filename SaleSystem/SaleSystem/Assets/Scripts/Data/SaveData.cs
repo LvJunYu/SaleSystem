@@ -6,23 +6,55 @@ namespace Sale
     public class RoomRecord
     {
         public int RoomIndex;
+        public DateTime CreateDate;
         public DateTime CheckInDate;
         public DateTime CheckOutDate;
-        public float Price;
+        public ERoomerState State;
+        public int Price;
         public List<PayRecord> PayRecords = new List<PayRecord>();
+    }
+
+    public enum ERoomerState
+    {
+        Reservation,
+        CheckIn,
+        CheckOut
+    }
+
+    public class RoomData
+    {
+        public string Name;
+        public int Price;
+
+        public RoomData()
+        {
+        }
+
+        public RoomData(string name, int price = SaleConstDefine.DefaultRoomPrice)
+        {
+            Name = name;
+            Price = price;
+        }
     }
 
     public class PayRecord
     {
         public EPayType PayType;
-        public float PayNum;
+        public int PayNum;
+
+        public PayRecord(int payNum, EPayType payType)
+        {
+            PayNum = payNum;
+            PayType = payType;
+        }
     }
 
     public enum EPayType
     {
-        Cash,
-        WeChat,
-        Alipay,
-        Pos
+        现金,
+        微信,
+        支付宝,
+        Pos机,
+        Max
     }
 }

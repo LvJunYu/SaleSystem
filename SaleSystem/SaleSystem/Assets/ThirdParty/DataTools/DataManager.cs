@@ -52,7 +52,7 @@ namespace MyTools
                 return;
             }
 
-            DataHolder<T> holder = new DataHolder<T>(version, DateTime.UtcNow, userData);
+            DataHolder<T> holder = new DataHolder<T>(version, DateTime.Now, userData);
             FileTools.WriteStringToFile(holder.Serialize(), filePath);
         }
 

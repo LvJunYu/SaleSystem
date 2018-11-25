@@ -2511,6 +2511,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortIndex: 0
   CloseBtn: {fileID: 114020210038844816}
+  CreateRoomRecordBtn: {fileID: 114225359705741562}
+  UpdateRoomRecordBtn: {fileID: 114147570860652548}
+  ChangeRoomBtn: {fileID: 114437895597936456}
   TabGroup: {fileID: 114201382001300276}
   MenuButtonAry:
   - {fileID: 114102657883557198}
