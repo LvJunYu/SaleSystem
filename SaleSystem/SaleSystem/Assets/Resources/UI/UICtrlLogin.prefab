@@ -645,7 +645,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 100
+  m_Spacing: 90
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -1057,7 +1057,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u7528\u6237\u767B\u9646"
+  m_Text: "\u7BA1\u7406\u5458\u767B\u9646"
 --- !u!114 &114829292103332464
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1460,7 +1460,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 144, y: 64}
+  m_SizeDelta: {x: 154, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224445631968831040
 RectTransform:
@@ -1533,7 +1533,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 144, y: 64}
+  m_SizeDelta: {x: 154, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224591416759098428
 RectTransform:

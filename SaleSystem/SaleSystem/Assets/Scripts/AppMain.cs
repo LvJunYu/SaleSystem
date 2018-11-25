@@ -1,4 +1,5 @@
-﻿using UITools;
+﻿using System.Collections;
+using UITools;
 using UnityEngine;
 
 namespace Sale
@@ -8,6 +9,8 @@ namespace Sale
         public static AppMain Instance;
         private UIEventSystem _eventSystem;
         private bool _run;
+        private bool _isQuiting;
+        private bool _allowQuit;
 
         void Awake()
         {
@@ -20,16 +23,53 @@ namespace Sale
             _eventSystem.Init();
             _eventSystem.Trans.SetParent(transform);
             gameObject.AddComponent<SocialGUIManager>();
+            SaleDataManager.Instance.LoadData();
+            _run = true;
+            if (!Application.isEditor)
+            {
+                Application.wantsToQuit += OnWantsQuit;
+            }
+        }
+
+        void OnApplicationFocus(bool hasFocus)
+        {
+            if (_run && !hasFocus)
+            {
+                SaleDataManager.Instance.SaveData();
+            }
+        }
+
+        IEnumerator OnStart()
+        {
+            yield return null;
+            yield return null;
+            SocialGUIManager.Instance.OpenUI<UICtrlMainApp>();
             _run = true;
         }
 
-        void Update()
+        IEnumerator QuitGame()
         {
-            if (!_run)
+            _run = false;
+            SaleDataManager.Instance.SaveData();
+            yield return new WaitForSeconds(1);
+            _allowQuit = true;
+            Application.Quit();
+        }
+
+        bool OnWantsQuit()
+        {
+            if (_allowQuit)
             {
-                return;
+                return true;
             }
-            
+
+            if (!_isQuiting)
+            {
+                StartCoroutine(QuitGame());
+                _isQuiting = true;
+            }
+
+            return false;
         }
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace Sale
 {
-    [UIAutoSetup]
+    [UIAutoSetup(EUIAutoSetupType.Add)]
     public class UICtrlMainApp : UICtrlGenericBase<UIViewMainApp>
     {
         private string[] PointInAnimNames = {"Adventure", "Workshop", "World", "OnLineOpen"};
@@ -74,6 +74,7 @@ namespace Sale
 
         private void OnQueryBtn()
         {
+            SocialGUIManager.ShowPopupDialog("正在开发中，敬请期待");
         }
 
         private void OnRecordBtn()

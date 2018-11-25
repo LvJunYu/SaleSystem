@@ -12,12 +12,9 @@ namespace Sale
         protected override void OnViewCreated()
         {
             base.OnViewCreated();
-            var upRoomCtrl = new UPCtrlRecordRoom();
-            upRoomCtrl.Init(this, _cachedView);
-            _menuCtrlArray[(int) EMenu.Roome] = upRoomCtrl;
-            
             _cachedView.CloseBtn.onClick.AddListener(OnCloseBtn);
             _menuCtrlArray = new UPCtrlRecordBase[(int) EMenu.Max];
+            _menuCtrlArray[(int) EMenu.Room] = CreateUpCtrl<UPCtrlRecordRoom>(EMenu.Room);
             for (int i = 0; i < _cachedView.MenuButtonAry.Length; i++)
             {
                 var inx = i;
@@ -35,7 +32,7 @@ namespace Sale
             base.OnOpen(parameter);
             if (_curMenu == EMenu.None)
             {
-                _curMenu = EMenu.Roome;
+                _curMenu = EMenu.Room;
             }
 
             _cachedView.TabGroup.SelectIndex((int) _curMenu, true);
@@ -56,7 +53,6 @@ namespace Sale
 
         private void ChangeMenu(EMenu menu)
         {
-            if (_curMenu == menu) return;
             if (_curMenuCtrl != null)
             {
                 _curMenuCtrl.Close();
@@ -75,10 +71,18 @@ namespace Sale
             SocialGUIManager.Instance.CloseUI<UICtrlRecord>();
         }
 
+        private T CreateUpCtrl<T>(EMenu menu) where T : UPCtrlRecordBase, new()
+        {
+            var ctrl = new T();
+            ctrl.Menu = menu;
+            ctrl.Init(this, _cachedView);
+            return ctrl;
+        }
+
         public enum EMenu
         {
             None = -1,
-            Roome,
+            Room,
             Dinner,
             Max
         }

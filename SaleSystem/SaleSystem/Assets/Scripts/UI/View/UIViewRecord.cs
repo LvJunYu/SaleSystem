@@ -11,6 +11,6 @@ namespace Sale
         public Button[] MenuButtonAry;
         public Button[] MenuSelectedButtonAry;
         public GameObject[] Pannels;
-        public RectTransform RoomContent;
+        public GridDataScroller[] GridDataScrollers;
     }
 }

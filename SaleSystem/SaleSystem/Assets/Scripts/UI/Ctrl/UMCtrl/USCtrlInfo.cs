@@ -1,3 +1,4 @@
+using MyTools;
 using UITools;
 
 namespace Sale
@@ -18,6 +19,11 @@ namespace Sale
         {
             SetTitle(title);
             SetContent(content);
+        }
+
+        public void SetActive(bool b)
+        {
+            _cachedView.SetActiveEx(b);
         }
     }
 }

@@ -8,6 +8,11 @@ namespace UITools
     {
         protected T _cachedView;
 
+        public RectTransform Transform
+        {
+            get { return _cachedView.Trans; }
+        }
+
         protected override void OnViewCreated()
         {
             base.OnViewCreated();
@@ -27,6 +32,14 @@ namespace UITools
         public void Init(RectTransform parent)
         {
             Init(parent, Vector3.zero, SocialGUIManager.Instance.UIRoot);
+        }
+
+        public virtual void MoveByIndex(int beginindex, int newindex)
+        {
+        }
+
+        public virtual void EndTween()
+        {
         }
     }
 }

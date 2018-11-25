@@ -5,20 +5,28 @@ namespace MyTools
 {
     public class DataManager : Singleton<DataManager>
     {
-        private static readonly string s_userSaveDataFileName = "saveData";
+        private const string UserSaveDataFileName = "SaveData";
         private string _saveFilePath;
 
-        public void Init()
+        private string SaveFilePath
         {
-            _saveFilePath = string.Format("{0}/{1}", Application.persistentDataPath, s_userSaveDataFileName);
+            get
+            {
+                if (_saveFilePath == null)
+                {
+                    _saveFilePath = string.Format("{0}/{1}", Application.persistentDataPath, UserSaveDataFileName);
+                }
+
+                return _saveFilePath;
+            }
         }
 
         public T LoadData<T>() where T : DataBase
         {
-            return LoadData<T>(_saveFilePath);
+            return LoadData<T>(SaveFilePath);
         }
 
-        public T LoadData<T>(string filePath) where T : DataBase
+        private T LoadData<T>(string filePath) where T : DataBase
         {
             string saveDataFileContent;
             if (!FileTools.TryReadFileToString(filePath, out saveDataFileContent))
@@ -33,10 +41,10 @@ namespace MyTools
 
         public void SaveData<T>(T userData, Version version) where T : DataBase
         {
-            SaveData(userData, version, _saveFilePath);
+            SaveData(userData, version, SaveFilePath);
         }
 
-        public void SaveData<T>(T userData, Version version, string filePath) where T : DataBase
+        private void SaveData<T>(T userData, Version version, string filePath) where T : DataBase
         {
             if (null == userData)
             {
@@ -44,16 +52,16 @@ namespace MyTools
                 return;
             }
 
-            DataHolder<T> holder = new DataHolder<T>(version, System.DateTime.UtcNow, userData);
+            DataHolder<T> holder = new DataHolder<T>(version, DateTime.UtcNow, userData);
             FileTools.WriteStringToFile(holder.Serialize(), filePath);
         }
 
         public void ClearData()
         {
-            ClearData(_saveFilePath);
+            ClearData(SaveFilePath);
         }
 
-        public void ClearData(string filePath)
+        private void ClearData(string filePath)
         {
             FileTools.DeleteFile(filePath);
         }
