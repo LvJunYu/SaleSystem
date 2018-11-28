@@ -28,7 +28,7 @@ namespace Sale
 
         private void CreateRoomRecordBtn()
         {
-            SocialGUIManager.Instance.OpenUI<UICtrlCreateNew>();
+            SocialGUIManager.Instance.OpenUI<UICtrlCreateRecord>();
         }
 
         public override void Open()

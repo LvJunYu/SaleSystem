@@ -10,8 +10,8 @@ namespace Sale
         private string _name;
         private int _price;
         private ERoomState _state;
-        private Queue<RoomRecord> _records = new Queue<RoomRecord>();
-        private Queue<RoomRecord> _unFinishRecords = new Queue<RoomRecord>();
+        private Queue<RoomRecordData> _records = new Queue<RoomRecordData>();
+        private Queue<RoomRecordData> _unFinishRecords = new Queue<RoomRecordData>();
 
         public int Index
         {
@@ -23,7 +23,7 @@ namespace Sale
             get { return _name; }
         }
 
-        public Queue<RoomRecord> Records
+        public Queue<RoomRecordData> Records
         {
             get { return _records; }
         }
@@ -51,10 +51,10 @@ namespace Sale
             _price = SaleConstDefine.DefaultRoomPrice;
         }
 
-        public void AddRecord(RoomRecord roomRecord)
+        public void AddRecord(RoomRecordData roomRecordData)
         {
-            _records.Enqueue(roomRecord);
-            _unFinishRecords.Enqueue(roomRecord);
+            _records.Enqueue(roomRecordData);
+            _unFinishRecords.Enqueue(roomRecordData);
         }
 
         public void ClearRecords()
@@ -119,6 +119,19 @@ namespace Sale
         {
             return new RoomData(_name, _price);
         }
+
+        public bool CheckDateConflict(DateTime checkInData, DateTime checkOutDate)
+        {
+            foreach (var record in _unFinishRecords)
+            {
+                if (record.IsConflict(checkInData, checkOutDate))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 
     public enum ERoomState
@@ -127,5 +140,16 @@ namespace Sale
         订房,
         入住,
         待退房,
+    }
+
+    public class RoomRecord
+    {
+        public int RoomIndex;
+        public DateTime CreateDate;
+        public DateTime CheckInDate;
+        public DateTime CheckOutDate;
+        public ERoomerState State;
+        public int Price;
+        public List<PayRecord> PayRecords = new List<PayRecord>();
     }
 }

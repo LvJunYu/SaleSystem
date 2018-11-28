@@ -55,7 +55,7 @@ namespace Sale
         public DateTime GetDateTime()
         {
             return new DateTime(int.Parse(_cachedView.Year.text), int.Parse(_cachedView.Month.text),
-                int.Parse(_cachedView.Day.text));
+                int.Parse(_cachedView.Day.text), SaleConstDefine.DefaultRecordHour, 0, 0);
         }
     }
 }

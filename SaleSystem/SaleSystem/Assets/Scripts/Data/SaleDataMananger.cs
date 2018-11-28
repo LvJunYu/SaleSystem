@@ -8,8 +8,9 @@ namespace Sale
     {
         private readonly Version _version = new Version(1, 0);
         private SaleData _data;
+        private int _recordIndex;
         private List<Room> _rooms = new List<Room>();
-        private List<RoomRecord> _roomRecords = new List<RoomRecord>();
+        private List<RoomRecordData> _roomRecords = new List<RoomRecordData>();
         private bool _isDirty;
 
         public List<Room> Rooms
@@ -17,9 +18,14 @@ namespace Sale
             get { return _rooms; }
         }
 
-        public List<RoomRecord> RoomRecords
+        public List<RoomRecordData> RoomRecords
         {
             get { return _roomRecords; }
+        }
+
+        public int RecordIndex
+        {
+            get { return _recordIndex; }
         }
 
         public void LoadData()
@@ -47,6 +53,7 @@ namespace Sale
         private SaleData InitDta()
         {
             var data = new SaleData();
+            data.RecordIndex = 1;
             data.Rooms.Add(new RoomData("客房1"));
             data.Rooms.Add(new RoomData("客房2"));
             data.Rooms.Add(new RoomData("客房3"));
@@ -56,9 +63,9 @@ namespace Sale
 
         private void ParseData(SaleData data)
         {
+            _recordIndex = data.RecordIndex;
             _roomRecords = data.RoomRecords;
             _roomRecords.Sort((p, q) => (p.CheckInDate - q.CheckInDate).Days);
-
             _rooms.Clear();
             for (int i = 0; i < data.Rooms.Count; i++)
             {
@@ -92,7 +99,8 @@ namespace Sale
             {
                 _data = new SaleData();
             }
-            
+
+            _data.RecordIndex = _recordIndex;
             _data.Rooms.Clear();
             for (int i = 0; i < _rooms.Count; i++)
             {
@@ -102,16 +110,18 @@ namespace Sale
             return _data;
         }
 
-        public void AddRoomRecord(RoomRecord data)
+        public void AddRoomRecord(RoomRecordData data)
         {
             _roomRecords.Add(data);
+            _recordIndex++;
             _isDirty = true;
         }
     }
 
     public class SaleData : DataBase
     {
+        public int RecordIndex;
         public List<RoomData> Rooms = new List<RoomData>();
-        public List<RoomRecord> RoomRecords = new List<RoomRecord>();
+        public List<RoomRecordData> RoomRecords = new List<RoomRecordData>();
     }
 }

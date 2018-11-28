@@ -14,7 +14,7 @@ namespace Sale
             var res = day >= 1 && day <= 31;
             if (!res)
             {
-                SocialGUIManager.ShowPopupDialog("请输入正确的时间");
+                SocialGUIManager.ShowPopupDialog("日期输入有误");
             }
 
             return res;
@@ -25,7 +25,7 @@ namespace Sale
             var res = month >= 1 && month <= 12;
             if (!res)
             {
-                SocialGUIManager.ShowPopupDialog("请输入正确的时间");
+                SocialGUIManager.ShowPopupDialog("月份输入有误");
             }
 
             return res;
@@ -36,7 +36,7 @@ namespace Sale
             var res = year > DateTime.MinValue.Year && year < 3000;
             if (!res)
             {
-                SocialGUIManager.ShowPopupDialog("请输入正确的时间");
+                SocialGUIManager.ShowPopupDialog("年份超出范围");
             }
 
             return res;

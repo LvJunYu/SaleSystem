@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace Sale
 {
-    public class RoomRecord
+    public class RoomRecordData
     {
+        public int Id;
         public int RoomIndex;
         public DateTime CreateDate;
         public DateTime CheckInDate;
@@ -12,6 +13,11 @@ namespace Sale
         public ERoomerState State;
         public int Price;
         public List<PayRecord> PayRecords = new List<PayRecord>();
+
+        public bool IsConflict(DateTime checkInData, DateTime checkOutDate)
+        {
+            return checkOutDate.GetDays() > CheckInDate.GetDays() && checkInData.GetDays() < CheckOutDate.GetDays();
+        }
     }
 
     public enum ERoomerState

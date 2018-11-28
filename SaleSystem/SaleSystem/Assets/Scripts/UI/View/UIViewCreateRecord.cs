@@ -4,8 +4,9 @@ using UnityEngine.UI;
 
 namespace Sale
 {
-    public class UIViewCreateNew : UIViewBase
+    public class UIViewCreateRecord : UIViewBase
     {
+        public USViewInfo RecordIdView;
         public Button CloseBtn;
         public Button OKBtn;
         public RectTransform InfoContent;
