@@ -39,6 +39,11 @@ namespace Sale
 
             return base.OpenUI<T>(value);
         }
+
+        public static void ShowPopupDialogFormat(string format, params object[] val)
+        {
+            ShowPopupDialog(string.Format(format, val));
+        }
    
         public static void ShowPopupDialog(string msg, string title = null,
             params KeyValuePair<string, Action>[] btnParam)

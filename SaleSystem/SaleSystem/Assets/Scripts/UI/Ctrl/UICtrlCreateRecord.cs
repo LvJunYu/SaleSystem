@@ -14,6 +14,7 @@ namespace Sale
         private UMCtrlInfoItem _priceCtrl;
         private UMCtrlDate _checkInCtrl;
         private UMCtrlDate _checkOutCtrl;
+        private UMCtrlInfoItem _roomerCtrl;
         private UMCtrlInfoItem _payCountCtrl;
         private UMCtrlDropdown _payTypeCtrl;
         private List<string> _roomNames = new List<string>();
@@ -29,7 +30,7 @@ namespace Sale
             _recordId.SetTitle("订单号：");
             _roomCtrl = new UMCtrlDropdown();
             _roomCtrl.Init(_cachedView.InfoContent);
-            _roomCtrl.SetTitle("房间号：");
+            _roomCtrl.SetTitle("房间：");
             _roomCtrl.AddListener(OnRoomValChanged);
             _priceCtrl = new UMCtrlInfoItem();
             _priceCtrl.Init(_cachedView.InfoContent);
@@ -42,6 +43,9 @@ namespace Sale
             _checkOutCtrl.Init(_cachedView.InfoContent);
             _checkOutCtrl.SetTitle("退房时间：");
 
+            _roomerCtrl = new UMCtrlInfoItem();
+            _roomerCtrl.Init(_cachedView.InfoContent);
+            _roomerCtrl.SetTitle("房客姓名：");
             _payCountCtrl = new UMCtrlInfoItem();
             _payCountCtrl.Init(_cachedView.InfoContent);
             _payCountCtrl.SetTitle("付款金额：");
@@ -49,7 +53,7 @@ namespace Sale
             _payTypeCtrl = new UMCtrlDropdown();
             _payTypeCtrl.Init(_cachedView.InfoContent);
             _payTypeCtrl.SetTitle("付款方式：");
-            _payTypeCtrl.SetOptions(SaleConstDefine.PayTypes);
+            _payTypeCtrl.SetOptions(SaleDataManager.Instance.PayTypes);
             InitRoomData();
         }
 
@@ -85,6 +89,7 @@ namespace Sale
             _recordId.SetContent(SaleDataManager.Instance.RecordIndex.ToString());
             RefreshRoom();
             RefreshDate();
+            _roomerCtrl.SetContent(string.Empty);
             RefreshPay();
         }
 
@@ -127,20 +132,33 @@ namespace Sale
             var room = SaleDataManager.Instance.Rooms[roomIndex];
             if (room.CheckDateConflict(checkInData, checkOutDate))
             {
-                SocialGUIManager.ShowPopupDialog("房间{0}已经被预定", room.Name);
+                SocialGUIManager.ShowPopupDialogFormat("房间{0}已经被预定", room.Name);
                 return;
             }
+
+            var roomerName = _roomerCtrl.GetContent();
+            if (string.IsNullOrEmpty(roomerName))
+            {
+                SocialGUIManager.ShowPopupDialog("请填写房客姓名");
+                return;
+            }
+
             var data = new RoomRecordData();
             data.Id = SaleDataManager.Instance.RecordIndex;
             data.CreateDate = DateTime.Now;
             data.CheckInDate = checkInData;
             data.CheckOutDate = checkOutDate;
             data.RoomIndex = room.Index;
+            data.RoommerName = roomerName;
             var price = _priceCtrl.GetContent();
             data.Price = int.Parse(price);
-            var payCount = _payCountCtrl.GetContent();
-            var payType = (EPayType) _payTypeCtrl.GetVal();
-            data.PayRecords.Add(new PayRecord(int.Parse(payCount), payType));
+            var payCount = int.Parse(_payCountCtrl.GetContent());
+            var payType = _payTypeCtrl.GetContent();
+            if (payCount > 0)
+            {
+                data.PayRecords.Add(new PayRecord(payCount, payType));
+            }
+
             SaleDataManager.Instance.AddRoomRecord(data);
             room.AddRecord(data);
             Messenger.Broadcast(EMessengerType.OnRoomRecordChanged);

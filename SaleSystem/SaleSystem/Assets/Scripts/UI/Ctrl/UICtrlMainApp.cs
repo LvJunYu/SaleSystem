@@ -4,10 +4,11 @@ using MyTools;
 using UITools;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Random = UnityEngine.Random;
 
 namespace Sale
 {
-    [UIAutoSetup(EUIAutoSetupType.Add)]
+    [UIAutoSetup]
     public class UICtrlMainApp : UICtrlGenericBase<UIViewMainApp>
     {
         private string[] PointInAnimNames = {"Adventure", "Workshop", "World", "OnLineOpen"};
@@ -32,6 +33,7 @@ namespace Sale
             _cachedView.LeftChiLun.SetActiveEx(false);
             _cachedView.RecordBtn.onClick.AddListener(OnRecordBtn);
             _cachedView.QueryBtn.onClick.AddListener(OnQueryBtn);
+            _cachedView.SettingBtn.onClick.AddListener(SettingBtn);
             CreateStartSequence();
             CreateCommonSequences();
             for (int i = 0; i < (int) EBtnType.Max; i++)
@@ -70,6 +72,11 @@ namespace Sale
             UpdateRabbitEye();
             UpdateWind();
             UpdateChiLun();
+        }
+
+        private void SettingBtn()
+        {
+            SocialGUIManager.Instance.OpenUI<UICtrlSetting>();
         }
 
         private void OnQueryBtn()

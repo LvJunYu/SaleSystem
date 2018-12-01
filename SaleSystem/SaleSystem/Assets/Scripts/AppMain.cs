@@ -47,7 +47,7 @@ namespace Sale
             _run = true;
         }
 
-        IEnumerator QuitGame()
+        IEnumerator SaveDataAndQuit()
         {
             _run = false;
             SaleDataManager.Instance.SaveData();
@@ -65,11 +65,16 @@ namespace Sale
 
             if (!_isQuiting)
             {
-                StartCoroutine(QuitGame());
+                QuitGame();
                 _isQuiting = true;
             }
 
             return false;
+        }
+
+        public void QuitGame()
+        {
+            StartCoroutine(SaveDataAndQuit());
         }
     }
 }

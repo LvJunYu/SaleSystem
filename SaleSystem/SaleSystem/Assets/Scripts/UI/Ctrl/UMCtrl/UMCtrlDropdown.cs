@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UITools;
 using UnityEngine.Events;
@@ -31,6 +30,11 @@ namespace Sale
         public int GetVal()
         {
             return _cachedView.Dropdown.value;
+        }
+
+        public string GetContent()
+        {
+            return _cachedView.Dropdown.itemText.text;
         }
     }
 }

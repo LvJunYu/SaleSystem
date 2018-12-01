@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MyTools;
 using UITools;
 using UnityEngine;
 
@@ -23,7 +24,7 @@ namespace Sale
 
         private void UpdateRoomRecordBtn()
         {
-            SocialGUIManager.ShowPopupDialog("开发中");
+            SocialGUIManager.Instance.OpenUI<UICtrlRecordList>();
         }
 
         private void CreateRoomRecordBtn()

@@ -10,8 +10,9 @@ namespace Sale
         private string _name;
         private int _price;
         private ERoomState _state;
-        private Queue<RoomRecordData> _records = new Queue<RoomRecordData>();
+        private List<RoomRecordData> _records = new List<RoomRecordData>();
         private Queue<RoomRecordData> _unFinishRecords = new Queue<RoomRecordData>();
+        //todo 现在这里还不是有序的
 
         public int Index
         {
@@ -21,11 +22,6 @@ namespace Sale
         public string Name
         {
             get { return _name; }
-        }
-
-        public Queue<RoomRecordData> Records
-        {
-            get { return _records; }
         }
 
         public ERoomState State
@@ -43,6 +39,11 @@ namespace Sale
             get { return _price; }
         }
 
+        public List<RoomRecordData> Records
+        {
+            get { return _records; }
+        }
+
         public Room(int index)
         {
             _index = index;
@@ -53,7 +54,7 @@ namespace Sale
 
         public void AddRecord(RoomRecordData roomRecordData)
         {
-            _records.Enqueue(roomRecordData);
+            _records.Add(roomRecordData);
             _unFinishRecords.Enqueue(roomRecordData);
         }
 
@@ -69,7 +70,7 @@ namespace Sale
             while (_unFinishRecords.Count > 0)
             {
                 var record = _unFinishRecords.Peek();
-                if (record.CheckOutDate.GetDays() < nowDay || record.State == ERoomerState.CheckOut)
+                if (record.CheckOutDate.GetDays() < nowDay || record.State == ERoomerState.退房)
                 {
                     _unFinishRecords.Dequeue();
                 }

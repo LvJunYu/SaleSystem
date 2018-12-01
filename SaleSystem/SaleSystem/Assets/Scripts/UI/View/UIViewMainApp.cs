@@ -20,5 +20,6 @@ namespace Sale
         public RectTransform[] Winds;
         public Button RecordBtn;
         public Button QueryBtn;
+        public Button SettingBtn;
     }
 }

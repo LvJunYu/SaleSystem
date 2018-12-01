@@ -10,7 +10,8 @@ namespace Sale
         private SaleData _data;
         private int _recordIndex;
         private List<Room> _rooms = new List<Room>();
-        private List<RoomRecordData> _roomRecords = new List<RoomRecordData>();
+        private List<string> _payTypes;
+        private List<RoomRecordData> _roomRecords;
         private bool _isDirty;
 
         public List<Room> Rooms
@@ -28,13 +29,23 @@ namespace Sale
             get { return _recordIndex; }
         }
 
+        public List<string> PayTypes
+        {
+            get { return _payTypes; }
+            set
+            {
+                _payTypes = value;
+                _isDirty = true;
+            }
+        }
+
         public void LoadData()
         {
+//            DataManager.Instance.ClearData();
             _data = DataManager.Instance.LoadData<SaleData>();
             if (_data == null)
             {
                 _data = InitDta();
-                _isDirty = true;
             }
 
             ParseData(_data);
@@ -53,6 +64,9 @@ namespace Sale
         private SaleData InitDta()
         {
             var data = new SaleData();
+            data.PayType.Add("微信");
+            data.PayType.Add("支付宝");
+            data.PayType.Add("现金");
             data.RecordIndex = 1;
             data.Rooms.Add(new RoomData("客房1"));
             data.Rooms.Add(new RoomData("客房2"));
@@ -65,7 +79,8 @@ namespace Sale
         {
             _recordIndex = data.RecordIndex;
             _roomRecords = data.RoomRecords;
-            _roomRecords.Sort((p, q) => (p.CheckInDate - q.CheckInDate).Days);
+            _payTypes = data.PayType;
+            _roomRecords.Sort((p, q) => p.Id - q.Id);
             _rooms.Clear();
             for (int i = 0; i < data.Rooms.Count; i++)
             {
@@ -83,16 +98,17 @@ namespace Sale
             {
                 _rooms[i].ClearRecords();
             }
-            
+
             for (int i = 0; i < _roomRecords.Count; i++)
             {
-                if (_roomRecords[i].RoomIndex < _rooms.Count)
+                var roomIndex = _roomRecords[i].RoomIndex;
+                if (roomIndex < _rooms.Count)
                 {
-                    _rooms[i].AddRecord(_roomRecords[i]);
+                    _rooms[roomIndex].AddRecord(_roomRecords[i]);
                 }
             }
         }
-  
+
         private SaleData GetData()
         {
             if (_data == null)
@@ -101,6 +117,7 @@ namespace Sale
             }
 
             _data.RecordIndex = _recordIndex;
+            _data.PayType = _payTypes;
             _data.Rooms.Clear();
             for (int i = 0; i < _rooms.Count; i++)
             {
@@ -122,6 +139,7 @@ namespace Sale
     {
         public int RecordIndex;
         public List<RoomData> Rooms = new List<RoomData>();
+        public List<string> PayType = new List<string>();
         public List<RoomRecordData> RoomRecords = new List<RoomRecordData>();
     }
 }

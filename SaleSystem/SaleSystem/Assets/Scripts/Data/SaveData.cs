@@ -7,6 +7,7 @@ namespace Sale
     {
         public int Id;
         public int RoomIndex;
+        public string RoommerName;
         public DateTime CreateDate;
         public DateTime CheckInDate;
         public DateTime CheckOutDate;
@@ -22,9 +23,9 @@ namespace Sale
 
     public enum ERoomerState
     {
-        Reservation,
-        CheckIn,
-        CheckOut
+        预定,
+        入住,
+        退房
     }
 
     public class RoomData
@@ -45,22 +46,13 @@ namespace Sale
 
     public class PayRecord
     {
-        public EPayType PayType;
+        public string PayType;
         public int PayNum;
 
-        public PayRecord(int payNum, EPayType payType)
+        public PayRecord(int payNum, string payType)
         {
             PayNum = payNum;
             PayType = payType;
         }
-    }
-
-    public enum EPayType
-    {
-        现金,
-        微信,
-        支付宝,
-        Pos机,
-        Max
     }
 }
