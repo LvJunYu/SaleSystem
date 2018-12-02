@@ -16,11 +16,6 @@ namespace UITools
         ///     创建UICtrl和UIView，但是不尝试直接显示
         /// </summary>
         Create,
-
-        /// <summary>
-        ///     创建UICtrl和UIView，同时尝试把UI显示出来
-        /// </summary>
-        Show,
     }
 
     /// <summary>

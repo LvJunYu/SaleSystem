@@ -1,9 +1,8 @@
 ﻿using UITools;
-using UnityEngine;
 
 namespace Sale
 {
-    [UIAutoSetup(EUIAutoSetupType.Show)]
+    [UIAutoSetup]
     public class UICtrlLogin : UICtrlGenericBase<UIViewLogin>
     {
         protected override void InitGroupId()
@@ -21,8 +20,8 @@ namespace Sale
         private void LoginBtn()
         {
             var name = _cachedView.Name.text;
-            if (!string.IsNullOrEmpty(name) && PlayerPrefs.HasKey(name) &&
-                PlayerPrefs.GetString(name) == _cachedView.Pwd.text)
+            if (!string.IsNullOrEmpty(name) && name == "admin" &&
+                "123456" == _cachedView.Pwd.text)
             {
                 UserData.Instance.AdminLogin(name);
                 SocialGUIManager.Instance.CloseUI<UICtrlLogin>();

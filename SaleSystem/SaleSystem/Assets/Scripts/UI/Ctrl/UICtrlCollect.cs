@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 namespace Sale
 {
-    [UIAutoSetup]
-    public class UICtrlCollect : UICtrlGenericBase<UIViewCollect>
+    [UIAutoSetup(EUIAutoSetupType.Create)]
+    public class UICtrlCollect : UICtrlAnimationBase<UIViewCollect>
     {
         private Dictionary<int, List<PayRecord>> _dateDic = new Dictionary<int, List<PayRecord>>();
         private int _minDate;
@@ -37,6 +37,13 @@ namespace Sale
         protected override void InitGroupId()
         {
             _groupId = (int) EUIGroupType.Pop1;
+        }
+
+        protected override void SetPartAnimations()
+        {
+            base.SetPartAnimations();
+            SetPart(_cachedView.PannelRtf, EAnimationType.MoveFromDown);
+            SetPart(_cachedView.BGRtf, EAnimationType.Fade);
         }
 
         private void RefreshView()

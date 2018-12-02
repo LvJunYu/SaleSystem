@@ -3,8 +3,8 @@ using UITools;
 
 namespace Sale
 {
-    [UIAutoSetup]
-    public class UICtrlRecord : UICtrlGenericBase<UIViewRecord>
+    [UIAutoSetup(EUIAutoSetupType.Create)]
+    public class UICtrlRecord : UICtrlAnimationBase<UIViewRecord>
     {
         private UPCtrlRecordBase _curMenuCtrl;
         private UPCtrlRecordBase[] _menuCtrlArray;
@@ -49,6 +49,13 @@ namespace Sale
             base.InitEventListener();
             RegisterEvent(EMessengerType.OnRoomChanged, OnRoomChanged);
             RegisterEvent(EMessengerType.OnRoomRecordChanged, OnRoomRecordChanged);
+        }
+
+        protected override void SetPartAnimations()
+        {
+            base.SetPartAnimations();
+            SetPart(_cachedView.PannelRtf, EAnimationType.MoveFromDown);
+            SetPart(_cachedView.BGRtf, EAnimationType.Fade);
         }
 
         private void OnRoomRecordChanged()

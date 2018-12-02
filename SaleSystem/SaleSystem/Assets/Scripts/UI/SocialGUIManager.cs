@@ -24,7 +24,7 @@ namespace Sale
             cs.matchWidthOrHeight = 0.432f;
 
             InitUI(GetType());
-            ProcessUIAutoSetup();
+            StartCoroutine(ProcessUIAutoSetup());
         }
 
         public override T OpenUI<T>(object value = null)
@@ -44,7 +44,7 @@ namespace Sale
         {
             ShowPopupDialog(string.Format(format, val));
         }
-   
+
         public static void ShowPopupDialog(string msg, string title = null,
             params KeyValuePair<string, Action>[] btnParam)
         {

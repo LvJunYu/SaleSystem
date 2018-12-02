@@ -600,6 +600,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SortIndex: 0
+  PannelRtf: {fileID: 224609582541533910}
+  BGRtf: {fileID: 224050497042989154}
   CloseBtn: {fileID: 114765752594935466}
   GridDataScroller: {fileID: 114183793408507578}
   PayTypeDock: {fileID: 224428862590581368}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -51,33 +52,34 @@ namespace UITools
             }
         }
 
-        protected virtual void ProcessUIAutoSetup()
+        protected IEnumerator ProcessUIAutoSetup()
         {
+            yield return null;
+            yield return null;
             //第一遍把所有Ctrl都创建了 第二遍创建视图 第三遍打开UI 防止中间互相引用导致错误
             using (var itor = UITypeAttributeDict.GetEnumerator())
             {
                 while (itor.MoveNext())
                 {
                     var autoSetup = itor.Current.Value;
-                    if (autoSetup.AutoSetupType == EUIAutoSetupType.Create
-                        || autoSetup.AutoSetupType == EUIAutoSetupType.Show)
+                    if (autoSetup.AutoSetupType == EUIAutoSetupType.Create)
                     {
                         CreateView(itor.Current.Key);
                     }
                 }
             }
 
-            using (var itor = UITypeAttributeDict.GetEnumerator())
-            {
-                while (itor.MoveNext())
-                {
-                    var autoSetup = itor.Current.Value;
-                    if (autoSetup.AutoSetupType == EUIAutoSetupType.Show)
-                    {
-                        OpenUI(itor.Current.Key);
-                    }
-                }
-            }
+//            using (var itor = UITypeAttributeDict.GetEnumerator())
+//            {
+//                while (itor.MoveNext())
+//                {
+//                    var autoSetup = itor.Current.Value;
+//                    if (autoSetup.AutoSetupType == EUIAutoSetupType.Show)
+//                    {
+//                        OpenUI(itor.Current.Key);
+//                    }
+//                }
+//            }
         }
 
         protected virtual void Update()

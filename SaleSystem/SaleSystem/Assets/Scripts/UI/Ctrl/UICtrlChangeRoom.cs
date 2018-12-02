@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Sale
 {
     [UIAutoSetup]
-    public class UICtrlChangeRoom : UICtrlGenericBase<UIViewChangeRoom>
+    public class UICtrlChangeRoom : UICtrlAnimationBase<UIViewChangeRoom>
     {
         private List<UMCtrlRoomRaw> _rooms = new List<UMCtrlRoomRaw>();
         private int _curRoomCount;
@@ -31,6 +31,13 @@ namespace Sale
         {
             base.OnOpen(parameter);
             RefreshView();
+        }
+
+        protected override void SetPartAnimations()
+        {
+            base.SetPartAnimations();
+            SetPart(_cachedView.PannelRtf, EAnimationType.MoveFromDown);
+            SetPart(_cachedView.BGRtf, EAnimationType.Fade);
         }
 
         private void RefreshView()

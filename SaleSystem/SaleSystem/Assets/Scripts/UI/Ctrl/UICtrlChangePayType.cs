@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Sale
 {
     [UIAutoSetup]
-    public class UICtrlChangePayType : UICtrlGenericBase<UIViewChangeRoom>
+    public class UICtrlChangePayType : UICtrlAnimationBase<UIViewChangeRoom>
     {
         private List<UMCtrlPayType> _items = new List<UMCtrlPayType>();
         private int _curPayTypeCount;
@@ -31,6 +31,13 @@ namespace Sale
         {
             base.OnOpen(parameter);
             RefreshView();
+        }
+
+        protected override void SetPartAnimations()
+        {
+            base.SetPartAnimations();
+            SetPart(_cachedView.PannelRtf, EAnimationType.MoveFromDown);
+            SetPart(_cachedView.BGRtf, EAnimationType.Fade);
         }
 
         private void RefreshView()

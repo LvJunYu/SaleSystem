@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 namespace Sale
 {
-    [UIAutoSetup]
-    public class UICtrlCreateRecord : UICtrlGenericBase<UIViewCreateRecord>
+    [UIAutoSetup(EUIAutoSetupType.Create)]
+    public class UICtrlCreateRecord : UICtrlAnimationBase<UIViewCreateRecord>
     {
         protected static List<string> _roomNames = new List<string>();
 
@@ -99,6 +99,13 @@ namespace Sale
         protected override void InitGroupId()
         {
             _groupId = (int) EUIGroupType.Pop2;
+        }
+
+        protected override void SetPartAnimations()
+        {
+            base.SetPartAnimations();
+            SetPart(_cachedView.PannelRtf, EAnimationType.MoveFromDown);
+            SetPart(_cachedView.BGRtf, EAnimationType.Fade);
         }
 
         protected virtual void RefreshView(object parameter)

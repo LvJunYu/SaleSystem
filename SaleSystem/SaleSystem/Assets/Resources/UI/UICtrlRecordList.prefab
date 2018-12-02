@@ -777,6 +777,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SortIndex: 0
+  PannelRtf: {fileID: 224294350817842704}
+  BGRtf: {fileID: 224875945944135702}
   CloseBtn: {fileID: 114130492146611054}
   SearchBtn: {fileID: 114350162103119916}
   AllBtn: {fileID: 114986840172583458}

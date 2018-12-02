@@ -3,7 +3,7 @@ using UITools;
 
 namespace Sale
 {
-    [UIAutoSetup]
+    [UIAutoSetup(EUIAutoSetupType.Create)]
     public class UICtrlUpdateRecord : UICtrlCreateRecord
     {
         protected override void RefreshView(object parameter)

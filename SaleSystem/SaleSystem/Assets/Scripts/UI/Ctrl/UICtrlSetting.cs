@@ -2,8 +2,8 @@
 
 namespace Sale
 {
-    [UIAutoSetup]
-    public class UICtrlSetting : UICtrlGenericBase<UIViewSetting>
+    [UIAutoSetup(EUIAutoSetupType.Create)]
+    public class UICtrlSetting : UICtrlAnimationBase<UIViewSetting>
     {
         protected override void InitGroupId()
         {
@@ -17,6 +17,13 @@ namespace Sale
             _cachedView.PayTypeSetting.onClick.AddListener(PayTypeSetting);
             _cachedView.RoomSetting.onClick.AddListener(RoomSetting);
             _cachedView.QuitBtn.onClick.AddListener(QuitBtn);
+        }
+
+        protected override void SetPartAnimations()
+        {
+            base.SetPartAnimations();
+            SetPart(_cachedView.PannelRtf, EAnimationType.MoveFromDown);
+            SetPart(_cachedView.BGRtf, EAnimationType.Fade);
         }
 
         private void PayTypeSetting()

@@ -6,8 +6,9 @@ namespace Sale
 {
     public class UIViewChangeRoom : UIViewBase
     {
+        public RectTransform PannelRtf;
+        public RectTransform BGRtf;
         public RectTransform Content;
-        public ContentSizeFitter ContentSizeFitter;
         public Button AddBtn;
         public Button DeleteBtn;
         public Button OKBtn;

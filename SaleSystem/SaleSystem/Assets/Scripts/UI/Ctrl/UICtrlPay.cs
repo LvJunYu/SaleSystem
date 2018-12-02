@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Sale
 {
-    [UIAutoSetup]
-    public class UICtrlPay : UICtrlGenericBase<UIViewPay>
+    [UIAutoSetup(EUIAutoSetupType.Create)]
+    public class UICtrlPay : UICtrlAnimationBase<UIViewPay>
     {
         private List<UMCtrlPayItem> _items = new List<UMCtrlPayItem>();
         private int _curPayTypeCount;
@@ -33,6 +33,13 @@ namespace Sale
             base.OnOpen(parameter);
             _payRecords = parameter as List<PayRecord>;
             RefreshView();
+        }
+
+        protected override void SetPartAnimations()
+        {
+            base.SetPartAnimations();
+            SetPart(_cachedView.PannelRtf, EAnimationType.MoveFromDown);
+            SetPart(_cachedView.BGRtf, EAnimationType.Fade);
         }
 
         private void RefreshView()

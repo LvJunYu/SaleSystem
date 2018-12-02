@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 namespace Sale
 {
-    [UIAutoSetup]
-    public class UICtrlRecordList : UICtrlGenericBase<UIViewRecordList>
+    [UIAutoSetup(EUIAutoSetupType.Create)]
+    public class UICtrlRecordList : UICtrlAnimationBase<UIViewRecordList>
     {
         private List<RoomRecordData> _records = new List<RoomRecordData>();
         private ESearchType _searchType;
@@ -68,6 +68,13 @@ namespace Sale
         protected override void InitGroupId()
         {
             _groupId = (int) EUIGroupType.Pop2;
+        }
+
+        protected override void SetPartAnimations()
+        {
+            base.SetPartAnimations();
+            SetPart(_cachedView.PannelRtf, EAnimationType.MoveFromDown);
+            SetPart(_cachedView.BGRtf, EAnimationType.Fade);
         }
 
         private void OnRoomRecordChanged()

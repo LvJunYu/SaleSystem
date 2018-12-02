@@ -8,6 +8,7 @@ namespace Sale
     public class AppMain : MonoBehaviour
     {
         public static AppMain Instance;
+        public GameObject OpenImg;
         private UIEventSystem _eventSystem;
         private bool _run;
         private bool _isQuiting;
@@ -23,8 +24,9 @@ namespace Sale
             _eventSystem = new UIEventSystem();
             _eventSystem.Init();
             _eventSystem.Trans.SetParent(transform);
-            gameObject.AddComponent<SocialGUIManager>();
             SaleDataManager.Instance.LoadData();
+            gameObject.AddComponent<SocialGUIManager>();
+            SocialGUIManager.Instance.OpenUI<UICtrlLogin>();
             _run = true;
             LogHelper.Info("App Run!");
 //            if (!Application.isEditor)

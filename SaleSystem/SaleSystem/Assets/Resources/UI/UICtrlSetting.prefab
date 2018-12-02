@@ -644,6 +644,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SortIndex: 0
+  PannelRtf: {fileID: 224261415874285362}
+  BGRtf: {fileID: 224406133334456350}
   CloseBtn: {fileID: 114601688119373648}
   PayTypeSetting: {fileID: 114932225868332530}
   RoomSetting: {fileID: 114220051682918908}

@@ -530,8 +530,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SortIndex: 0
+  PannelRtf: {fileID: 224652146788554344}
+  BGRtf: {fileID: 224097439444472840}
   Content: {fileID: 224738259490372908}
-  ContentSizeFitter: {fileID: 114562224816752602}
   AddBtn: {fileID: 114901931698597882}
   DeleteBtn: {fileID: 114556656264042312}
   OKBtn: {fileID: 114559831628408388}

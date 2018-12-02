@@ -490,6 +490,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SortIndex: 0
+  PannelRtf: {fileID: 224294350817842704}
+  BGRtf: {fileID: 224875945944135702}
   RecordIdView: {fileID: 114791123018468716}
   CloseBtn: {fileID: 114130492146611054}
   OKBtn: {fileID: 114355493973560800}
