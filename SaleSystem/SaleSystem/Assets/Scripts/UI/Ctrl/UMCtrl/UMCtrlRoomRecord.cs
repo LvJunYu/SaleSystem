@@ -32,9 +32,9 @@ namespace Sale
             if (_record == null) return;
             _infos[0].SetContent(_record.Id.ToString());
             _infos[1].SetContent(SaleDataManager.Instance.Rooms[_record.RoomIndex].Name);
-            _infos[2].SetContent(_record.CheckInDate.ToShortDateString());
+            _infos[2].SetContent(_record.CheckInDate.GetDateStr());
             _infos[3].SetContent(_record.RoommerName);
-            _infos[4].SetContent(_record.CheckOutDate.ToShortDateString());
+            _infos[4].SetContent(_record.CheckOutDate.GetDateStr());
             _infos[5].SetContent(_record.State.ToString());
         }
 

@@ -68,6 +68,7 @@ namespace Sale
 
             _cachedView.Dropdown.value = index;
             _cachedView.ContentInputField.text = _payRecord.PayNum.ToString();
+            _cachedView.TimeTxt.text = _payRecord.PayTime.GetDateStr();
             _isDirty = false;
         }
 

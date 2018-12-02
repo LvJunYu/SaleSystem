@@ -7,6 +7,7 @@ namespace Sale
     {
         public Dropdown Dropdown;
         public InputField ContentInputField;
+        public Text TimeTxt;
     }
 }
 

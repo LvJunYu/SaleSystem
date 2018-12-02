@@ -1221,7 +1221,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5F55 \u5165"
+  m_Text: "\u8BA2  \u5355"
 --- !u!114 &114480450161714192
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1701,7 +1701,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u67E5 \u8BE2"
+  m_Text: "\u6C47  \u603B"
 --- !u!114 &114909117275615474
 MonoBehaviour:
   m_ObjectHideFlags: 1

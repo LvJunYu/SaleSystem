@@ -68,6 +68,7 @@ namespace Sale
                 }
 
                 SaleDataManager.Instance.PayTypes = payTypes;
+                Messenger.Broadcast(EMessengerType.OnPayTypeChanged);
             }
         }
 

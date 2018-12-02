@@ -166,9 +166,9 @@ namespace Sale
 
         private bool CheckDataValid()
         {
-            _data.CheckInDate = _checkInCtrl.GetDateTime();
-            _data.CheckOutDate = _checkOutCtrl.GetDateTime();
-            if (_data.CheckInDate.GetDays() >= _data.CheckOutDate.GetDays())
+            var checkInData = _checkInCtrl.GetDateTime();
+            var checkOutDate = _checkOutCtrl.GetDateTime();
+            if (checkInData.GetDays() >= checkOutDate.GetDays())
             {
                 SocialGUIManager.ShowPopupDialog("订单时间少于1天");
                 return false;
@@ -176,7 +176,7 @@ namespace Sale
 
             var roomIndex = _roomCtrl.GetVal();
             var room = SaleDataManager.Instance.Rooms[roomIndex];
-            if (room.CheckDateConflict(_data))
+            if (room.CheckDateConflict(_data, checkInData, checkOutDate))
             {
                 SocialGUIManager.ShowPopupDialogFormat("房间{0}已经被预定", room.Name);
                 return false;

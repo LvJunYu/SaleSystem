@@ -17,7 +17,9 @@ namespace UITools
 
         [SerializeField] private RectTransform _scrollContent;
 
+        // private UI elements //
         private ScrollRect _scroller;
+        //        private RectTransform _scrollerTransform;
 
         public Vector2 ContentPosition
         {
@@ -25,10 +27,11 @@ namespace UITools
             set { _scrollContent.anchoredPosition = value; }
         }
 
+        // define //
         public enum Movement
         {
             Horizontal,
-            Vertical
+            Vertical,
         }
 
         // public fields //
@@ -74,6 +77,11 @@ namespace UITools
         public bool MouseIn
         {
             get { return _mouseIn; }
+        }
+
+        public bool HasInited
+        {
+            get { return _hasInited; }
         }
 
         #region Public Methods
@@ -198,8 +206,8 @@ namespace UITools
                 }
             }
 
-            _col = (int) ((vWidth + _spacing.x - _padding.left - _padding.right) / ItemSize.x);
-            _row = (int) ((vHeight + _spacing.y - _padding.top - _padding.bottom) / ItemSize.y);
+            _col = Mathf.Max(1, (int) ((vWidth + _spacing.x - _padding.left - _padding.right) / ItemSize.x));
+            _row = Mathf.Max(1, (int) ((vHeight + _spacing.y - _padding.top - _padding.bottom) / ItemSize.y));
             if (_moveType == Movement.Horizontal)
             {
                 _col += 2;
@@ -295,20 +303,7 @@ namespace UITools
 
         public void OnValueChanged(Vector2 normalizedPosition)
         {
-            int startIndex;
-            if (_moveType == Movement.Horizontal)
-            {
-                float scrollLength = -_scrollContent.anchoredPosition.x - _padding.left;
-                int scrollCol = (int) (scrollLength / ItemSize.x);
-                startIndex = scrollCol * _row;
-            }
-            else
-            {
-                float scrollLength = _scrollContent.anchoredPosition.y - _padding.top;
-                int scrollRow = (int) (scrollLength / ItemSize.y);
-                startIndex = scrollRow * _col;
-            }
-
+            var startIndex = GetStartIndex();
             if (_startIndex == startIndex && !_isDirty)
             {
                 return;
@@ -412,7 +407,7 @@ namespace UITools
 
         public void SetContentPosY(int inx, int colNum)
         {
-            float y = (float) inx / colNum * (_grid.spacing.y + _grid.cellSize.y);
+            float y = inx / colNum * (_grid.spacing.y + _grid.cellSize.y);
             ContentPosition = new Vector2(ContentPosition.x, -y);
         }
 
@@ -460,7 +455,8 @@ namespace UITools
         {
             Vector2 calculatePos = new Vector2(Mathf.Clamp(pos.x, 0, ItemSize.x * _col), pos.y);
 
-            var index = (int) ((-calculatePos.y + _padding.top) / ItemSize.y) * _col;
+            int index = 0;
+            index = (int) ((-calculatePos.y + _padding.top) / ItemSize.y) * _col;
             if (index < 0)
             {
                 index = 0;
@@ -494,6 +490,43 @@ namespace UITools
             {
                 item.Value.EndTween();
             }
+        }
+
+        public void ChangeCellSizeWidth(float width)
+        {
+            _grid.cellSize = new Vector2(width, _grid.cellSize.y);
+            if (_hasInited)
+            {
+                _cellSize = _grid.cellSize;
+                foreach (var item in _itemDict.Values)
+                {
+                    item.Transform.sizeDelta = _cellSize;
+                }
+            }
+        }
+
+        public void ForceUpdateByPos()
+        {
+            ProcessNewStartIndex(Math.Max(0, GetStartIndex()));
+        }
+
+        private int GetStartIndex()
+        {
+            int startIndex;
+            if (_moveType == Movement.Horizontal)
+            {
+                float scrollLength = -_scrollContent.anchoredPosition.x - _padding.left;
+                int scrollCol = (int) (scrollLength / ItemSize.x);
+                startIndex = scrollCol * _row;
+            }
+            else
+            {
+                float scrollLength = _scrollContent.anchoredPosition.y - _padding.top;
+                int scrollRow = (int) (scrollLength / ItemSize.y);
+                startIndex = scrollRow * _col;
+            }
+
+            return startIndex;
         }
     }
 
