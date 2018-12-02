@@ -41,5 +41,11 @@ namespace Sale
 
             return res;
         }
+
+        public static bool IsConflict(DateTime checkInData1, DateTime checkOutDate1, DateTime checkInDate2,
+            DateTime checkOutDate2)
+        {
+            return checkOutDate1.GetDays() > checkInDate2.GetDays() && checkInData1.GetDays() < checkOutDate2.GetDays();
+        }
     }
 }

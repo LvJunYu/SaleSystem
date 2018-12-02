@@ -14,11 +14,6 @@ namespace Sale
         public ERoomerState State;
         public int Price;
         public List<PayRecord> PayRecords = new List<PayRecord>();
-
-        public bool IsConflict(DateTime checkInData, DateTime checkOutDate)
-        {
-            return checkOutDate.GetDays() > CheckInDate.GetDays() && checkInData.GetDays() < CheckOutDate.GetDays();
-        }
     }
 
     public enum ERoomerState
@@ -50,7 +45,7 @@ namespace Sale
         public int PayNum;
         public DateTime PayTime;
 
-        public PayRecord() : this(0, SaleDataManager.Instance.PayTypes[0], DateTime.Now)
+        public PayRecord()
         {
         }
 
@@ -59,6 +54,11 @@ namespace Sale
             PayNum = payNum;
             PayType = payType;
             PayTime = payTime;
+        }
+
+        public static PayRecord CreateNew()
+        {
+            return new PayRecord(0, SaleDataManager.Instance.PayTypes[0], DateTime.Now);
         }
     }
 }

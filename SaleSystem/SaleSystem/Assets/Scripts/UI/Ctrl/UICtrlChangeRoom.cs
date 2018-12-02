@@ -73,6 +73,7 @@ namespace Sale
 
                 SaleDataManager.Instance.RefreshRoomRecords();
                 Messenger.Broadcast(EMessengerType.OnRoomChanged);
+                SaleDataManager.Instance.ChangeRooms();
             }
         }
 

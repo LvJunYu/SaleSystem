@@ -65,7 +65,7 @@ namespace Sale
 
         private void RefreshView()
         {
-            _cachedView.Title.text = _room.IndexStr;
+            _cachedView.Title.text = _room.IdStr;
             _cachedView.NameInputField.text = _room.Name;
             _cachedView.PriceInputField.text = _room.Price.ToString();
             _isDirty = false;

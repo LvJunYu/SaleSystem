@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using MyTools;
 using UITools;
 using UnityEngine;
 
@@ -25,17 +26,18 @@ namespace Sale
             gameObject.AddComponent<SocialGUIManager>();
             SaleDataManager.Instance.LoadData();
             _run = true;
-            if (!Application.isEditor)
-            {
-                Application.wantsToQuit += OnWantsQuit;
-            }
+            LogHelper.Info("App Run!");
+//            if (!Application.isEditor)
+//            {
+//                Application.wantsToQuit += OnWantsQuit;
+//            }
         }
 
         void OnApplicationFocus(bool hasFocus)
         {
             if (_run && !hasFocus)
             {
-                SaleDataManager.Instance.SaveData();
+//                SaleDataManager.Instance.SaveData();
             }
         }
 
@@ -74,7 +76,8 @@ namespace Sale
 
         public void QuitGame()
         {
-            StartCoroutine(SaveDataAndQuit());
+            Application.Quit();
+//            StartCoroutine(SaveDataAndQuit());
         }
     }
 }

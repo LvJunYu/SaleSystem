@@ -89,7 +89,7 @@ namespace Sale
         {
             var item = GetItem(_curPayTypeCount);
             item.SetActive(true);
-            item.SetData(new PayRecord());
+            item.SetData(PayRecord.CreateNew());
             _curPayTypeCount++;
             ScrollToEnd();
         }

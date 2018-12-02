@@ -11,6 +11,7 @@ namespace Sale
     {
         private List<RoomRecordData> _records = new List<RoomRecordData>();
         private ESearchType _searchType;
+        private string _searchContent;
 
         private List<string> _searchOptions = new List<string>
         {
@@ -43,6 +44,8 @@ namespace Sale
             }
             else
             {
+                _cachedView.Dropdown.value = (int) ESearchType.按房间号;
+                _searchContent = _cachedView.SearchInputField.text = room.IdStr;
                 _records.Clear();
                 _records.AddRange(room.Records);
                 _records.Reverse();
@@ -53,7 +56,7 @@ namespace Sale
         protected override void OnClose()
         {
             base.OnClose();
-            _cachedView.SearchInputField.text = string.Empty;
+            _searchContent = _cachedView.SearchInputField.text = string.Empty;
         }
 
         protected override void InitEventListener()
@@ -71,7 +74,7 @@ namespace Sale
         {
             if (_isOpen)
             {
-                _cachedView.GridDataScroller.RefreshCurrent();
+                Search();
             }
         }
 
@@ -96,10 +99,9 @@ namespace Sale
             }
         }
 
-        private void SearchBtn()
+        private void Search()
         {
-            var content = _cachedView.SearchInputField.text;
-            if (string.IsNullOrEmpty(content))
+            if (string.IsNullOrEmpty(_searchContent))
             {
                 RefreshData();
             }
@@ -108,16 +110,22 @@ namespace Sale
                 switch (_searchType)
                 {
                     case ESearchType.按订单号:
-                        SearchByRecordId(int.Parse(content));
+                        SearchByRecordId(int.Parse(_searchContent));
                         break;
                     case ESearchType.按房间号:
-                        SearchByRoomId(int.Parse(content));
+                        SearchByRoomId(int.Parse(_searchContent));
                         break;
                     case ESearchType.按姓名:
-                        SearchByName(content);
+                        SearchByName(_searchContent);
                         break;
                 }
             }
+        }
+
+        private void SearchBtn()
+        {
+            _searchContent = _cachedView.SearchInputField.text;
+            Search();
         }
 
         private void SearchByRecordId(int id)

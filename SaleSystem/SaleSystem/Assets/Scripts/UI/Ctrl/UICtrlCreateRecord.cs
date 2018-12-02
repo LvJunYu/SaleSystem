@@ -10,6 +10,7 @@ namespace Sale
     public class UICtrlCreateRecord : UICtrlGenericBase<UIViewCreateRecord>
     {
         protected static List<string> _roomNames = new List<string>();
+
         private static List<string> States = new List<string>
         {
             ERoomerState.预定.ToString(),
@@ -165,9 +166,9 @@ namespace Sale
 
         private bool CheckDataValid()
         {
-            var checkInData = _checkInCtrl.GetDateTime();
-            var checkOutDate = _checkOutCtrl.GetDateTime();
-            if (checkInData.GetDays() >= checkOutDate.GetDays())
+            _data.CheckInDate = _checkInCtrl.GetDateTime();
+            _data.CheckOutDate = _checkOutCtrl.GetDateTime();
+            if (_data.CheckInDate.GetDays() >= _data.CheckOutDate.GetDays())
             {
                 SocialGUIManager.ShowPopupDialog("订单时间少于1天");
                 return false;
@@ -175,7 +176,7 @@ namespace Sale
 
             var roomIndex = _roomCtrl.GetVal();
             var room = SaleDataManager.Instance.Rooms[roomIndex];
-            if (room.CheckDateConflict(checkInData, checkOutDate))
+            if (room.CheckDateConflict(_data))
             {
                 SocialGUIManager.ShowPopupDialogFormat("房间{0}已经被预定", room.Name);
                 return false;

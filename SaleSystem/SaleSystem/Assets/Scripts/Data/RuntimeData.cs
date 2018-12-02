@@ -6,13 +6,12 @@ namespace Sale
     public class Room
     {
         private int _index;
-        private string _indexStr;
+        private string _idStr;
         private string _name;
         private int _price;
         private ERoomState _state;
         private List<RoomRecordData> _records = new List<RoomRecordData>();
-        private Queue<RoomRecordData> _unFinishRecords = new Queue<RoomRecordData>();
-        //todo 现在这里还不是有序的
+        private List<RoomRecordData> _unFinishRecords = new List<RoomRecordData>();
 
         public int Index
         {
@@ -29,9 +28,9 @@ namespace Sale
             get { return _state; }
         }
 
-        public string IndexStr
+        public string IdStr
         {
-            get { return _indexStr; }
+            get { return _idStr; }
         }
 
         public int Price
@@ -47,15 +46,15 @@ namespace Sale
         public Room(int index)
         {
             _index = index;
-            _indexStr = (index + 1).ToString();
-            _name = "客房" + _indexStr;
+            _idStr = (index + 1).ToString();
+            _name = "客房" + _idStr;
             _price = SaleConstDefine.DefaultRoomPrice;
         }
 
         public void AddRecord(RoomRecordData roomRecordData)
         {
             _records.Add(roomRecordData);
-            _unFinishRecords.Enqueue(roomRecordData);
+            _unFinishRecords.Add(roomRecordData);
         }
 
         public void ClearRecords()
@@ -66,13 +65,14 @@ namespace Sale
 
         public void RefreshState()
         {
+            _unFinishRecords.Sort((p, q) => (q.CheckInDate - p.CheckInDate).Days); //入住时间倒叙排
             var nowDay = DateTime.Now.GetDays();
             while (_unFinishRecords.Count > 0)
             {
-                var record = _unFinishRecords.Peek();
+                var record = _unFinishRecords[_unFinishRecords.Count - 1];
                 if (record.CheckOutDate.GetDays() < nowDay || record.State == ERoomerState.退房)
                 {
-                    _unFinishRecords.Dequeue();
+                    _unFinishRecords.RemoveAt(_unFinishRecords.Count - 1);
                 }
                 else
                 {
@@ -86,21 +86,21 @@ namespace Sale
             }
             else
             {
-                var curRecord = _unFinishRecords.Peek();
+                var curRecord = _unFinishRecords[_unFinishRecords.Count - 1];
                 if (curRecord.CheckInDate.GetDays() <= nowDay)
                 {
                     if (curRecord.CheckOutDate.GetDays() == nowDay)
                     {
-                        _state = ERoomState.待退房;
+                        _state = ERoomState.今天到期;
                     }
                     else
                     {
-                        _state = ERoomState.入住;
+                        _state = ERoomState.已入住;
                     }
                 }
                 else
                 {
-                    _state = ERoomState.订房;
+                    _state = ERoomState.已预定;
                 }
             }
         }
@@ -121,11 +121,12 @@ namespace Sale
             return new RoomData(_name, _price);
         }
 
-        public bool CheckDateConflict(DateTime checkInData, DateTime checkOutDate)
+        public bool CheckDateConflict(RoomRecordData checkRecord, DateTime checkInData, DateTime checkOutDate)
         {
             foreach (var record in _unFinishRecords)
             {
-                if (record.IsConflict(checkInData, checkOutDate))
+                if (record == checkRecord) continue;
+                if (DateTimeHelper.IsConflict(checkInData, checkOutDate, record.CheckInDate, record.CheckOutDate))
                 {
                     return true;
                 }
@@ -138,9 +139,9 @@ namespace Sale
     public enum ERoomState
     {
         空闲,
-        订房,
-        入住,
-        待退房,
+        已预定,
+        已入住,
+        今天到期,
     }
 
     public class RoomRecord

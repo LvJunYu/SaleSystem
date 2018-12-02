@@ -30,7 +30,7 @@ namespace Sale
         {
             if (_room == null) return;
             _room.RefreshState();
-            _infos[0].SetInfo("房号：", _room.IndexStr);
+            _infos[0].SetInfo("房号：", _room.IdStr);
             _infos[1].SetInfo("名称：", _room.Name);
             _infos[2].SetInfo("状态：", _room.State.ToString());
             _infos[3].SetActive(false);

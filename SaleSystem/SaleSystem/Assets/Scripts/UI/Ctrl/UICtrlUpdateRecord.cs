@@ -1,5 +1,4 @@
-﻿using System;
-using MyTools;
+﻿using MyTools;
 using UITools;
 
 namespace Sale
@@ -33,19 +32,15 @@ namespace Sale
             var roomIndex = _roomCtrl.GetVal();
             var room = SaleDataManager.Instance.Rooms[roomIndex];
             var roomerName = _roomerCtrl.GetContent();
-            var data = new RoomRecordData();
-            data.Id = SaleDataManager.Instance.RecordIndex;
-            data.CreateDate = DateTime.Now;
-            data.CheckInDate = _checkInCtrl.GetDateTime();
-            data.CheckOutDate = _checkOutCtrl.GetDateTime();
-            data.RoomIndex = room.Index;
-            data.RoommerName = roomerName;
-            data.State = (ERoomerState) _stateCtrl.GetVal();
-            var price = _priceCtrl.GetContent();
-            data.Price = int.Parse(price);
-            SaleDataManager.Instance.AddRoomRecord(data);
-            room.AddRecord(data);
+            _data.CheckInDate = _checkInCtrl.GetDateTime();
+            _data.CheckOutDate = _checkOutCtrl.GetDateTime();
+            _data.RoomIndex = room.Index;
+            _data.RoommerName = roomerName;
+            _data.State = (ERoomerState) _stateCtrl.GetVal();
+            _data.Price = int.Parse(_priceCtrl.GetContent());
+            SaleDataManager.Instance.RefreshRoomRecords();
             Messenger.Broadcast(EMessengerType.OnRoomRecordChanged);
+            SaleDataManager.Instance.SaveData();
         }
 
         protected override void CloseBtn()
