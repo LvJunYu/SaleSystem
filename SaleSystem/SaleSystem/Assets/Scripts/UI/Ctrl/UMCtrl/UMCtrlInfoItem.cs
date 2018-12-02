@@ -1,3 +1,4 @@
+using MyTools;
 using UITools;
 using UnityEngine.UI;
 
@@ -8,6 +9,16 @@ namespace Sale
         public void SetTitle(string title)
         {
             _cachedView.Title.text = title;
+        }
+
+        public void SetGuidContent(string content)
+        {
+            _cachedView.GuidTxt.text = content;
+        }
+
+        public void SetGuidActive(bool b)
+        {
+            _cachedView.GuidTxt.SetActiveEx(b);
         }
 
         public void SetContentType(InputField.ContentType contentType)

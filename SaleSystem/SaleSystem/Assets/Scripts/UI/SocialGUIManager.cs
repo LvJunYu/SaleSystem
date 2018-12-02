@@ -59,6 +59,7 @@ namespace Sale
         MainUI,
         Pop1,
         Pop2,
+        Pop3,
         PopUpDialog,
         Max
     }

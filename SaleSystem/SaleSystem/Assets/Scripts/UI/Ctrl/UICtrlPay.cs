@@ -6,15 +6,16 @@ using UnityEngine;
 namespace Sale
 {
     [UIAutoSetup]
-    public class UICtrlChangePayType : UICtrlGenericBase<UIViewChangeRoom>
+    public class UICtrlPay : UICtrlGenericBase<UIViewPay>
     {
-        private List<UMCtrlPayType> _items = new List<UMCtrlPayType>();
+        private List<UMCtrlPayItem> _items = new List<UMCtrlPayItem>();
         private int _curPayTypeCount;
         private float _parentHeight;
+        private List<PayRecord> _payRecords;
 
         protected override void InitGroupId()
         {
-            _groupId = (int) EUIGroupType.Pop2;
+            _groupId = (int) EUIGroupType.Pop3;
         }
 
         protected override void OnViewCreated()
@@ -30,18 +31,18 @@ namespace Sale
         protected override void OnOpen(object parameter)
         {
             base.OnOpen(parameter);
+            _payRecords = parameter as List<PayRecord>;
             RefreshView();
         }
 
         private void RefreshView()
         {
-            var payTypes = SaleDataManager.Instance.PayTypes;
-            _curPayTypeCount = payTypes.Count;
-            for (int i = 0; i < payTypes.Count; i++)
+            _curPayTypeCount = _payRecords.Count;
+            for (int i = 0; i < _payRecords.Count; i++)
             {
                 var item = GetItem(i);
                 item.SetActive(true);
-                item.SetData(payTypes[i]);
+                item.SetData(_payRecords[i]);
             }
 
             for (int i = _curPayTypeCount; i < _items.Count; i++)
@@ -52,22 +53,22 @@ namespace Sale
 
         private void SaveData()
         {
-            if (_curPayTypeCount != SaleDataManager.Instance.PayTypes.Count || CheckInfoChanged())
+            if (_curPayTypeCount != _payRecords.Count || CheckInfoChanged())
             {
-                var payTypes = new List<string>();
+                _payRecords.Clear();
                 for (int i = 0; i < _items.Count; i++)
                 {
                     if (_items[i].IsActive)
                     {
-                        payTypes.Add(_items[i].GetData());
+                        _payRecords.Add(_items[i].GetData());
                     }
                     else
                     {
                         break;
                     }
                 }
-
-                SaleDataManager.Instance.PayTypes = payTypes;
+                
+                Messenger.Broadcast(EMessengerType.OnPayInfoChanged);
             }
         }
 
@@ -88,6 +89,7 @@ namespace Sale
         {
             var item = GetItem(_curPayTypeCount);
             item.SetActive(true);
+            item.SetData(new PayRecord());
             _curPayTypeCount++;
             ScrollToEnd();
         }
@@ -114,22 +116,16 @@ namespace Sale
 
         private void OKBtn()
         {
-            if (_curPayTypeCount == 0)
-            {
-                SocialGUIManager.ShowPopupDialog("至少有一种付款方式");
-                return;
-            }
-
             SaveData();
-            SocialGUIManager.Instance.CloseUI<UICtrlChangePayType>();
+            SocialGUIManager.Instance.CloseUI<UICtrlPay>();
         }
 
         private void CancelBtn()
         {
-            SocialGUIManager.Instance.CloseUI<UICtrlChangePayType>();
+            SocialGUIManager.Instance.CloseUI<UICtrlPay>();
         }
 
-        private UMCtrlPayType GetItem(int index)
+        private UMCtrlPayItem GetItem(int index)
         {
             if (index < _items.Count)
             {
@@ -137,7 +133,7 @@ namespace Sale
             }
             else
             {
-                var item = new UMCtrlPayType();
+                var item = new UMCtrlPayItem();
                 item.Init(_cachedView.Content);
                 _items.Add(item);
                 return item;

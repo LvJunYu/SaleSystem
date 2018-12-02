@@ -11,6 +11,7 @@ namespace Sale
         protected override void OnViewCreated()
         {
             base.OnViewCreated();
+            _cachedView.Btn.onClick.AddListener(Btn);
             var infoViews = _cachedView.GetComponentsInChildren<USViewInfo>(true);
             _infos = new USCtrlInfo[infoViews.Length];
             for (int i = 0; i < infoViews.Length; i++)
@@ -18,6 +19,11 @@ namespace Sale
                 _infos[i] = new USCtrlInfo();
                 _infos[i].Init(infoViews[i]);
             }
+        }
+
+        private void Btn()
+        {
+            SocialGUIManager.Instance.OpenUI<UICtrlRecordList>(_room);
         }
 
         private void RefreshView()

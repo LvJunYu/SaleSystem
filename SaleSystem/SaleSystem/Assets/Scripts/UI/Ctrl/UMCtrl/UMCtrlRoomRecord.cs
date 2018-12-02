@@ -27,10 +27,6 @@ namespace Sale
             _infos[5].SetTitle("状 态：");
         }
 
-        private void Btn()
-        {
-        }
-
         private void RefreshView()
         {
             if (_record == null) return;
@@ -40,6 +36,11 @@ namespace Sale
             _infos[3].SetContent(_record.RoommerName);
             _infos[4].SetContent(_record.CheckOutDate.ToShortDateString());
             _infos[5].SetContent(_record.State.ToString());
+        }
+
+        private void Btn()
+        {
+            SocialGUIManager.Instance.OpenUI<UICtrlUpdateRecord>(_record);
         }
 
         public int Index { get; set; }

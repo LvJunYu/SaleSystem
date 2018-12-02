@@ -5,6 +5,7 @@ namespace Sale
 {
     public class UMViewRoom : UMViewBase
     {
+        public Button Btn;
     }
 }
 

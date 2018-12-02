@@ -3,10 +3,9 @@ using UnityEngine.UI;
 
 namespace Sale
 {
-    public class UMViewInfoItem : UMViewBase
+    public class UMViewPayItem : UMViewBase
     {
-        public Text Title;
-        public Text GuidTxt;
+        public Dropdown Dropdown;
         public InputField ContentInputField;
     }
 }

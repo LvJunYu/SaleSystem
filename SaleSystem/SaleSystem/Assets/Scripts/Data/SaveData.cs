@@ -48,11 +48,17 @@ namespace Sale
     {
         public string PayType;
         public int PayNum;
+        public DateTime PayTime;
 
-        public PayRecord(int payNum, string payType)
+        public PayRecord() : this(0, SaleDataManager.Instance.PayTypes[0], DateTime.Now)
+        {
+        }
+
+        public PayRecord(int payNum, string payType, DateTime payTime)
         {
             PayNum = payNum;
             PayType = payType;
+            PayTime = payTime;
         }
     }
 }
