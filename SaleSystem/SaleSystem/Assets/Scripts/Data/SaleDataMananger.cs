@@ -22,7 +22,7 @@ namespace Sale
 
         public int RecordIndex
         {
-            get { return  _data.RecordIndex; }
+            get { return _data.RecordIndex; }
             set { _data.RecordIndex = value; }
         }
 
@@ -51,6 +51,7 @@ namespace Sale
 
         public void SaveData()
         {
+            if (!UserData.Instance.CheckIdentity()) return;
             LogHelper.Info("SaveData");
             DataManager.Instance.SaveData(_data, _version);
         }
@@ -107,7 +108,7 @@ namespace Sale
             {
                 _data.Rooms.Add(_rooms[i].GetData());
             }
-            
+
             SaveData();
         }
 
@@ -115,6 +116,12 @@ namespace Sale
         {
             RoomRecords.Add(data);
             RecordIndex++;
+            SaveData();
+        }
+
+        public void RemoveRoomRecord(RoomRecordData data)
+        {
+            RoomRecords.Remove(data);
             SaveData();
         }
     }

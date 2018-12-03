@@ -12,5 +12,10 @@ namespace Sale
         public Button PayTypeSetting;
         public Button RoomSetting;
         public Button QuitBtn;
+        public Button LoginBtn;
+        public Button OKBtn;
+        public Toggle WindowScreenToggle;
+        public Toggle FullScreenToggle;
+        public Dropdown ResolutionDropdown;
     }
 }

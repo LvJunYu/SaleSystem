@@ -1,4 +1,6 @@
-﻿using MyTools;
+﻿using System;
+using System.Collections.Generic;
+using MyTools;
 using UITools;
 
 namespace Sale
@@ -6,6 +8,16 @@ namespace Sale
     [UIAutoSetup(EUIAutoSetupType.Create)]
     public class UICtrlUpdateRecord : UICtrlCreateRecord
     {
+        protected override void OnViewCreated()
+        {
+            base.OnViewCreated();
+            var view = _cachedView as UIViewUpdateRecord;
+            if (view != null)
+            {
+                view.DeleteBtn.onClick.AddListener(DeleteBtn);
+            }
+        }
+
         protected override void RefreshView(object parameter)
         {
             _data = parameter as RoomRecordData;
@@ -32,19 +44,41 @@ namespace Sale
             var roomIndex = _roomCtrl.GetVal();
             var room = SaleDataManager.Instance.Rooms[roomIndex];
             var roomerName = _roomerCtrl.GetContent();
+            var oldRoomIndex = _data.RoomIndex;
             _data.CheckInDate = _checkInCtrl.GetDateTime();
             _data.CheckOutDate = _checkOutCtrl.GetDateTime();
             _data.RoomIndex = room.Index;
             _data.RoommerName = roomerName;
             _data.State = (ERoomerState) _stateCtrl.GetVal();
             _data.Price = int.Parse(_priceCtrl.GetContent());
-            SaleDataManager.Instance.RefreshRoomRecords();
+            if (oldRoomIndex != roomIndex)
+            {
+                SaleDataManager.Instance.Rooms[oldRoomIndex].RemoveRecord(_data);
+                room.AddRecord(_data);
+            }
+
             Messenger.Broadcast(EMessengerType.OnRoomRecordChanged);
             SaleDataManager.Instance.SaveData();
         }
 
         protected override void CloseBtn()
         {
+            SocialGUIManager.Instance.CloseUI<UICtrlUpdateRecord>();
+        }
+
+        private void DeleteBtn()
+        {
+            if (!UserData.Instance.CheckIdentity()) return;
+            SocialGUIManager.ShowPopupDialog("确定删除该订单吗？", null, new KeyValuePair<string, Action>("确定", DeleteData),
+                new KeyValuePair<string, Action>("取消", null));
+        }
+
+        private void DeleteData()
+        {
+            var room = SaleDataManager.Instance.Rooms[_data.RoomIndex];
+            SaleDataManager.Instance.RemoveRoomRecord(_data);
+            room.RemoveRecord(_data);
+            Messenger.Broadcast(EMessengerType.OnRoomRecordChanged);
             SocialGUIManager.Instance.CloseUI<UICtrlUpdateRecord>();
         }
     }

@@ -4,6 +4,6 @@ namespace Sale
 {
     public class UIViewUpdateRecord : UIViewCreateRecord
     {
-        public Button CancelBtn;
+        public Button DeleteBtn;
     }
 }

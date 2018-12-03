@@ -57,6 +57,16 @@ namespace Sale
             _unFinishRecords.Add(roomRecordData);
         }
 
+        public void RemoveRecord(RoomRecordData data)
+        {
+            _records.Remove(data);
+            var index = _unFinishRecords.IndexOf(data);
+            if (index >= 0)
+            {
+                _unFinishRecords.RemoveAt(index);
+            }
+        }
+
         public void ClearRecords()
         {
             _records.Clear();

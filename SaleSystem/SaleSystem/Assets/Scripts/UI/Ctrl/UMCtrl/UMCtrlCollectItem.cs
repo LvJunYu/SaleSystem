@@ -26,14 +26,17 @@ namespace Sale
 
             var total = 0;
             var payTypeCount = new int[payTypes.Count];
-            for (int i = 0; i < _data.PayRecords.Count; i++)
+            if (_data.PayRecords != null)
             {
-                var payRecord = _data.PayRecords[i];
-                total += payRecord.PayNum;
-                var index = payTypes.IndexOf(payRecord.PayType);
-                if (index >= 0)
+                for (int i = 0; i < _data.PayRecords.Count; i++)
                 {
-                    payTypeCount[index] += payRecord.PayNum;
+                    var payRecord = _data.PayRecords[i];
+                    total += payRecord.PayNum;
+                    var index = payTypes.IndexOf(payRecord.PayType);
+                    if (index >= 0)
+                    {
+                        payTypeCount[index] += payRecord.PayNum;
+                    }
                 }
             }
 

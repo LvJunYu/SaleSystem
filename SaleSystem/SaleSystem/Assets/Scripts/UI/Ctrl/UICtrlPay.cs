@@ -62,6 +62,7 @@ namespace Sale
         {
             if (_curPayTypeCount != _payRecords.Count || CheckInfoChanged())
             {
+                if (!UserData.Instance.CheckIdentity()) return;
                 _payRecords.Clear();
                 for (int i = 0; i < _items.Count; i++)
                 {

@@ -69,17 +69,6 @@ namespace Sale
             _payCtrl.Init(_cachedView.InfoContent);
             _payCtrl.SetTitle("已付款：");
             _payCtrl.AddBtnListener(PayBtn);
-//            _payTypeCtrl = new UMCtrlDropdown();
-//            _payTypeCtrl.Init(_cachedView.InfoContent);
-//            _payTypeCtrl.SetTitle("付款方式：");
-//            _payTypeCtrl.SetOptions(SaleDataManager.Instance.PayTypes);
-
-//            _payCountCtrl = new UMCtrlInfoItem();
-//            _payCountCtrl.Init(_cachedView.InfoContent);
-//            _payCountCtrl.SetTitle("付款金额：");
-//            _payCountCtrl.SetContentType(InputField.ContentType.IntegerNumber);
-//            _payCountCtrl.SetGuidContent("请输入付款金额");
-//            _payCountCtrl.SetGuidActive(true);
             InitRoomData();
         }
 
@@ -93,7 +82,7 @@ namespace Sale
         {
             base.InitEventListener();
             RegisterEvent(EMessengerType.OnRoomChanged, InitRoomData);
-            RegisterEvent(EMessengerType.OnPayInfoChanged, RefreshPayInfo);
+            RegisterEvent(EMessengerType.OnPayInfoChanged, OnPayInfoChanged);
         }
 
         protected override void InitGroupId()
@@ -146,9 +135,14 @@ namespace Sale
             SocialGUIManager.Instance.CloseUI<UICtrlCreateRecord>();
         }
 
-        protected void RefreshPayInfo()
+        private void OnPayInfoChanged()
         {
             if (!_isOpen) return;
+            RefreshPayInfo();
+        }
+
+        protected void RefreshPayInfo()
+        {
             var payInfos = _data.PayRecords;
             int pay = 0;
             for (int i = 0; i < payInfos.Count; i++)
@@ -166,6 +160,7 @@ namespace Sale
 
         private void OKBtn()
         {
+            if (!UserData.Instance.CheckIdentity(false)) return;
             if (!CheckDataValid()) return;
             SaveData();
             CloseBtn();

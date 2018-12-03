@@ -1,10 +1,13 @@
-﻿using UITools;
+﻿using MyTools;
+using UITools;
 
 namespace Sale
 {
     [UIAutoSetup(EUIAutoSetupType.Create)]
     public class UICtrlSetting : UICtrlAnimationBase<UIViewSetting>
     {
+        private UPCtrlWinScreenSetting _upScreenSetting;
+
         protected override void InitGroupId()
         {
             _groupId = (int) EUIGroupType.Pop1;
@@ -17,6 +20,16 @@ namespace Sale
             _cachedView.PayTypeSetting.onClick.AddListener(PayTypeSetting);
             _cachedView.RoomSetting.onClick.AddListener(RoomSetting);
             _cachedView.QuitBtn.onClick.AddListener(QuitBtn);
+            _cachedView.LoginBtn.onClick.AddListener(LoginBtn);
+            _cachedView.OKBtn.onClick.AddListener(OKBtn);
+            _upScreenSetting = new UPCtrlWinScreenSetting();
+            _upScreenSetting.Init(this, _cachedView);
+        }
+
+        private void LoginBtn()
+        {
+            SocialGUIManager.Instance.CloseUI<UICtrlSetting>();
+            SocialGUIManager.Instance.OpenUI<UICtrlLogin>();
         }
 
         protected override void SetPartAnimations()
@@ -24,6 +37,18 @@ namespace Sale
             base.SetPartAnimations();
             SetPart(_cachedView.PannelRtf, EAnimationType.MoveFromDown);
             SetPart(_cachedView.BGRtf, EAnimationType.Fade);
+        }
+
+        protected override void OnOpen(object parameter)
+        {
+            base.OnOpen(parameter);
+            _upScreenSetting.Open();
+        }
+
+        protected override void OnClose()
+        {
+            base.OnClose();
+            _upScreenSetting.Close();
         }
 
         private void PayTypeSetting()
@@ -39,6 +64,12 @@ namespace Sale
         private void QuitBtn()
         {
             AppMain.Instance.QuitGame();
+        }
+
+        private void OKBtn()
+        {
+            ScreenResolutionManager.Instance.Save();
+            SocialGUIManager.Instance.CloseUI<UICtrlSetting>();
         }
 
         private void CloseBtn()

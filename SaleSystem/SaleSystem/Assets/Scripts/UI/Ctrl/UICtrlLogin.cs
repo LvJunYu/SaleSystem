@@ -19,17 +19,10 @@ namespace Sale
 
         private void LoginBtn()
         {
-            var name = _cachedView.Name.text;
-            if (!string.IsNullOrEmpty(name) && name == "admin" &&
-                "123456" == _cachedView.Pwd.text)
+            if (UserData.Instance.TryAdminLogin(_cachedView.Name.text, _cachedView.Pwd.text))
             {
-                UserData.Instance.AdminLogin(name);
                 SocialGUIManager.Instance.CloseUI<UICtrlLogin>();
                 SocialGUIManager.Instance.OpenUI<UICtrlMainApp>();
-            }
-            else
-            {
-                SocialGUIManager.ShowPopupDialog("用户名或密码错误。");
             }
         }
 

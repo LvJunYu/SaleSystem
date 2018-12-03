@@ -8,7 +8,6 @@ namespace Sale
     public class AppMain : MonoBehaviour
     {
         public static AppMain Instance;
-        public GameObject OpenImg;
         private UIEventSystem _eventSystem;
         private bool _run;
         private bool _isQuiting;
@@ -17,6 +16,7 @@ namespace Sale
         void Awake()
         {
             Instance = this;
+            ScreenResolutionManager.Instance.Init();
         }
 
         void Start()

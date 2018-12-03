@@ -29,6 +29,7 @@ namespace Sale
 
         private void CreateRoomRecordBtn()
         {
+            if (!UserData.Instance.CheckIdentity()) return;
             SocialGUIManager.Instance.OpenUI<UICtrlCreateRecord>();
         }
 
