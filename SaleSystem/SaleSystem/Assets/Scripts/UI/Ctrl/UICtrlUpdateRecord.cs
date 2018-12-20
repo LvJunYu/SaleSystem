@@ -35,6 +35,7 @@ namespace Sale
             _checkInCtrl.SetDate(_data.CheckInDate);
             _checkOutCtrl.SetDate(_data.CheckOutDate);
             _roomerCtrl.SetContent(_data.RoommerName);
+            _roomerNumCtrl.SetContent(_data.RoommerNum == 0 ? string.Empty : _data.RoommerNum.ToString());
             _stateCtrl.SetCurVal((int) _data.State);
             RefreshPayInfo();
         }
@@ -43,12 +44,12 @@ namespace Sale
         {
             var roomIndex = _roomCtrl.GetVal();
             var room = SaleDataManager.Instance.Rooms[roomIndex];
-            var roomerName = _roomerCtrl.GetContent();
             var oldRoomIndex = _data.RoomIndex;
             _data.CheckInDate = _checkInCtrl.GetDateTime();
             _data.CheckOutDate = _checkOutCtrl.GetDateTime();
             _data.RoomIndex = room.Index;
-            _data.RoommerName = roomerName;
+            _data.RoommerName = _roomerCtrl.GetContent();
+            _data.RoommerNum = int.Parse(_roomerNumCtrl.GetContent());
             _data.State = (ERoomerState) _stateCtrl.GetVal();
             _data.Price = int.Parse(_priceCtrl.GetContent());
             if (oldRoomIndex != roomIndex)

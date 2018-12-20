@@ -5,6 +5,7 @@ namespace Sale
     public class UserData : Singleton<UserData>
     {
         private Account _account;
+        private string _url = "http://192.168.1.102:7701/test?num=10&num1=555";
 
         public Account Account
         {
@@ -14,6 +15,10 @@ namespace Sale
         public void GuestLogin()
         {
             _account = new Account("Guest", EUserType.Guest);
+            NetworkManager.AppHttpClient.Post(_url, null, www =>
+            {
+                LogHelper.Info(www.text);
+            });
         }
 
         public bool TryAdminLogin(string name, string pwd)

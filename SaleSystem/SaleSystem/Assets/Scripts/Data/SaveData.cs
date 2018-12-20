@@ -8,6 +8,7 @@ namespace Sale
         public int Id;
         public int RoomIndex;
         public string RoommerName;
+        public int RoommerNum;
         public DateTime CreateDate;
         public DateTime CheckInDate;
         public DateTime CheckOutDate;

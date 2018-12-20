@@ -24,6 +24,7 @@ namespace Sale
         protected UMCtrlDate _checkInCtrl;
         protected UMCtrlDate _checkOutCtrl;
         protected UMCtrlInfoItem _roomerCtrl;
+        protected UMCtrlInfoItem _roomerNumCtrl;
         protected UMCtrlDropdown _stateCtrl;
         protected UMCtrlPayInfo _payCtrl;
         protected RoomRecordData _data;
@@ -59,6 +60,12 @@ namespace Sale
             _roomerCtrl.SetTitle("房客姓名：");
             _roomerCtrl.SetGuidContent("请输入房客姓名");
             _roomerCtrl.SetGuidActive(true);
+            _roomerNumCtrl = new UMCtrlInfoItem();
+            _roomerNumCtrl.Init(_cachedView.InfoContent);
+            _roomerNumCtrl.SetTitle("身份证号：");
+            _roomerNumCtrl.SetGuidContent("请输入身份证号");
+            _roomerNumCtrl.SetGuidActive(true);
+            _roomerNumCtrl.SetContentType(InputField.ContentType.IntegerNumber);
 
             _stateCtrl = new UMCtrlDropdown();
             _stateCtrl.Init(_cachedView.InfoContent);
@@ -107,6 +114,7 @@ namespace Sale
             _checkInCtrl.SetDate(DateTime.Now);
             _checkOutCtrl.SetDate(DateTime.Now.AddDays(1));
             _roomerCtrl.SetContent(string.Empty);
+            _roomerNumCtrl.SetContent(string.Empty);
             _stateCtrl.SetCurVal((int) ERoomerState.入住);
             RefreshPayInfo();
         }
@@ -115,13 +123,13 @@ namespace Sale
         {
             var roomIndex = _roomCtrl.GetVal();
             var room = SaleDataManager.Instance.Rooms[roomIndex];
-            var roomerName = _roomerCtrl.GetContent();
             _data.Id = SaleDataManager.Instance.RecordIndex;
             _data.CreateDate = DateTime.Now;
             _data.CheckInDate = _checkInCtrl.GetDateTime();
             _data.CheckOutDate = _checkOutCtrl.GetDateTime();
             _data.RoomIndex = room.Index;
-            _data.RoommerName = roomerName;
+            _data.RoommerName = _roomerCtrl.GetContent();
+            _data.RoommerNum = int.Parse(_roomerCtrl.GetContent());
             _data.State = (ERoomerState) _stateCtrl.GetVal();
             var price = _priceCtrl.GetContent();
             _data.Price = int.Parse(price);
@@ -160,7 +168,12 @@ namespace Sale
 
         private void OKBtn()
         {
-            if (!UserData.Instance.CheckIdentity(false)) return;
+            if (!UserData.Instance.CheckIdentity(false))
+            {
+                CloseBtn();
+                return;
+            }
+
             if (!CheckDataValid()) return;
             SaveData();
             CloseBtn();
@@ -188,6 +201,13 @@ namespace Sale
             if (string.IsNullOrEmpty(roomerName))
             {
                 SocialGUIManager.ShowPopupDialog("请填写房客姓名");
+                return false;
+            }
+
+            var roomerNum = _roomerNumCtrl.GetContent();
+            if (string.IsNullOrEmpty(roomerNum))
+            {
+                SocialGUIManager.ShowPopupDialog("请填写房客身份证号");
                 return false;
             }
 
