@@ -43,6 +43,7 @@ namespace Sale
     public class PayRecord
     {
         public string PayType;
+        public string PayDesc;
         public int PayNum;
         public DateTime PayTime;
 

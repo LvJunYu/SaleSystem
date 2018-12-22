@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace MyTools
+namespace UITools
 {
     public static class CommonTools
     {
@@ -14,7 +14,6 @@ namespace MyTools
         {
             if (root == null)
             {
-                LogHelper.Info("SetAllLayerIncludeHideObj, Root is Null!");
                 return;
             }
             int tmplayer = layer;

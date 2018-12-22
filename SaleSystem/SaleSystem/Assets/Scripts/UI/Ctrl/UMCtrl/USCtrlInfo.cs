@@ -1,4 +1,3 @@
-using MyTools;
 using UITools;
 
 namespace Sale

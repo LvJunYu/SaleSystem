@@ -1,4 +1,3 @@
-using MyTools;
 using UITools;
 using UnityEngine.UI;
 
@@ -6,7 +5,7 @@ namespace Sale
 {
     public class UMCtrlCollectItem : UMCtrlGenericBase<UMViewCollectItem>, IDataItemRenderer
     {
-        private CollectData _data;
+        private DayData _data;
         private Text[] _payTypes;
 
         protected override void OnViewCreated()
@@ -28,9 +27,8 @@ namespace Sale
             var payTypeCount = new int[payTypes.Count];
             if (_data.PayRecords != null)
             {
-                for (int i = 0; i < _data.PayRecords.Count; i++)
+                foreach (var payRecord in _data.PayRecords)
                 {
-                    var payRecord = _data.PayRecords[i];
                     total += payRecord.PayNum;
                     var index = payTypes.IndexOf(payRecord.PayType);
                     if (index >= 0)
@@ -59,7 +57,7 @@ namespace Sale
 
         public void Set(object data)
         {
-            _data = data as CollectData;
+            _data = data as DayData;
             if (_data == null) return;
             RefreshView();
         }

@@ -153,15 +153,4 @@ namespace Sale
         已入住,
         今天到期,
     }
-
-    public class RoomRecord
-    {
-        public int RoomIndex;
-        public DateTime CreateDate;
-        public DateTime CheckInDate;
-        public DateTime CheckOutDate;
-        public ERoomerState State;
-        public int Price;
-        public List<PayRecord> PayRecords = new List<PayRecord>();
-    }
 }

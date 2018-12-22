@@ -8,6 +8,7 @@ namespace Sale
         public Dropdown Dropdown;
         public InputField ContentInputField;
         public Text TimeTxt;
+        public InputField PayTypeField;
     }
 }
 

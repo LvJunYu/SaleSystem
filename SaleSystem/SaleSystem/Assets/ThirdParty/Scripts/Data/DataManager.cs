@@ -26,7 +26,7 @@ namespace MyTools
             return LoadData<T>(SaveFilePath);
         }
 
-        private T LoadData<T>(string filePath) where T : DataBase
+        public T LoadData<T>(string filePath) where T : DataBase
         {
             string saveDataFileContent;
             if (!FileTools.TryReadFileToString(filePath, out saveDataFileContent))
@@ -44,7 +44,7 @@ namespace MyTools
             SaveData(userData, version, SaveFilePath);
         }
 
-        private void SaveData<T>(T userData, Version version, string filePath) where T : DataBase
+        public void SaveData<T>(T userData, Version version, string filePath) where T : DataBase
         {
             if (null == userData)
             {

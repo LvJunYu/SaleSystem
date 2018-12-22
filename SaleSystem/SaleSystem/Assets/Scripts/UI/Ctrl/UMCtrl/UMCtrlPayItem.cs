@@ -25,6 +25,12 @@ namespace Sale
             base.OnViewCreated();
             _cachedView.ContentInputField.onEndEdit.AddListener(ContentInputField);
             _cachedView.Dropdown.onValueChanged.AddListener(OnPayTypeChanged);
+            _cachedView.PayTypeField.onEndEdit.AddListener(PayTypeField);
+        }
+
+        private void PayTypeField(string arg0)
+        {
+            _isDirty = _cachedView.PayTypeField.text != _payRecord.PayDesc;
         }
 
         private void OnPayTypeChanged(int arg0)
@@ -69,6 +75,7 @@ namespace Sale
             _cachedView.Dropdown.value = index;
             _cachedView.ContentInputField.text = _payRecord.PayNum.ToString();
             _cachedView.TimeTxt.text = _payRecord.PayTime.GetDateStr();
+            _cachedView.PayTypeField.text = _payRecord.PayDesc;
             _isDirty = false;
         }
 
@@ -79,6 +86,7 @@ namespace Sale
                 _payRecord.PayTime = DateTime.Now;
                 _payRecord.PayNum = int.Parse(_cachedView.ContentInputField.text);
                 _payRecord.PayType = SaleDataManager.Instance.PayTypes[_cachedView.Dropdown.value];
+                _payRecord.PayDesc = _cachedView.PayTypeField.text;
                 _isDirty = false;
             }
 

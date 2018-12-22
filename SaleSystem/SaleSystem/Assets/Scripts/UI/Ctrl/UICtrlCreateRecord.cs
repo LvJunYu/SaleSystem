@@ -111,8 +111,9 @@ namespace Sale
             _roomCtrl.SetOptions(_roomNames);
             _roomCtrl.SetCurVal(0);
             OnRoomValChanged(0);
-            _checkInCtrl.SetDate(DateTime.Now);
-            _checkOutCtrl.SetDate(DateTime.Now.AddDays(1));
+            var today = DateTimeHelper.GetDateTime(DateTime.Now.GetDays());
+            _checkInCtrl.SetDate(today);
+            _checkOutCtrl.SetDate(today.AddDays(1));
             _roomerCtrl.SetContent(string.Empty);
             _roomerNumCtrl.SetContent(string.Empty);
             _stateCtrl.SetCurVal((int) ERoomerState.入住);
@@ -129,7 +130,7 @@ namespace Sale
             _data.CheckOutDate = _checkOutCtrl.GetDateTime();
             _data.RoomIndex = room.Index;
             _data.RoommerName = _roomerCtrl.GetContent();
-            _data.RoommerNum = int.Parse(_roomerCtrl.GetContent());
+            _data.RoommerNum = int.Parse(_roomerNumCtrl.GetContent());
             _data.State = (ERoomerState) _stateCtrl.GetVal();
             var price = _priceCtrl.GetContent();
             _data.Price = int.Parse(price);

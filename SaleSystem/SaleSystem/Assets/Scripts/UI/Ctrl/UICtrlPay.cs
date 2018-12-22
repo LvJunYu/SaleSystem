@@ -63,19 +63,27 @@ namespace Sale
             if (_curPayTypeCount != _payRecords.Count || CheckInfoChanged())
             {
                 if (!UserData.Instance.CheckIdentity()) return;
+                foreach (var payRecord in _payRecords)
+                {
+                    SaleDataManager.Instance.CollectHandler.RemovePayRecord(payRecord);
+                }
+
                 _payRecords.Clear();
                 for (int i = 0; i < _items.Count; i++)
                 {
                     if (_items[i].IsActive)
                     {
-                        _payRecords.Add(_items[i].GetData());
+                        var payRecord = _items[i].GetData();
+                        _payRecords.Add(payRecord);
+                        SaleDataManager.Instance.CollectHandler.AddPayRecord(payRecord);
                     }
                     else
                     {
                         break;
                     }
                 }
-                
+
+                SaleDataManager.Instance.SaveData();
                 Messenger.Broadcast(EMessengerType.OnPayInfoChanged);
             }
         }

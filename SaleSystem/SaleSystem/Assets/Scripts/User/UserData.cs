@@ -15,10 +15,6 @@ namespace Sale
         public void GuestLogin()
         {
             _account = new Account("Guest", EUserType.Guest);
-            NetworkManager.AppHttpClient.Post(_url, null, www =>
-            {
-                LogHelper.Info(www.text);
-            });
         }
 
         public bool TryAdminLogin(string name, string pwd)

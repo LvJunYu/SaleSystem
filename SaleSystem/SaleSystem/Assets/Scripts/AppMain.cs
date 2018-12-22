@@ -54,7 +54,7 @@ namespace Sale
         IEnumerator SaveDataAndQuit()
         {
             _run = false;
-            SaleDataManager.Instance.SaveData();
+//            SaleDataManager.Instance.SaveData();
             yield return new WaitForSeconds(1);
             _allowQuit = true;
             Application.Quit();

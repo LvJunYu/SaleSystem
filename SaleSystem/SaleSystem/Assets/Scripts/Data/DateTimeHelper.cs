@@ -14,11 +14,21 @@ namespace Sale
             return DateTime.MinValue.AddDays(days);
         }
 
+        public static int GetMonths(this DateTime dateTime)
+        {
+            return (dateTime.Year - DateTime.MinValue.Year) * 12 + dateTime.Month - 1;
+        }
+
+        public static DateTime GetDateTimeByMonth(int months)
+        {
+            return DateTime.MinValue.AddMonths(months);
+        }
+
         public static string GetDateStr(this DateTime dateTime)
         {
             return string.Format("{0}.{1}.{2}", dateTime.Year, dateTime.Month, dateTime.Day);
         }
-        
+
         public static bool CheckDayValid(int day)
         {
             var res = day >= 1 && day <= 31;
