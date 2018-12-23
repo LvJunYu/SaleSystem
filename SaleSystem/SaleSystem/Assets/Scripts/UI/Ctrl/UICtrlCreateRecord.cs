@@ -120,6 +120,15 @@ namespace Sale
             RefreshPayInfo();
         }
 
+        protected override void OnClose()
+        {
+            base.OnClose();
+            if (_data.ChangePayRecords != null)
+            {
+                _data.ChangePayRecords = null;
+            }
+        }
+
         protected virtual void SaveData()
         {
             var roomIndex = _roomCtrl.GetVal();
@@ -134,8 +143,12 @@ namespace Sale
             _data.State = (ERoomerState) _stateCtrl.GetVal();
             var price = _priceCtrl.GetContent();
             _data.Price = int.Parse(price);
+            if (_data.ChangePayRecords != null)
+            {
+                _data.PayRecords = _data.ChangePayRecords;
+                _data.ChangePayRecords = null;
+            }
             SaleDataManager.Instance.AddRoomRecord(_data);
-            room.AddRecord(_data);
             Messenger.Broadcast(EMessengerType.OnRoomRecordChanged);
         }
 
@@ -152,7 +165,7 @@ namespace Sale
 
         protected void RefreshPayInfo()
         {
-            var payInfos = _data.PayRecords;
+            var payInfos = _data.ChangePayRecords ?? _data.PayRecords;
             int pay = 0;
             for (int i = 0; i < payInfos.Count; i++)
             {
@@ -164,7 +177,7 @@ namespace Sale
 
         private void PayBtn()
         {
-            SocialGUIManager.Instance.OpenUI<UICtrlPay>(_data.PayRecords);
+            SocialGUIManager.Instance.OpenUI<UICtrlPay>(_data);
         }
 
         private void OKBtn()

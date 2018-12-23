@@ -47,6 +47,7 @@ namespace Sale
             var oldRoomIndex = _data.RoomIndex;
             var oldCheckInDate = _data.CheckInDate;
             var oldCheckOutDate = _data.CheckOutDate;
+            var oldPayRecprds = _data.PayRecords;
             _data.CheckInDate = _checkInCtrl.GetDateTime();
             _data.CheckOutDate = _checkOutCtrl.GetDateTime();
             _data.RoomIndex = room.Index;
@@ -54,8 +55,13 @@ namespace Sale
             _data.RoommerNum = int.Parse(_roomerNumCtrl.GetContent());
             _data.State = (ERoomerState) _stateCtrl.GetVal();
             _data.Price = int.Parse(_priceCtrl.GetContent());
+            if (_data.ChangePayRecords != null)
+            {
+                _data.PayRecords = _data.ChangePayRecords;
+                _data.ChangePayRecords = null;
+            }
+            SaleDataManager.Instance.ChangeRecord(_data, oldRoomIndex, oldCheckInDate, oldCheckOutDate, oldPayRecprds);
             Messenger.Broadcast(EMessengerType.OnRoomRecordChanged);
-            SaleDataManager.Instance.ChangeRecord(_data, oldRoomIndex, oldCheckInDate, oldCheckOutDate);
         }
 
         protected override void CloseBtn()

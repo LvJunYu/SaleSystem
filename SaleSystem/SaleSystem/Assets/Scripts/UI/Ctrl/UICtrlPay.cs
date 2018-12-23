@@ -11,7 +11,12 @@ namespace Sale
         private List<UMCtrlPayItem> _items = new List<UMCtrlPayItem>();
         private int _curPayTypeCount;
         private float _parentHeight;
-        private List<PayRecord> _payRecords;
+        private RoomRecordData _data;
+
+        private List<PayRecord> _payRecords
+        {
+            get { return _data.ChangePayRecords ?? _data.PayRecords; }
+        }
 
         protected override void InitGroupId()
         {
@@ -31,7 +36,7 @@ namespace Sale
         protected override void OnOpen(object parameter)
         {
             base.OnOpen(parameter);
-            _payRecords = parameter as List<PayRecord>;
+            _data = parameter as RoomRecordData;
             RefreshView();
         }
 
@@ -63,19 +68,21 @@ namespace Sale
             if (_curPayTypeCount != _payRecords.Count || CheckInfoChanged())
             {
                 if (!UserData.Instance.CheckIdentity()) return;
-                foreach (var payRecord in _payRecords)
+                if (_data.ChangePayRecords == null)
                 {
-                    SaleDataManager.Instance.CollectHandler.RemovePayRecord(payRecord);
+                    _data.ChangePayRecords = new List<PayRecord>();
+                }
+                else
+                {
+                    _data.ChangePayRecords.Clear();
                 }
 
-                _payRecords.Clear();
                 for (int i = 0; i < _items.Count; i++)
                 {
                     if (_items[i].IsActive)
                     {
                         var payRecord = _items[i].GetData();
-                        _payRecords.Add(payRecord);
-                        SaleDataManager.Instance.CollectHandler.AddPayRecord(payRecord);
+                        _data.ChangePayRecords.Add(payRecord);
                     }
                     else
                     {
@@ -83,7 +90,6 @@ namespace Sale
                     }
                 }
 
-                SaleDataManager.Instance.SaveData();
                 Messenger.Broadcast(EMessengerType.OnPayInfoChanged);
             }
         }

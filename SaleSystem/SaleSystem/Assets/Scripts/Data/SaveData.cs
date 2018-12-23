@@ -15,6 +15,7 @@ namespace Sale
         public ERoomerState State;
         public int Price;
         public List<PayRecord> PayRecords = new List<PayRecord>();
+        public List<PayRecord> ChangePayRecords;
     }
 
     public enum ERoomerState

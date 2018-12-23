@@ -84,6 +84,7 @@ namespace Sale
 
         public void AddRoomRecord(RoomRecordData data)
         {
+            Rooms[data.RoomIndex].AddRecord(data);
             RoomRecords.Add(data);
             _dataCollectHandler.AddRecord(data);
             RecordIndex++;
@@ -98,7 +99,7 @@ namespace Sale
         }
 
         public void ChangeRecord(RoomRecordData data, int oldRoomIndex, DateTime oldCheckInDate,
-            DateTime oldCheckOutDate)
+            DateTime oldCheckOutDate, List<PayRecord> oldPayRecords)
         {
             if (oldRoomIndex != data.RoomIndex)
             {
@@ -106,14 +107,14 @@ namespace Sale
                 Rooms[data.RoomIndex].AddRecord(data);
             }
 
-            if (oldCheckInDate.GetDays() != data.CheckInDate.GetDays())
+            if (oldCheckInDate.GetDays() != data.CheckInDate.GetDays() || oldCheckOutDate.GetDays() != data.CheckOutDate.GetDays())
             {
-                _dataCollectHandler.ChangeCheckInDate(data, oldCheckInDate);
+                _dataCollectHandler.ChangeDate(data, oldCheckInDate, oldCheckOutDate);
             }
 
-            if (oldCheckOutDate.GetDays() != data.CheckOutDate.GetDays())
+            if (oldPayRecords != data.PayRecords)
             {
-                _dataCollectHandler.ChangeCheckOutDate(data, oldCheckOutDate);
+                _dataCollectHandler.ChangePayRecord(data, oldPayRecords);
             }
 
             SaveData();

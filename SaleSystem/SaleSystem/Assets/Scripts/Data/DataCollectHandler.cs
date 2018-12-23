@@ -36,7 +36,7 @@ namespace Sale
             }
         }
 
-        public void AddPayRecord(PayRecord pay)
+        private void AddPayRecord(PayRecord pay)
         {
             _isDirty = true;
             var days = pay.PayTime.GetDays();
@@ -52,7 +52,7 @@ namespace Sale
             }
         }
 
-        public void RemovePayRecord(PayRecord pay)
+        private void RemovePayRecord(PayRecord pay)
         {
             _isDirty = true;
             var days = pay.PayTime.GetDays();
@@ -72,11 +72,10 @@ namespace Sale
         {
             _isDirty = true;
             var startMonth = data.CheckInDate.GetMonths();
-            AddMonthData(data, startMonth);
             var endMonth = data.CheckOutDate.AddDays(-1).GetMonths();
-            if (endMonth != startMonth)
+            for (int i = startMonth; i <= endMonth; i++)
             {
-                AddMonthData(data, endMonth);
+                AddMonthData(data, i);
             }
 
             foreach (var payRecord in data.PayRecords)
@@ -88,46 +87,51 @@ namespace Sale
         public void RemoveRecord(RoomRecordData data)
         {
             _isDirty = true;
+            var startMonth = data.CheckInDate.GetMonths();
+            var endMonth = data.CheckOutDate.AddDays(-1).GetMonths();
+            for (int i = startMonth; i <= endMonth; i++)
+            {
+                GetMonthData(i).Remove(data);
+            }
+
             foreach (var payRecord in data.PayRecords)
             {
                 RemovePayRecord(payRecord);
             }
-
-            var startMonth = data.CheckInDate.GetMonths();
-            GetMonthData(startMonth).Remove(data);
-            var endMonth = data.CheckOutDate.AddDays(-1).GetMonths();
-            if (endMonth != startMonth)
-            {
-                GetMonthData(endMonth).Remove(data);
-            }
         }
 
-        public void ChangeCheckInDate(RoomRecordData data, DateTime oldCheckInDate)
+        public void ChangeDate(RoomRecordData data, DateTime oldCheckInDate, DateTime oldCheckOutDate)
         {
             _isDirty = true;
-            var oldMonth = oldCheckInDate.GetMonths();
-            var newMonth = data.CheckInDate.GetMonths();
-            if (newMonth != oldMonth)
+            var oldStartMonth = oldCheckInDate.GetMonths();
+            var oldEndMonth = oldCheckOutDate.AddDays(-1).GetMonths();
+            var newStartMonth = data.CheckInDate.GetMonths();
+            var newEndMonth = data.CheckOutDate.AddDays(-1).GetMonths();
+            if (oldStartMonth != newStartMonth || oldEndMonth != newEndMonth)
             {
-                GetMonthData(oldMonth).Remove(data);
-                AddMonthData(data, newMonth);
-            }
-        }
-
-        public void ChangeCheckOutDate(RoomRecordData data, DateTime oldCheckOutDate)
-        {
-            _isDirty = true;
-            var oldMonth = oldCheckOutDate.AddDays(-1).GetMonths();
-            var newMonth = data.CheckOutDate.AddDays(-1).GetMonths();
-            if (newMonth != oldMonth)
-            {
-                var list = GetMonthData(oldMonth);
-                if (list != null)
+                for (int i = oldStartMonth; i <= oldEndMonth; i++)
                 {
-                    list.Remove(data);
+                    GetMonthData(i).Remove(data);
                 }
+                
+                for (int i = newStartMonth; i <= newEndMonth; i++)
+                {
+                    AddMonthData(data, i);
+                }
+            }
+        }
 
-                AddMonthData(data, newMonth);
+        public void ChangePayRecord(RoomRecordData data, List<PayRecord> oldPayRecords)
+        {
+            _isDirty = true;
+            foreach (var payRecord in oldPayRecords)
+            {
+                RemovePayRecord(payRecord);
+            }
+
+            foreach (var payRecord in data.PayRecords)
+            {
+                AddPayRecord(payRecord);
             }
         }
 
