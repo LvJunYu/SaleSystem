@@ -1,5 +1,4 @@
 using System;
-using MyTools;
 using UITools;
 
 namespace Sale
@@ -84,7 +83,7 @@ namespace Sale
             if (_isDirty)
             {
                 _payRecord.PayTime = DateTime.Now;
-                _payRecord.PayNum = int.Parse(_cachedView.ContentInputField.text);
+                _payRecord.PayNum = SaleTools.SafeParse(_cachedView.ContentInputField.text);
                 _payRecord.PayType = SaleDataManager.Instance.PayTypes[_cachedView.Dropdown.value];
                 _payRecord.PayDesc = _cachedView.PayTypeField.text;
                 _isDirty = false;

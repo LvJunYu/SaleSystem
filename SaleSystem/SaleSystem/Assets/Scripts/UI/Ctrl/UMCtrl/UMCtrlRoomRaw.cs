@@ -1,4 +1,3 @@
-using MyTools;
 using UITools;
 
 namespace Sale
@@ -75,7 +74,7 @@ namespace Sale
         {
             if (_isDirty)
             {
-                _room.SetData(_cachedView.NameInputField.text, int.Parse(_cachedView.PriceInputField.text));
+                _room.SetData(_cachedView.NameInputField.text, SaleTools.SafeParse(_cachedView.PriceInputField.text));
             }
 
             return _room;

@@ -139,15 +139,15 @@ namespace Sale
             _data.CheckOutDate = _checkOutCtrl.GetDateTime();
             _data.RoomIndex = room.Index;
             _data.RoommerName = _roomerCtrl.GetContent();
-            _data.RoommerNum = int.Parse(_roomerNumCtrl.GetContent());
+            _data.RoommerNum = SaleTools.SafeParse(_roomerNumCtrl.GetContent());
             _data.State = (ERoomerState) _stateCtrl.GetVal();
-            var price = _priceCtrl.GetContent();
-            _data.Price = int.Parse(price);
+            _data.Price = SaleTools.SafeParse(_priceCtrl.GetContent());
             if (_data.ChangePayRecords != null)
             {
                 _data.PayRecords = _data.ChangePayRecords;
                 _data.ChangePayRecords = null;
             }
+
             SaleDataManager.Instance.AddRoomRecord(_data);
             Messenger.Broadcast(EMessengerType.OnRoomRecordChanged);
         }
@@ -215,13 +215,6 @@ namespace Sale
             if (string.IsNullOrEmpty(roomerName))
             {
                 SocialGUIManager.ShowPopupDialog("请填写房客姓名");
-                return false;
-            }
-
-            var roomerNum = _roomerNumCtrl.GetContent();
-            if (string.IsNullOrEmpty(roomerNum))
-            {
-                SocialGUIManager.ShowPopupDialog("请填写房客身份证号");
                 return false;
             }
 

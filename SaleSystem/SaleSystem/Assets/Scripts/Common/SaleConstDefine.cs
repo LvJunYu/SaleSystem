@@ -1,5 +1,8 @@
-﻿public class SaleConstDefine
+﻿namespace Sale
 {
-    public const int DefaultRecordHour = 12;
-    public const int DefaultRoomPrice = 300;
+    public class SaleConstDefine
+    {
+        public const int DefaultRecordHour = 12;
+        public const int DefaultRoomPrice = 300;
+    }
 }

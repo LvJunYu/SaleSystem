@@ -52,9 +52,9 @@ namespace Sale
             _data.CheckOutDate = _checkOutCtrl.GetDateTime();
             _data.RoomIndex = room.Index;
             _data.RoommerName = _roomerCtrl.GetContent();
-            _data.RoommerNum = int.Parse(_roomerNumCtrl.GetContent());
+            _data.RoommerNum = SaleTools.SafeParse(_roomerNumCtrl.GetContent());
             _data.State = (ERoomerState) _stateCtrl.GetVal();
-            _data.Price = int.Parse(_priceCtrl.GetContent());
+            _data.Price = SaleTools.SafeParse(_priceCtrl.GetContent());
             if (_data.ChangePayRecords != null)
             {
                 _data.PayRecords = _data.ChangePayRecords;
