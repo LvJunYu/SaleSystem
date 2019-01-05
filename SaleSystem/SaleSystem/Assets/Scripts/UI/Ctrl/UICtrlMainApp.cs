@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using DG.Tweening;
-using MyTools;
 using UITools;
 using UnityEngine;
 using UnityEngine.EventSystems;

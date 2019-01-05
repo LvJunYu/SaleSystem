@@ -25,25 +25,25 @@ namespace Sale
 
         private void OnResolutionDropdownValueChanged(int arg0)
         {
-            ScreenResolutionManager.Instance.SetResolution(arg0);
+            ResolutionManager.Instance.SetResolution(arg0);
         }
 
         private void OnFullScreenToggleValueChanged(bool arg0)
         {
-            ScreenResolutionManager.Instance.SetFullScreen(arg0);
-            RefreshOptions(ScreenResolutionManager.Instance.AllResolutionOptions);
+            ResolutionManager.Instance.SetFullScreen(arg0);
+            RefreshOptions(ResolutionManager.Instance.AllResolutionOptions);
             _cachedView.ResolutionDropdown.options = _optionDatas;
-            _cachedView.ResolutionDropdown.value = ScreenResolutionManager.Instance.SelectIndex;
+            _cachedView.ResolutionDropdown.value = ResolutionManager.Instance.SelectIndex;
         }
 
         private void UpdateScreenSettingView()
         {
-            bool fullScreen = ScreenResolutionManager.Instance.FullScreen;
+            bool fullScreen = ResolutionManager.Instance.FullScreen;
             _cachedView.WindowScreenToggle.isOn = !fullScreen;
             _cachedView.FullScreenToggle.isOn = fullScreen;
-            RefreshOptions(ScreenResolutionManager.Instance.AllResolutionOptions);
+            RefreshOptions(ResolutionManager.Instance.AllResolutionOptions);
             _cachedView.ResolutionDropdown.options = _optionDatas;
-            _cachedView.ResolutionDropdown.value = ScreenResolutionManager.Instance.SelectIndex;
+            _cachedView.ResolutionDropdown.value = ResolutionManager.Instance.SelectIndex;
         }
 
         private void RefreshOptions(List<Resolution> resolutions)

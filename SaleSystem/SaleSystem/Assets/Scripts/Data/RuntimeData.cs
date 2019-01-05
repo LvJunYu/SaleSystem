@@ -77,17 +77,16 @@ namespace Sale
         {
             _unFinishRecords.Sort((p, q) => (q.CheckInDate - p.CheckInDate).Days); //入住时间倒叙排
             var nowDay = DateTime.Now.GetDays();
-            while (_unFinishRecords.Count > 0)
+            var index = _unFinishRecords.Count - 1;
+            while (index >= 0 && index < _unFinishRecords.Count)
             {
-                var record = _unFinishRecords[_unFinishRecords.Count - 1];
+                var record = _unFinishRecords[index];
                 if (record.CheckOutDate.GetDays() < nowDay || record.State == ERoomerState.退房)
                 {
-                    _unFinishRecords.RemoveAt(_unFinishRecords.Count - 1);
+                    _unFinishRecords.RemoveAt(index);
                 }
-                else
-                {
-                    break;
-                }
+
+                index--;
             }
 
             if (_unFinishRecords.Count == 0)
@@ -96,10 +95,10 @@ namespace Sale
             }
             else
             {
-                var curRecord = _unFinishRecords[_unFinishRecords.Count - 1];
-                if (curRecord.CheckInDate.GetDays() <= nowDay)
+                var lastRecord = _unFinishRecords[_unFinishRecords.Count - 1];
+                if (lastRecord.CheckInDate.GetDays() <= nowDay)
                 {
-                    if (curRecord.CheckOutDate.GetDays() == nowDay)
+                    if (lastRecord.CheckOutDate.GetDays() == nowDay)
                     {
                         _state = ERoomState.今天到期;
                     }

@@ -68,7 +68,7 @@ namespace Sale
 
         private void OKBtn()
         {
-            ScreenResolutionManager.Instance.Save();
+            ResolutionManager.Instance.Save();
             SocialGUIManager.Instance.CloseUI<UICtrlSetting>();
         }
 

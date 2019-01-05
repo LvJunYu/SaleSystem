@@ -12,7 +12,7 @@ namespace Sale
         protected override void OnViewCreated()
         {
             base.OnViewCreated();
-            _cachedView.GridDataScroller.Set(OnRefreshItem, OnCreateItem);
+            _cachedView.DayGridDataScroller.Set(OnRefreshItem, OnCreateItem);
             InitPayTypes();
         }
 
@@ -43,7 +43,7 @@ namespace Sale
         private void RefreshView()
         {
             _collectDatas = SaleDataManager.Instance.CollectHandler.CollectDatas;
-            _cachedView.GridDataScroller.SetItemCount(_collectDatas.Count);
+            _cachedView.DayGridDataScroller.SetItemCount(_collectDatas.Count);
         }
 
         private IDataItemRenderer OnCreateItem(RectTransform arg1)

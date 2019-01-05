@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using UITools;
+using UnityEngine;
 
 namespace Sale
 {
     public class UPCtrlCollectMonth : UPCtrlCollectBase
     {
-        private List<UMCtrlRoomCollect> _items = new List<UMCtrlRoomCollect>();
         private DateTime _curDate;
+        private List<RoomMonthData> _dataList;
 
         protected override void OnViewCreated()
         {
             base.OnViewCreated();
+            _cachedView.MonthGridDataScroller.Set(OnRefreshItem, OnCreateItem);
             _cachedView.LeftBtn.onClick.AddListener(OnPreMonthBtn);
             _cachedView.RightBtn.onClick.AddListener(OnNextMonthBtn);
         }
@@ -26,25 +29,8 @@ namespace Sale
         {
             _cachedView.YearTxt.text = _curDate.Year.ToString();
             _cachedView.MonthTxt.text = _curDate.Month.ToString();
-            var data = SaleDataManager.Instance.CollectHandler.GetRoomMonthData(_curDate.GetMonths());
-            var rooms = SaleDataManager.Instance.Rooms;
-            for (int i = 0; i < rooms.Count; i++)
-            {
-                if (i == _items.Count)
-                {
-                    _items.Add(CreateItem());
-                }
-
-                var item = _items[i];
-                item.SetData(data[i]);
-            }
-        }
-
-        private UMCtrlRoomCollect CreateItem()
-        {
-            var item = new UMCtrlRoomCollect();
-            item.Init(_cachedView.RoomDock);
-            return item;
+            _dataList = SaleDataManager.Instance.CollectHandler.GetRoomMonthData(_curDate.GetMonths());
+            _cachedView.MonthGridDataScroller.SetItemCount(_dataList.Count);
         }
 
         private void OnPreMonthBtn()
@@ -57,6 +43,24 @@ namespace Sale
         {
             _curDate = _curDate.AddMonths(1);
             RefreshView();
+        }
+
+        private IDataItemRenderer OnCreateItem(RectTransform arg1)
+        {
+            var item = new UMCtrlRoomCollect();
+            item.Init(arg1);
+            return item;
+        }
+
+        private void OnRefreshItem(IDataItemRenderer item, int index)
+        {
+            if (_isOpen)
+            {
+                if (index < _dataList.Count)
+                {
+                    item.Set(_dataList[index]);
+                }
+            }
         }
     }
 

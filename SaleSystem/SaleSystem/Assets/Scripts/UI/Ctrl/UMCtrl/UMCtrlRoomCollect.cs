@@ -2,7 +2,7 @@ using UITools;
 
 namespace Sale
 {
-    public class UMCtrlRoomCollect : UMCtrlGenericBase<UMViewRoom>
+    public class UMCtrlRoomCollect : UMCtrlGenericBase<UMViewRoom>, IDataItemRenderer
     {
         private USCtrlInfo[] _infos;
         private RoomMonthData _data;
@@ -30,10 +30,22 @@ namespace Sale
             _infos[3].SetInfo("总收入：", _data.TotalIncome.ToString());
         }
 
-        public void SetData(RoomMonthData roomMonthData)
+        public int Index { get; set; }
+
+        public object Data
         {
-            _data = roomMonthData;
+            get { return _data; }
+        }
+
+        public void Set(object data)
+        {
+            _data = data as RoomMonthData;
+            if (_data == null) return;
             RefreshView();
+        }
+
+        public void Unload()
+        {
         }
     }
 }

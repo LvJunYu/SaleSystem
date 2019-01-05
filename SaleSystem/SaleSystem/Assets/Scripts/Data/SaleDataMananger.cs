@@ -6,7 +6,6 @@ namespace Sale
 {
     public class SaleDataManager : Singleton<SaleDataManager>
     {
-        private SaleData _data;
         private DataLoadHandler _dataLoadHandler = new DataLoadHandler();
         private DataCollectHandler _dataCollectHandler = new DataCollectHandler();
 
@@ -17,18 +16,12 @@ namespace Sale
 
         public List<RoomRecordData> RoomRecords
         {
-            get { return _data.RoomRecords; }
-        }
-
-        public int RecordIndex
-        {
-            get { return _data.RecordIndex; }
-            set { _data.RecordIndex = value; }
+            get { return _dataLoadHandler.RoomRecords; }
         }
 
         public List<string> PayTypes
         {
-            get { return _data.PayType; }
+            get { return _dataLoadHandler.PayTypes; }
         }
 
         public DataCollectHandler CollectHandler
@@ -36,16 +29,16 @@ namespace Sale
             get { return _dataCollectHandler; }
         }
 
-        public void LoadData()
+        public int RecordIndex
         {
-            _data = _dataLoadHandler.LoadData();
-            _dataCollectHandler.Init(RoomRecords);
-            RefreshRoomRecords();
+            get { return _dataLoadHandler.RecordIndex; }
         }
 
-        public void SaveData()
+        public void Init()
         {
-            _dataLoadHandler.SaveData(_data);
+            _dataLoadHandler.LoadData();
+            _dataCollectHandler.Init(RoomRecords);
+            RefreshRoomRecords();
         }
 
         public void RefreshRoomRecords()
@@ -67,19 +60,12 @@ namespace Sale
 
         public void ChangePayTypes(List<string> payTypes)
         {
-            _data.PayType = payTypes;
-            SaveData();
+            _dataLoadHandler.ChangePayTypes(payTypes);
         }
 
         public void ChangeRooms()
         {
-            _data.Rooms.Clear();
-            for (int i = 0; i < Rooms.Count; i++)
-            {
-                _data.Rooms.Add(Rooms[i].GetData());
-            }
-
-            SaveData();
+            _dataLoadHandler.ChangeRooms();
         }
 
         public void AddRoomRecord(RoomRecordData data)
@@ -87,15 +73,15 @@ namespace Sale
             Rooms[data.RoomIndex].AddRecord(data);
             RoomRecords.Add(data);
             _dataCollectHandler.AddRecord(data);
-            RecordIndex++;
-            SaveData();
+            _dataLoadHandler.RecordIndex++;
+            _dataLoadHandler.SaveRecordsData();
         }
 
         public void RemoveRoomRecord(RoomRecordData data)
         {
             RoomRecords.Remove(data);
             _dataCollectHandler.RemoveRecord(data);
-            SaveData();
+            _dataLoadHandler.SaveRecordsData();
         }
 
         public void ChangeRecord(RoomRecordData data, int oldRoomIndex, DateTime oldCheckInDate,
@@ -117,7 +103,7 @@ namespace Sale
                 _dataCollectHandler.ChangePayRecord(data, oldPayRecords);
             }
 
-            SaveData();
+            _dataLoadHandler.SaveRecordsData();
         }
     }
 }

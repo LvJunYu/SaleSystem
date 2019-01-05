@@ -48,6 +48,7 @@ namespace MyTools
                     return false;
                 }
                 content = Encoding.UTF8.GetString(bytes);
+//                LogHelper.Info("Load file, bytes length {1}, filePath {2}, content {0}", content, bytes.Length, fileFullName);
                 return true;
             } 
             else
@@ -97,6 +98,7 @@ namespace MyTools
                 return false;
             }
             byte[] bytes = Encoding.UTF8.GetBytes(content);
+//            LogHelper.Info("Save data: bytes length {1}, filePath {2}, content {0}", content, bytes.Length, fileFullName);
             if (bytes.Length == 0)
             {
                 Debug.LogErrorFormat("WriteStringToFile failed array size is 0! FileFullName: {0}", fileFullName);

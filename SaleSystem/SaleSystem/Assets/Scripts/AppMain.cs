@@ -16,7 +16,7 @@ namespace Sale
         void Awake()
         {
             Instance = this;
-            ScreenResolutionManager.Instance.Init();
+            ResolutionManager.Instance.Init();
         }
 
         void Start()
@@ -24,7 +24,7 @@ namespace Sale
             _eventSystem = new UIEventSystem();
             _eventSystem.Init();
             _eventSystem.Trans.SetParent(transform);
-            SaleDataManager.Instance.LoadData();
+            SaleDataManager.Instance.Init();
             gameObject.AddComponent<SocialGUIManager>();
             SocialGUIManager.Instance.OpenUI<UICtrlLogin>();
             _run = true;

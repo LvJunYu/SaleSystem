@@ -77,13 +77,13 @@ namespace UITools
             _canvasScaler = gameObject.AddComponent<CanvasScaler>();
             _canvasScaler.referenceResolution = new Vector2(UIConstDefine.UINormalScreenWidth,
                 UIConstDefine.UINormalScreenHeight);
-            if (ResolutionManager.Instance.Width <= UIConstDefine.UINormalScreenWidth)
+            if (Screen.width <= UIConstDefine.UINormalScreenWidth)
             {
                 _uiWidth = UIConstDefine.UINormalScreenWidth;
             }
             else
             {
-                _uiWidth = ResolutionManager.Instance.Width;
+                _uiWidth = Screen.width;
             }
 
             _canvasScaler.referencePixelsPerUnit = 128;
@@ -114,22 +114,23 @@ namespace UITools
 
         internal void Clear()
         {
-            var allUiEnumerator = _allUIs.GetEnumerator();
-            while (allUiEnumerator.MoveNext())
+            using (var allUiEnumerator = _allUIs.GetEnumerator())
             {
-                var item = allUiEnumerator.Current.Value;
-
-                if (item.IsViewCreated)
+                while (allUiEnumerator.MoveNext())
                 {
-                    if (item.IsOpen)
+                    var item = allUiEnumerator.Current.Value;
+                    if (item.IsViewCreated)
                     {
-                        item.Close();
+                        if (item.IsOpen)
+                        {
+                            item.Close();
+                        }
+
+                        item.Destroy();
                     }
 
-                    item.Destroy();
+                    item.OnCtrlDestroy();
                 }
-
-                item.OnCtrlDestroy();
             }
 
             _allUIs.Clear();

@@ -185,7 +185,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1365909771690484
 GameObject:
   m_ObjectHideFlags: 1
@@ -306,7 +306,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1541555818996936
 GameObject:
   m_ObjectHideFlags: 1
@@ -1188,7 +1188,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5DE5 \u574A"
+  m_Text: "\u8BBE  \u7F6E"
 --- !u!114 &114470062872364414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1479,7 +1479,7 @@ MonoBehaviour:
   - {fileID: 224634119394526240}
   RecordBtn: {fileID: 114367492694986234}
   QueryBtn: {fileID: 114240513547388870}
-  SettingBtn: {fileID: 114227837464040554}
+  SettingBtn: {fileID: 114336152890707352}
 --- !u!114 &114679522332911756
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2310,7 +2310,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -36, y: 180}
+  m_AnchoredPosition: {x: -36, y: 188}
   m_SizeDelta: {x: 160, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224627279820883714
