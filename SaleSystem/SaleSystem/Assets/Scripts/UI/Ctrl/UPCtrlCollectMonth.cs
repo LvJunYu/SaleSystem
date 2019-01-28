@@ -87,10 +87,10 @@ namespace Sale
             TotalIncome = 0;
         }
 
-        public void AddData(RoomRecordData roomRecordData)
+        public void AddData(RoomRecord roomRecord)
         {
-            var endDays = roomRecordData.CheckOutDate.GetDays();
-            var date = roomRecordData.CheckInDate;
+            var endDays = roomRecord.CheckOutDate.GetDays();
+            var date = roomRecord.CheckInDate;
             while (date.GetDays() < endDays)
             {
                 var month = date.GetMonths();
@@ -102,7 +102,7 @@ namespace Sale
                 date = date.AddDays(1);
             }
 
-            var payRecords = roomRecordData.PayRecords;
+            var payRecords = roomRecord.PayRecords;
             foreach (var payRecord in payRecords)
             {
                 if (payRecord.PayTime.GetMonths() == CurMonth)

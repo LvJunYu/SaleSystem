@@ -20,7 +20,7 @@ namespace Sale
 
         protected override void RefreshView(object parameter)
         {
-            _data = parameter as RoomRecordData;
+            _data = parameter as RoomRecord;
             if (_data == null)
             {
                 SocialGUIManager.Instance.CloseUI<UICtrlUpdateRecord>();
@@ -64,6 +64,11 @@ namespace Sale
             Messenger.Broadcast(EMessengerType.OnRoomRecordChanged);
         }
 
+        protected override bool HasIdentity()
+        {
+            return UserData.Instance.CheckIdentity(EBehaviorType.UpdateRecord, false);
+        }
+
         protected override void CloseBtn()
         {
             SocialGUIManager.Instance.CloseUI<UICtrlUpdateRecord>();
@@ -71,7 +76,7 @@ namespace Sale
 
         private void DeleteBtn()
         {
-            if (!UserData.Instance.CheckIdentity()) return;
+            if (!UserData.Instance.CheckIdentity(EBehaviorType.DeleteRecord)) return;
             SocialGUIManager.ShowPopupDialog("确定删除该订单吗？", null, new KeyValuePair<string, Action>("确定", DeleteData),
                 new KeyValuePair<string, Action>("取消", null));
         }

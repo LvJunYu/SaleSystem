@@ -6,7 +6,7 @@ namespace Sale
 {
     public class DataCollectHandler
     {
-        private Dictionary<int, HashSet<RoomRecordData>> _monthData = new Dictionary<int, HashSet<RoomRecordData>>();
+        private Dictionary<int, HashSet<RoomRecord>> _monthData = new Dictionary<int, HashSet<RoomRecord>>();
         private Dictionary<int, HashSet<PayRecord>> _dayData = new Dictionary<int, HashSet<PayRecord>>();
         private List<DayData> _collectDatas;
         private List<RoomMonthData> _roomData = new List<RoomMonthData>();
@@ -27,7 +27,7 @@ namespace Sale
             }
         }
 
-        public void Init(List<RoomRecordData> roomRecords)
+        public void Init(List<RoomRecord> roomRecords)
         {
             Clear();
             foreach (var record in roomRecords)
@@ -59,7 +59,7 @@ namespace Sale
             GetDayData(days).Remove(pay);
         }
 
-        private void AddMonthData(RoomRecordData data, int month)
+        private void AddMonthData(RoomRecord data, int month)
         {
             var monthData = GetMonthData(month, true);
             if (!monthData.Contains(data))
@@ -68,7 +68,7 @@ namespace Sale
             }
         }
 
-        public void AddRecord(RoomRecordData data)
+        public void AddRecord(RoomRecord data)
         {
             _isDirty = true;
             var startMonth = data.CheckInDate.GetMonths();
@@ -84,7 +84,7 @@ namespace Sale
             }
         }
 
-        public void RemoveRecord(RoomRecordData data)
+        public void RemoveRecord(RoomRecord data)
         {
             _isDirty = true;
             var startMonth = data.CheckInDate.GetMonths();
@@ -100,7 +100,7 @@ namespace Sale
             }
         }
 
-        public void ChangeDate(RoomRecordData data, DateTime oldCheckInDate, DateTime oldCheckOutDate)
+        public void ChangeDate(RoomRecord data, DateTime oldCheckInDate, DateTime oldCheckOutDate)
         {
             _isDirty = true;
             var oldStartMonth = oldCheckInDate.GetMonths();
@@ -121,7 +121,7 @@ namespace Sale
             }
         }
 
-        public void ChangePayRecord(RoomRecordData data, List<PayRecord> oldPayRecords)
+        public void ChangePayRecord(RoomRecord data, List<PayRecord> oldPayRecords)
         {
             _isDirty = true;
             foreach (var payRecord in oldPayRecords)
@@ -135,9 +135,9 @@ namespace Sale
             }
         }
 
-        private HashSet<RoomRecordData> GetMonthData(int month, bool create = false)
+        private HashSet<RoomRecord> GetMonthData(int month, bool create = false)
         {
-            HashSet<RoomRecordData> records;
+            HashSet<RoomRecord> records;
             if (_monthData.TryGetValue(month, out records))
             {
                 return records;
@@ -145,7 +145,7 @@ namespace Sale
 
             if (create)
             {
-                records = new HashSet<RoomRecordData>();
+                records = new HashSet<RoomRecord>();
                 _monthData.Add(month, records);
             }
 

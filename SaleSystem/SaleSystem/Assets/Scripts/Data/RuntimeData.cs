@@ -3,6 +3,61 @@ using System.Collections.Generic;
 
 namespace Sale
 {
+    public class RoomRecord
+    {
+        public int Id;
+        public int RoomIndex;
+        public string RoommerName;
+        public int RoommerNum;
+        public DateTime CreateDate;
+        public DateTime CheckInDate;
+        public DateTime CheckOutDate;
+        public ERoomerState State;
+        public int Price;
+        public List<PayRecord> PayRecords = new List<PayRecord>();
+        public List<PayRecord> ChangePayRecords;
+        public ERecordPhase RecordPhase;
+
+        public RoomRecord()
+        {
+        }
+
+        public RoomRecord(RoomRecordData data)
+        {
+            Id = data.Id;
+            RoomIndex = data.RoomIndex;
+            RoommerName = data.RoommerName;
+            RoommerNum = data.RoommerNum;
+            CreateDate = data.CreateDate;
+            CheckInDate = data.CheckInDate;
+            CheckOutDate = data.CheckOutDate;
+            State = data.State;
+            Price = data.Price;
+            PayRecords = data.PayRecords;
+            RecordPhase = ERecordPhase.Valid;
+        }
+
+        public RoomRecordData GetData(RoomRecordData data = null)
+        {
+            if (data == null)
+            {
+                data = new RoomRecordData();
+            }
+
+            data.Id = Id;
+            data.RoomIndex = RoomIndex;
+            data.RoommerName = RoommerName;
+            data.RoommerNum = RoommerNum;
+            data.CreateDate = CreateDate;
+            data.CheckInDate = CheckInDate;
+            data.CheckOutDate = CheckOutDate;
+            data.State = State;
+            data.Price = Price;
+            data.PayRecords = PayRecords;
+            return data;
+        }
+    }
+
     public class Room
     {
         private int _index;
@@ -10,8 +65,8 @@ namespace Sale
         private string _name;
         private int _price;
         private ERoomState _state;
-        private List<RoomRecordData> _records = new List<RoomRecordData>();
-        private List<RoomRecordData> _unFinishRecords = new List<RoomRecordData>();
+        private List<RoomRecord> _records = new List<RoomRecord>();
+        private List<RoomRecord> _unFinishRecords = new List<RoomRecord>();
 
         public int Index
         {
@@ -38,7 +93,7 @@ namespace Sale
             get { return _price; }
         }
 
-        public List<RoomRecordData> Records
+        public List<RoomRecord> Records
         {
             get { return _records; }
         }
@@ -51,13 +106,13 @@ namespace Sale
             _price = SaleConstDefine.DefaultRoomPrice;
         }
 
-        public void AddRecord(RoomRecordData roomRecordData)
+        public void AddRecord(RoomRecord roomRecord)
         {
-            _records.Add(roomRecordData);
-            _unFinishRecords.Add(roomRecordData);
+            _records.Add(roomRecord);
+            _unFinishRecords.Add(roomRecord);
         }
 
-        public void RemoveRecord(RoomRecordData data)
+        public void RemoveRecord(RoomRecord data)
         {
             _records.Remove(data);
             var index = _unFinishRecords.IndexOf(data);
@@ -130,7 +185,7 @@ namespace Sale
             return new RoomData(_name, _price);
         }
 
-        public bool CheckDateConflict(RoomRecordData checkRecord, DateTime checkInData, DateTime checkOutDate)
+        public bool CheckDateConflict(RoomRecord checkRecord, DateTime checkInData, DateTime checkOutDate)
         {
             foreach (var record in _unFinishRecords)
             {
@@ -151,5 +206,11 @@ namespace Sale
         已预定,
         已入住,
         今天到期,
+    }
+
+    public enum ERecordPhase
+    {
+        Creating,
+        Valid
     }
 }

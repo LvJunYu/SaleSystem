@@ -14,7 +14,7 @@ namespace Sale
             get { return _dataLoadHandler.Rooms; }
         }
 
-        public List<RoomRecordData> RoomRecords
+        public List<RoomRecord> RoomRecords
         {
             get { return _dataLoadHandler.RoomRecords; }
         }
@@ -68,23 +68,20 @@ namespace Sale
             _dataLoadHandler.ChangeRooms();
         }
 
-        public void AddRoomRecord(RoomRecordData data)
+        public void AddRoomRecord(RoomRecord data)
         {
             Rooms[data.RoomIndex].AddRecord(data);
-            RoomRecords.Add(data);
             _dataCollectHandler.AddRecord(data);
-            _dataLoadHandler.RecordIndex++;
-            _dataLoadHandler.SaveRecordsData();
+            _dataLoadHandler.AddRecord(data);
         }
 
-        public void RemoveRoomRecord(RoomRecordData data)
+        public void RemoveRoomRecord(RoomRecord data)
         {
-            RoomRecords.Remove(data);
             _dataCollectHandler.RemoveRecord(data);
-            _dataLoadHandler.SaveRecordsData();
+            _dataLoadHandler.RemoveRecord(data);
         }
 
-        public void ChangeRecord(RoomRecordData data, int oldRoomIndex, DateTime oldCheckInDate,
+        public void ChangeRecord(RoomRecord data, int oldRoomIndex, DateTime oldCheckInDate,
             DateTime oldCheckOutDate, List<PayRecord> oldPayRecords)
         {
             if (oldRoomIndex != data.RoomIndex)
@@ -103,7 +100,7 @@ namespace Sale
                 _dataCollectHandler.ChangePayRecord(data, oldPayRecords);
             }
 
-            _dataLoadHandler.SaveRecordsData();
+            _dataLoadHandler.ChangeRecord(data);
         }
     }
 }

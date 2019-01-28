@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MyTools;
 using UITools;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Sale
         private List<UMCtrlPayItem> _items = new List<UMCtrlPayItem>();
         private int _curPayTypeCount;
         private float _parentHeight;
-        private RoomRecordData _data;
+        private RoomRecord _data;
 
         private List<PayRecord> _payRecords
         {
@@ -36,7 +37,7 @@ namespace Sale
         protected override void OnOpen(object parameter)
         {
             base.OnOpen(parameter);
-            _data = parameter as RoomRecordData;
+            _data = parameter as RoomRecord;
             RefreshView();
         }
 
@@ -63,11 +64,28 @@ namespace Sale
             }
         }
 
+        private bool HasIdentity()
+        {
+            switch (_data.RecordPhase)
+            {
+                case ERecordPhase.Creating:
+                    if (!UserData.Instance.CheckIdentity(EBehaviorType.CreateRecord)) return false;
+                    break;
+                case ERecordPhase.Valid:
+                    if (!UserData.Instance.CheckIdentity(EBehaviorType.UpdateRecord)) return false;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return true;
+        }
+
         private void SaveData()
         {
             if (_curPayTypeCount != _payRecords.Count || CheckInfoChanged())
             {
-                if (!UserData.Instance.CheckIdentity()) return;
+                if(!HasIdentity()) return;
                 if (_data.ChangePayRecords == null)
                 {
                     _data.ChangePayRecords = new List<PayRecord>();
@@ -109,6 +127,7 @@ namespace Sale
 
         private void AddBtn()
         {
+            if (!HasIdentity()) return;
             var item = GetItem(_curPayTypeCount);
             item.SetActive(true);
             item.SetData(PayRecord.CreateNew());
@@ -127,6 +146,7 @@ namespace Sale
 
         private void DeleteBtn()
         {
+            if (!HasIdentity()) return;
             if (_curPayTypeCount > 0)
             {
                 _curPayTypeCount--;

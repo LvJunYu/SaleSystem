@@ -1,4 +1,5 @@
-﻿using MyTools;
+﻿using System;
+using MyTools;
 
 namespace Sale
 {
@@ -7,11 +8,6 @@ namespace Sale
         private Account _account;
         private string _url = "http://192.168.1.102:7701/test?num=10&num1=555";
 
-        public Account Account
-        {
-            get { return _account; }
-        }
-
         public void GuestLogin()
         {
             _account = new Account("Guest", EUserType.Guest);
@@ -19,31 +15,91 @@ namespace Sale
 
         public bool TryAdminLogin(string name, string pwd)
         {
-            if (name == "123456" && pwd == "qqqqqq")
+            for (int i = 0; i < (int) EUserType.Max; i++)
             {
-                _account = new Account(name, EUserType.Administrator);
-                return true;
+                if (name == Account.AdminNames[i] && pwd == Account.Passwords[i])
+                {
+                    _account = new Account(name, (EUserType) i);
+                    return true;
+                }
             }
-            else
-            {
-                SocialGUIManager.ShowPopupDialog("用户名或密码错误。");
-                return false;
-            }
+
+            SocialGUIManager.ShowPopupDialog("用户名或密码错误。");
+            return false;
         }
 
-        public bool CheckIdentity(bool remind = true)
+        public bool CheckIdentity(EBehaviorType behaviorType, bool remind = true)
         {
-            if (_account.UserType == EUserType.Administrator)
+            switch (behaviorType)
             {
-                return true;
+                case EBehaviorType.SaveRecordData:
+                case EBehaviorType.CreateRecord:
+                    if (_account.UserType > EUserType.Guest)
+                    {
+                        return true;
+                    }
+                    break;
+                case EBehaviorType.ChangeRoomData:
+                case EBehaviorType.ChangePayType:
+                case EBehaviorType.DeleteAllData:
+                    if (_account.UserType == EUserType.AdminLeve2)
+                    {
+                        return true;
+                    }
+                    break;
+                case EBehaviorType.UpdateRecord:
+                case EBehaviorType.DeleteRecord:
+                    if (_account.UserType > EUserType.AdminLeve0)
+                    {
+                        return true;
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("behaviorType", behaviorType, null);
             }
 
             if (remind)
             {
-                SocialGUIManager.ShowPopupDialog("您没有管理员权限");
+                switch (behaviorType)
+                {
+                    case EBehaviorType.SaveRecordData:
+                        SocialGUIManager.ShowPopupDialog("您没有权限修改订单数据");
+                        break;
+                    case EBehaviorType.ChangeRoomData:
+                        SocialGUIManager.ShowPopupDialog("您没有权限修改房间数据");
+                        break;
+                    case EBehaviorType.ChangePayType:
+                        SocialGUIManager.ShowPopupDialog("您没有权限修改付款类型数据");
+                        break;
+                    case EBehaviorType.DeleteAllData:
+                        SocialGUIManager.ShowPopupDialog("您没有权限修删除所有数据");
+                        break;
+                    case EBehaviorType.CreateRecord:
+                        SocialGUIManager.ShowPopupDialog("您没有权限创建订单");
+                        break;
+                    case EBehaviorType.UpdateRecord:
+                        SocialGUIManager.ShowPopupDialog("您没有权限修改订单");
+                        break;
+                    case EBehaviorType.DeleteRecord:
+                        SocialGUIManager.ShowPopupDialog("您没有权限删除订单");
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("behaviorType", behaviorType, null);
+                }
             }
 
             return false;
         }
+    }
+
+    public enum EBehaviorType
+    {
+        SaveRecordData,
+        ChangeRoomData,
+        ChangePayType,
+        DeleteAllData,
+        CreateRecord,
+        UpdateRecord,
+        DeleteRecord,
     }
 }

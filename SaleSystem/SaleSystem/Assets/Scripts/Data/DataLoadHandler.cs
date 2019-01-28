@@ -16,6 +16,7 @@ namespace Sale
         private PayTypeData _payTypeData;
 
         private List<Room> _rooms = new List<Room>();
+        private List<RoomRecord> _records = new List<RoomRecord>();
 
         public List<Room> Rooms
         {
@@ -27,9 +28,9 @@ namespace Sale
             get { return _payTypeData.PayType; }
         }
 
-        public List<RoomRecordData> RoomRecords
+        public List<RoomRecord> RoomRecords
         {
-            get { return _recordsData.RoomRecords; }
+            get { return _records; }
         }
 
         public int RecordIndex
@@ -55,7 +56,12 @@ namespace Sale
                 _recordsData.RecordIndex = 1;
             }
 
+            _records.Clear();
             _recordsData.RoomRecords.Sort((p, q) => p.Id - q.Id);
+            for (int i = 0; i < _recordsData.RoomRecords.Count; i++)
+            {
+                _records.Add(new RoomRecord(_recordsData.RoomRecords[i]));
+            }
         }
 
         public void LoadRoomsData()
@@ -95,21 +101,21 @@ namespace Sale
 
         public void SaveRecordsData()
         {
-            if (!UserData.Instance.CheckIdentity()) return;
+            if (!UserData.Instance.CheckIdentity(EBehaviorType.SaveRecordData)) return;
             LogHelper.Debug("save sale data");
             DataManager.Instance.SaveData(_recordsData, _version, _saveFilePath);
         }
 
         public void SaveRoomData()
         {
-            if (!UserData.Instance.CheckIdentity()) return;
+            if (!UserData.Instance.CheckIdentity(EBehaviorType.ChangeRoomData)) return;
             LogHelper.Debug("save room data");
             DataManager.Instance.SaveData(_roomsData, _version, _roomFilePath);
         }
 
         public void SavePayTypeData()
         {
-            if (!UserData.Instance.CheckIdentity()) return;
+            if (!UserData.Instance.CheckIdentity(EBehaviorType.ChangePayType)) return;
             LogHelper.Debug("save pay type data");
             DataManager.Instance.SaveData(_payTypeData, _version, _payTypeFilePath);
         }
@@ -129,6 +135,36 @@ namespace Sale
             }
 
             SaveRoomData();
+        }
+
+        public void AddRecord(RoomRecord data)
+        {
+            data.RecordPhase = ERecordPhase.Valid;
+            _records.Add(data);
+            _recordsData.RoomRecords.Add(data.GetData());
+            _recordsData.RecordIndex++;
+            SaveRecordsData();
+        }
+
+        public void RemoveRecord(RoomRecord data)
+        {
+            _records.Remove(data);
+            _recordsData.RoomRecords.Remove(_recordsData.RoomRecords.Find(record => record.Id == data.Id));
+            SaveRecordsData();
+        }
+
+        public void ChangeRecord(RoomRecord data)
+        {
+            for (int i = _recordsData.RoomRecords.Count - 1; i >= 0; i--)
+            {
+                var recordData = _recordsData.RoomRecords[i];
+                if (recordData.Id == data.Id)
+                {
+                    data.GetData(_recordsData.RoomRecords[i]);
+                    SaveRecordsData();
+                    return;
+                }
+            }
         }
     }
 

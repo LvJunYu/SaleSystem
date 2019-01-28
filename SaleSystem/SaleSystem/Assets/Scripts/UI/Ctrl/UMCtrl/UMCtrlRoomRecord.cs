@@ -5,7 +5,7 @@ namespace Sale
 {
     public class UMCtrlRoomRecord : UMCtrlGenericBase<UMViewRoomRecord>, IDataItemRenderer
     {
-        private RoomRecordData _record;
+        private RoomRecord _record;
         private Text[] _infos;
 
         protected override void OnViewCreated()
@@ -40,7 +40,7 @@ namespace Sale
 
         public void Set(object data)
         {
-            _record = data as RoomRecordData;
+            _record = data as RoomRecord;
             RefreshView();
         }
 

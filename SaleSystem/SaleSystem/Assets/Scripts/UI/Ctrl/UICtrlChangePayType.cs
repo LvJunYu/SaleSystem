@@ -61,7 +61,7 @@ namespace Sale
         {
             if (_curPayTypeCount != SaleDataManager.Instance.PayTypes.Count || CheckInfoChanged())
             {
-                if (!UserData.Instance.CheckIdentity()) return;
+                if (!UserData.Instance.CheckIdentity(EBehaviorType.ChangePayType)) return;
                 var payTypes = new List<string>();
                 for (int i = 0; i < _items.Count; i++)
                 {

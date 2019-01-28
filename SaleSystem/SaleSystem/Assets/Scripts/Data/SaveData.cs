@@ -14,8 +14,7 @@ namespace Sale
         public DateTime CheckOutDate;
         public ERoomerState State;
         public int Price;
-        public List<PayRecord> PayRecords = new List<PayRecord>();
-        public List<PayRecord> ChangePayRecords;
+        public List<PayRecord> PayRecords;
     }
 
     public enum ERoomerState

@@ -64,7 +64,7 @@ namespace Sale
             if (_curRoomCount != SaleDataManager.Instance.Rooms.Count ||
                 CheckRoomInfoChanged())
             {
-                if (!UserData.Instance.CheckIdentity()) return;
+                if (!UserData.Instance.CheckIdentity(EBehaviorType.ChangeRoomData)) return;
                 var rooms = SaleDataManager.Instance.Rooms;
                 rooms.Clear();
                 for (int i = 0; i < _rooms.Count; i++)

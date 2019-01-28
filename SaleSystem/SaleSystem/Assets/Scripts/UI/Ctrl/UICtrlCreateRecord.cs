@@ -27,7 +27,7 @@ namespace Sale
         protected UMCtrlInfoItem _roomerNumCtrl;
         protected UMCtrlDropdown _stateCtrl;
         protected UMCtrlPayInfo _payCtrl;
-        protected RoomRecordData _data;
+        protected RoomRecord _data;
 
         protected override void OnViewCreated()
         {
@@ -106,7 +106,7 @@ namespace Sale
 
         protected virtual void RefreshView(object parameter)
         {
-            _data = new RoomRecordData();
+            _data = new RoomRecord();
             _recordId.SetContent(SaleDataManager.Instance.RecordIndex.ToString());
             _roomCtrl.SetOptions(_roomNames);
             _roomCtrl.SetCurVal(0);
@@ -180,9 +180,14 @@ namespace Sale
             SocialGUIManager.Instance.OpenUI<UICtrlPay>(_data);
         }
 
+        protected virtual bool HasIdentity()
+        {
+            return UserData.Instance.CheckIdentity(EBehaviorType.CreateRecord, false);
+        }
+
         private void OKBtn()
         {
-            if (!UserData.Instance.CheckIdentity(false))
+            if (!HasIdentity())
             {
                 CloseBtn();
                 return;

@@ -9,7 +9,7 @@ namespace Sale
     [UIAutoSetup(EUIAutoSetupType.Create)]
     public class UICtrlRecordList : UICtrlAnimationBase<UIViewRecordList>
     {
-        private List<RoomRecordData> _records = new List<RoomRecordData>();
+        private List<RoomRecord> _records = new List<RoomRecord>();
         private ESearchType _searchType;
         private string _searchContent;
 
