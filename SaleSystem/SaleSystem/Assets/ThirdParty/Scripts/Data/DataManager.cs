@@ -61,7 +61,7 @@ namespace MyTools
             ClearData(SaveFilePath);
         }
 
-        private void ClearData(string filePath)
+        public void ClearData(string filePath)
         {
             FileTools.DeleteFile(filePath);
         }

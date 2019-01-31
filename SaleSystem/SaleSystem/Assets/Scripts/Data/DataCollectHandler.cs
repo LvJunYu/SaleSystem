@@ -72,7 +72,7 @@ namespace Sale
         {
             _isDirty = true;
             var startMonth = data.CheckInDate.GetMonths();
-            var endMonth = data.CheckOutDate.AddDays(-1).GetMonths();
+            var endMonth = data.CheckOutDate.GetMonths();
             for (int i = startMonth; i <= endMonth; i++)
             {
                 AddMonthData(data, i);
@@ -88,7 +88,7 @@ namespace Sale
         {
             _isDirty = true;
             var startMonth = data.CheckInDate.GetMonths();
-            var endMonth = data.CheckOutDate.AddDays(-1).GetMonths();
+            var endMonth = data.CheckOutDate.GetMonths();
             for (int i = startMonth; i <= endMonth; i++)
             {
                 GetMonthData(i).Remove(data);
@@ -104,9 +104,9 @@ namespace Sale
         {
             _isDirty = true;
             var oldStartMonth = oldCheckInDate.GetMonths();
-            var oldEndMonth = oldCheckOutDate.AddDays(-1).GetMonths();
+            var oldEndMonth = oldCheckOutDate.GetMonths();
             var newStartMonth = data.CheckInDate.GetMonths();
-            var newEndMonth = data.CheckOutDate.AddDays(-1).GetMonths();
+            var newEndMonth = data.CheckOutDate.GetMonths();
             if (oldStartMonth != newStartMonth || oldEndMonth != newEndMonth)
             {
                 for (int i = oldStartMonth; i <= oldEndMonth; i++)
@@ -189,9 +189,9 @@ namespace Sale
             }
         }
 
-        private void Clear()
+        public void Clear()
         {
-            _minDate = int.MaxValue;
+            _minDate = DateTime.Now.GetDays();
             _monthData.Clear();
             _dayData.Clear();
         }

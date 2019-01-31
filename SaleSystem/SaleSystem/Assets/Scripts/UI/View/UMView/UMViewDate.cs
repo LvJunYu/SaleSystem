@@ -9,6 +9,8 @@ namespace Sale
         public InputField Year;
         public InputField Month;
         public InputField Day;
+        public InputField Hour;
+        public InputField Minute;
     }
 }
 

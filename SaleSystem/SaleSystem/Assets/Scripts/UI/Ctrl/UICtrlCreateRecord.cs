@@ -111,9 +111,9 @@ namespace Sale
             _roomCtrl.SetOptions(_roomNames);
             _roomCtrl.SetCurVal(0);
             OnRoomValChanged(0);
-            var today = DateTimeHelper.GetDateTime(DateTime.Now.GetDays());
-            _checkInCtrl.SetDate(today);
-            _checkOutCtrl.SetDate(today.AddDays(1));
+            var now = DateTime.Now;
+            _checkInCtrl.SetDate(now);
+            _checkOutCtrl.SetDate(now.AddDays(1));
             _roomerCtrl.SetContent(string.Empty);
             _roomerNumCtrl.SetContent(string.Empty);
             _stateCtrl.SetCurVal((int) ERoomerState.入住);
@@ -202,9 +202,9 @@ namespace Sale
         {
             var checkInData = _checkInCtrl.GetDateTime();
             var checkOutDate = _checkOutCtrl.GetDateTime();
-            if (checkInData.GetDays() >= checkOutDate.GetDays())
+            if (checkInData >= checkOutDate)
             {
-                SocialGUIManager.ShowPopupDialog("订单时间少于1天");
+                SocialGUIManager.ShowPopupDialog("入住时间超过退房时间");
                 return false;
             }
 

@@ -90,7 +90,8 @@ namespace Sale
                 Rooms[data.RoomIndex].AddRecord(data);
             }
 
-            if (oldCheckInDate.GetDays() != data.CheckInDate.GetDays() || oldCheckOutDate.GetDays() != data.CheckOutDate.GetDays())
+            if (oldCheckInDate.GetDays() != data.CheckInDate.GetDays() ||
+                oldCheckOutDate.GetDays() != data.CheckOutDate.GetDays())
             {
                 _dataCollectHandler.ChangeDate(data, oldCheckInDate, oldCheckOutDate);
             }
@@ -101,6 +102,13 @@ namespace Sale
             }
 
             _dataLoadHandler.ChangeRecord(data);
+        }
+
+        public void ClearRecordsData()
+        {
+            _dataLoadHandler.ClearRecordsData();
+            _dataCollectHandler.Clear();
+            SocialGUIManager.ShowPopupDialog("房间订单数据已清空。");
         }
     }
 }

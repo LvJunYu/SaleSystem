@@ -166,6 +166,12 @@ namespace Sale
                 }
             }
         }
+
+        public void ClearRecordsData()
+        {
+            DataManager.Instance.ClearData(_saveFilePath);
+            LoadRecordsData();
+        }
     }
 
     public class RecordsData : DataBase

@@ -56,6 +56,17 @@ namespace Sale
             data.PayRecords = PayRecords;
             return data;
         }
+
+        public int GetPayCount()
+        {
+            int sum = 0;
+            for (int i = 0; i < PayRecords.Count; i++)
+            {
+                sum += PayRecords[i].PayNum;
+            }
+
+            return sum;
+        }
     }
 
     public class Room
@@ -130,18 +141,13 @@ namespace Sale
 
         public void RefreshState()
         {
-            _unFinishRecords.Sort((p, q) => (q.CheckInDate - p.CheckInDate).Days); //入住时间倒叙排
-            var nowDay = DateTime.Now.GetDays();
-            var index = _unFinishRecords.Count - 1;
-            while (index >= 0 && index < _unFinishRecords.Count)
+            //删除所有结束订单
+            for (int i = _unFinishRecords.Count - 1; i >= 0; i--)
             {
-                var record = _unFinishRecords[index];
-                if (record.CheckOutDate.GetDays() < nowDay || record.State == ERoomerState.退房)
+                if (_unFinishRecords[i].State == ERoomerState.退房 || _unFinishRecords[i].CheckOutDate < DateTime.Now)
                 {
-                    _unFinishRecords.RemoveAt(index);
+                    _unFinishRecords.RemoveAt(i);
                 }
-
-                index--;
             }
 
             if (_unFinishRecords.Count == 0)
@@ -150,21 +156,22 @@ namespace Sale
             }
             else
             {
-                var lastRecord = _unFinishRecords[_unFinishRecords.Count - 1];
-                if (lastRecord.CheckInDate.GetDays() <= nowDay)
+                _unFinishRecords.Sort((p, q) => p.CheckInDate.CompareTo(q.CheckInDate));
+                var firstRecord = _unFinishRecords[0];
+                if (firstRecord.CheckOutDate.GetDays() == DateTime.Now.GetDays())
                 {
-                    if (lastRecord.CheckOutDate.GetDays() == nowDay)
-                    {
-                        _state = ERoomState.今天到期;
-                    }
-                    else
-                    {
-                        _state = ERoomState.已入住;
-                    }
+                    _state = ERoomState.今天到期;
                 }
                 else
                 {
-                    _state = ERoomState.已预定;
+                    if (firstRecord.CheckInDate < DateTime.Now)
+                    {
+                        _state = ERoomState.已入住;
+                    }
+                    else
+                    {
+                        _state = ERoomState.已预定;
+                    }
                 }
             }
         }

@@ -1,4 +1,6 @@
-﻿using MyTools;
+﻿using System;
+using System.Collections.Generic;
+using MyTools;
 using UITools;
 
 namespace Sale
@@ -19,17 +21,12 @@ namespace Sale
             _cachedView.CloseBtn.onClick.AddListener(CloseBtn);
             _cachedView.PayTypeSetting.onClick.AddListener(PayTypeSetting);
             _cachedView.RoomSetting.onClick.AddListener(RoomSetting);
+            _cachedView.ClearData.onClick.AddListener(ClearData);
             _cachedView.QuitBtn.onClick.AddListener(QuitBtn);
             _cachedView.LoginBtn.onClick.AddListener(LoginBtn);
             _cachedView.OKBtn.onClick.AddListener(OKBtn);
             _upScreenSetting = new UPCtrlWinScreenSetting();
             _upScreenSetting.Init(this, _cachedView);
-        }
-
-        private void LoginBtn()
-        {
-            SocialGUIManager.Instance.CloseUI<UICtrlSetting>();
-            SocialGUIManager.Instance.OpenUI<UICtrlLogin>();
         }
 
         protected override void SetPartAnimations()
@@ -75,6 +72,20 @@ namespace Sale
         private void CloseBtn()
         {
             SocialGUIManager.Instance.CloseUI<UICtrlSetting>();
+        }
+
+        private void ClearData()
+        {
+            if (!UserData.Instance.CheckIdentity(EBehaviorType.DeleteAllData)) return;
+            SocialGUIManager.ShowPopupDialog("确定要清除所有订单数据吗？", null,
+                new KeyValuePair<string, Action>("确定", () => SaleDataManager.Instance.ClearRecordsData()),
+                    new KeyValuePair<string, Action>("取消", null));
+        }
+
+        private void LoginBtn()
+        {
+            SocialGUIManager.Instance.CloseUI<UICtrlSetting>();
+            SocialGUIManager.Instance.OpenUI<UICtrlLogin>();
         }
     }
 }

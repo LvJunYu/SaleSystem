@@ -91,7 +91,7 @@ namespace Sale
         {
             var endDays = roomRecord.CheckOutDate.GetDays();
             var date = roomRecord.CheckInDate;
-            while (date.GetDays() < endDays)
+            while (date.GetDays() <= endDays)
             {
                 var month = date.GetMonths();
                 if (month == CurMonth)

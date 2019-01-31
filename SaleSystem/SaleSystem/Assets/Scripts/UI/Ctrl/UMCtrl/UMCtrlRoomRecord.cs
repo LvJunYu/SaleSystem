@@ -23,7 +23,8 @@ namespace Sale
             _infos[2].text = (_record.RoommerName);
             _infos[3].text = (_record.CheckInDate.GetDateStr());
             _infos[4].text = (_record.CheckOutDate.GetDateStr());
-            _infos[5].text = (_record.State.ToString());
+            _infos[5].text = _record.GetPayCount().ToString();
+            _infos[6].text = (_record.State.ToString());
         }
 
         private void Btn()

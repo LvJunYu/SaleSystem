@@ -16,7 +16,7 @@ namespace Sale
 
         private void RefreshView()
         {
-            _cachedView.TimeTxt.text = DateTimeHelper.GetDateTime(_data.Days).GetDateStr();
+            _cachedView.TimeTxt.text = DateTimeHelper.GetDateTime(_data.Days).GetDateRaw();
             var payTypes = SaleDataManager.Instance.PayTypes;
             for (int i = 0; i < _payTypes.Length; i++)
             {

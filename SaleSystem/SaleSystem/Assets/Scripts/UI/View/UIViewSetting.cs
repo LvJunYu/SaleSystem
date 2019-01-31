@@ -11,6 +11,7 @@ namespace Sale
         public Button CloseBtn;
         public Button PayTypeSetting;
         public Button RoomSetting;
+        public Button ClearData;
         public Button QuitBtn;
         public Button LoginBtn;
         public Button OKBtn;
