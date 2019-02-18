@@ -83,7 +83,7 @@ namespace Sale
             if (_isDirty)
             {
                 _payRecord.PayTime = DateTime.Now;
-                _payRecord.PayNum = SaleTools.SafeParse(_cachedView.ContentInputField.text);
+                _payRecord.PayNum = SaleTools.SafeIntParse(_cachedView.ContentInputField.text);
                 _payRecord.PayType = SaleDataManager.Instance.PayTypes[_cachedView.Dropdown.value];
                 _payRecord.PayDesc = _cachedView.PayTypeField.text;
                 _isDirty = false;

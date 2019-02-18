@@ -74,7 +74,7 @@ namespace Sale
         {
             if (_isDirty)
             {
-                _room.SetData(_cachedView.NameInputField.text, SaleTools.SafeParse(_cachedView.PriceInputField.text));
+                _room.SetData(_cachedView.NameInputField.text, SaleTools.SafeIntParse(_cachedView.PriceInputField.text));
             }
 
             return _room;

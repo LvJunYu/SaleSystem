@@ -21,5 +21,6 @@ namespace Sale
         public Button RecordBtn;
         public Button QueryBtn;
         public Button SettingBtn;
+        public Button LoginBtn;
     }
 }

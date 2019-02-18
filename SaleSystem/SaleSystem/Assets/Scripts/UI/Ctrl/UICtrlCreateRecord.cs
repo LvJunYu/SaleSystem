@@ -46,6 +46,7 @@ namespace Sale
             _priceCtrl = new UMCtrlInfoItem();
             _priceCtrl.Init(_cachedView.InfoContent);
             _priceCtrl.SetTitle("价格：");
+            _priceCtrl.SetCharLimit(8);
             _priceCtrl.SetContentType(InputField.ContentType.IntegerNumber);
 
             _checkInCtrl = new UMCtrlDate();
@@ -58,14 +59,16 @@ namespace Sale
             _roomerCtrl = new UMCtrlInfoItem();
             _roomerCtrl.Init(_cachedView.InfoContent);
             _roomerCtrl.SetTitle("房客姓名：");
-            _roomerCtrl.SetGuidContent("请输入房客姓名");
-            _roomerCtrl.SetGuidActive(true);
+//            _roomerCtrl.SetGuidContent("请输入房客姓名");
+            _roomerCtrl.SetGuidActive(false);
+            _roomerCtrl.SetCharLimit(10);
             _roomerNumCtrl = new UMCtrlInfoItem();
             _roomerNumCtrl.Init(_cachedView.InfoContent);
             _roomerNumCtrl.SetTitle("身份证号：");
-            _roomerNumCtrl.SetGuidContent("请输入身份证号");
-            _roomerNumCtrl.SetGuidActive(true);
+//            _roomerNumCtrl.SetGuidContent("请输入身份证号");
+            _roomerNumCtrl.SetGuidActive(false);
             _roomerNumCtrl.SetContentType(InputField.ContentType.IntegerNumber);
+            _roomerNumCtrl.SetCharLimit(18);
 
             _stateCtrl = new UMCtrlDropdown();
             _stateCtrl.Init(_cachedView.InfoContent);
@@ -74,7 +77,7 @@ namespace Sale
 
             _payCtrl = new UMCtrlPayInfo();
             _payCtrl.Init(_cachedView.InfoContent);
-            _payCtrl.SetTitle("已付款：");
+            _payCtrl.SetTitle("总付款：");
             _payCtrl.AddBtnListener(PayBtn);
             InitRoomData();
         }
@@ -123,7 +126,7 @@ namespace Sale
         protected override void OnClose()
         {
             base.OnClose();
-            if (_data.ChangePayRecords != null)
+            if (_data != null && _data.ChangePayRecords != null)
             {
                 _data.ChangePayRecords = null;
             }
@@ -139,9 +142,9 @@ namespace Sale
             _data.CheckOutDate = _checkOutCtrl.GetDateTime();
             _data.RoomIndex = room.Index;
             _data.RoommerName = _roomerCtrl.GetContent();
-            _data.RoommerNum = SaleTools.SafeParse(_roomerNumCtrl.GetContent());
+            _data.RoommerNum = _roomerNumCtrl.GetContent();
             _data.State = (ERoomerState) _stateCtrl.GetVal();
-            _data.Price = SaleTools.SafeParse(_priceCtrl.GetContent());
+            _data.Price = SaleTools.SafeIntParse(_priceCtrl.GetContent());
             if (_data.ChangePayRecords != null)
             {
                 _data.PayRecords = _data.ChangePayRecords;

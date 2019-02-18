@@ -8,7 +8,7 @@ namespace Sale
         public int Id;
         public int RoomIndex;
         public string RoommerName;
-        public int RoommerNum;
+        public string RoommerNum;
         public DateTime CreateDate;
         public DateTime CheckInDate;
         public DateTime CheckOutDate;
@@ -197,7 +197,7 @@ namespace Sale
             foreach (var record in _unFinishRecords)
             {
                 if (record == checkRecord) continue;
-                if (DateTimeHelper.IsConflict(checkInData, checkOutDate, record.CheckInDate, record.CheckOutDate))
+                if (SaleTools.IsConflict(checkInData, checkOutDate, record.CheckInDate, record.CheckOutDate))
                 {
                     return true;
                 }

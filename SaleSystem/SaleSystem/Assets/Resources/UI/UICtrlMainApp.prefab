@@ -426,7 +426,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1688503779606076
 GameObject:
   m_ObjectHideFlags: 1
@@ -1188,7 +1188,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u8BBE  \u7F6E"
+  m_Text: "\u7EDF  \u8BA1"
 --- !u!114 &114470062872364414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1478,8 +1478,9 @@ MonoBehaviour:
   - {fileID: 224367765579184684}
   - {fileID: 224634119394526240}
   RecordBtn: {fileID: 114367492694986234}
-  QueryBtn: {fileID: 114240513547388870}
-  SettingBtn: {fileID: 114336152890707352}
+  QueryBtn: {fileID: 114336152890707352}
+  SettingBtn: {fileID: 114240513547388870}
+  LoginBtn: {fileID: 114840868404274330}
 --- !u!114 &114679522332911756
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1589,7 +1590,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5192 \u9669"
+  m_Text: "\u767B  \u5F55"
 --- !u!114 &114840868404274330
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1701,7 +1702,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u6C47  \u603B"
+  m_Text: "\u8BBE  \u7F6E"
 --- !u!114 &114909117275615474
 MonoBehaviour:
   m_ObjectHideFlags: 1

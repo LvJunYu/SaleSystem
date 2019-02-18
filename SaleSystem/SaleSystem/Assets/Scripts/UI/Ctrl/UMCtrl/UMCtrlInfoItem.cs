@@ -30,6 +30,11 @@ namespace Sale
             _cachedView.ContentInputField.text = content;
         }
 
+        public void SetCharLimit(int limit)
+        {
+            _cachedView.ContentInputField.characterLimit = limit;
+        }
+
         public string GetContent()
         {
             return _cachedView.ContentInputField.text;

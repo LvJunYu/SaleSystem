@@ -12,11 +12,13 @@ namespace Sale
         private bool _run;
         private bool _isQuiting;
         private bool _allowQuit;
+        [SerializeField] private LogHelper.ELogLevel _logLevel = LogHelper.ELogLevel.Info;
 
         void Awake()
         {
             Instance = this;
             ResolutionManager.Instance.Init();
+            LogHelper.LogLevel = _logLevel;
         }
 
         void Start()
@@ -26,7 +28,7 @@ namespace Sale
             _eventSystem.Trans.SetParent(transform);
             SaleDataManager.Instance.Init();
             gameObject.AddComponent<SocialGUIManager>();
-            SocialGUIManager.Instance.OpenUI<UICtrlLogin>();
+            SocialGUIManager.Instance.OpenUI<UICtrlMainApp>();
             _run = true;
             LogHelper.Info("App Run!");
 //            if (!Application.isEditor)

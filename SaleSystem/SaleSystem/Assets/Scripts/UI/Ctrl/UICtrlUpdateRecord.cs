@@ -35,7 +35,7 @@ namespace Sale
             _checkInCtrl.SetDate(_data.CheckInDate);
             _checkOutCtrl.SetDate(_data.CheckOutDate);
             _roomerCtrl.SetContent(_data.RoommerName);
-            _roomerNumCtrl.SetContent(_data.RoommerNum == 0 ? string.Empty : _data.RoommerNum.ToString());
+            _roomerNumCtrl.SetContent(_data.RoommerNum);
             _stateCtrl.SetCurVal((int) _data.State);
             RefreshPayInfo();
         }
@@ -52,9 +52,9 @@ namespace Sale
             _data.CheckOutDate = _checkOutCtrl.GetDateTime();
             _data.RoomIndex = room.Index;
             _data.RoommerName = _roomerCtrl.GetContent();
-            _data.RoommerNum = SaleTools.SafeParse(_roomerNumCtrl.GetContent());
+            _data.RoommerNum = _roomerNumCtrl.GetContent();
             _data.State = (ERoomerState) _stateCtrl.GetVal();
-            _data.Price = SaleTools.SafeParse(_priceCtrl.GetContent());
+            _data.Price = SaleTools.SafeIntParse(_priceCtrl.GetContent());
             if (_data.ChangePayRecords != null)
             {
                 _data.PayRecords = _data.ChangePayRecords;

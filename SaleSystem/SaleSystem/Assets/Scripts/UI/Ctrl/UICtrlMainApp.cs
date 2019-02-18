@@ -33,6 +33,7 @@ namespace Sale
             _cachedView.RecordBtn.onClick.AddListener(OnRecordBtn);
             _cachedView.QueryBtn.onClick.AddListener(OnQueryBtn);
             _cachedView.SettingBtn.onClick.AddListener(SettingBtn);
+            _cachedView.LoginBtn.onClick.AddListener(LoginBtnBtn);
             CreateStartSequence();
             CreateCommonSequences();
             for (int i = 0; i < (int) EBtnType.Max; i++)
@@ -49,6 +50,11 @@ namespace Sale
             }
 
             _windTimer = Random.Range(3, 6f);
+        }
+
+        private void LoginBtnBtn()
+        {
+            SocialGUIManager.Instance.OpenUI<UICtrlLogin>();
         }
 
         protected override void OnOpen(object parameter)

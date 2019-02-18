@@ -19,7 +19,7 @@ namespace Sale
 
         private void MinuteValChanged(string arg0)
         {
-            if (string.IsNullOrEmpty(arg0) || !DateTimeHelper.CheckMinuteValid(int.Parse(arg0)))
+            if (string.IsNullOrEmpty(arg0) || !SaleTools.CheckMinuteValid(int.Parse(arg0)))
             {
                 _cachedView.Minute.text = _dateTime.Minute.ToString();
             }
@@ -27,7 +27,7 @@ namespace Sale
 
         private void HourValChanged(string arg0)
         {
-            if (string.IsNullOrEmpty(arg0) || !DateTimeHelper.CheckHourValid(int.Parse(arg0)))
+            if (string.IsNullOrEmpty(arg0) || !SaleTools.CheckHourValid(int.Parse(arg0)))
             {
                 _cachedView.Hour.text = _dateTime.Hour.ToString();
             }
@@ -35,7 +35,7 @@ namespace Sale
 
         private void DayValChanged(string arg0)
         {
-            if (string.IsNullOrEmpty(arg0) || !DateTimeHelper.CheckDayValid(int.Parse(arg0)))
+            if (string.IsNullOrEmpty(arg0) || !SaleTools.CheckDayValid(int.Parse(arg0)))
             {
                 _cachedView.Day.text = _dateTime.Day.ToString();
             }
@@ -43,7 +43,7 @@ namespace Sale
 
         private void MonthValChanged(string arg0)
         {
-            if (string.IsNullOrEmpty(arg0) || !DateTimeHelper.CheckMonthValid(int.Parse(arg0)))
+            if (string.IsNullOrEmpty(arg0) || !SaleTools.CheckMonthValid(int.Parse(arg0)))
             {
                 _cachedView.Month.text = _dateTime.Month.ToString();
             }
@@ -51,7 +51,7 @@ namespace Sale
 
         private void YearValChanged(string arg0)
         {
-            if (string.IsNullOrEmpty(arg0) || !DateTimeHelper.CheckYearValid(int.Parse(arg0)))
+            if (string.IsNullOrEmpty(arg0) || !SaleTools.CheckYearValid(int.Parse(arg0)))
             {
                 _cachedView.Year.text = _dateTime.Year.ToString();
             }
@@ -74,9 +74,9 @@ namespace Sale
 
         public DateTime GetDateTime()
         {
-            return new DateTime(SaleTools.SafeParse(_cachedView.Year.text), SaleTools.SafeParse(_cachedView.Month.text),
-                SaleTools.SafeParse(_cachedView.Day.text), SaleTools.SafeParse(_cachedView.Hour.text),
-                SaleTools.SafeParse(_cachedView.Minute.text), 0);
+            return new DateTime(SaleTools.SafeIntParse(_cachedView.Year.text), SaleTools.SafeIntParse(_cachedView.Month.text),
+                SaleTools.SafeIntParse(_cachedView.Day.text), SaleTools.SafeIntParse(_cachedView.Hour.text),
+                SaleTools.SafeIntParse(_cachedView.Minute.text), 0);
         }
     }
 }

@@ -10,20 +10,28 @@ namespace Sale
     public class UICtrlPopupDialog : UICtrlGenericBase<UIViewPopupDialog>
     {
         private Stack<UMCtrlDialog> _ctrlDialogsDic = new Stack<UMCtrlDialog>();
+        private bool _justShow; // 刚显示的那一帧不检查关闭
 
         public override void OnUpdate()
         {
             base.OnUpdate();
-            if (_ctrlDialogsDic.Count > 0)
+            if (_justShow)
             {
-                if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
-                {
-                    _ctrlDialogsDic.Pop().Destroy();
-                }
+                _justShow = false;
             }
             else
             {
-                SocialGUIManager.Instance.CloseUI<UICtrlPopupDialog>();
+                if (_ctrlDialogsDic.Count > 0)
+                {
+                    if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+                    {
+                        _ctrlDialogsDic.Pop().Destroy();
+                    }
+                }
+                else
+                {
+                    SocialGUIManager.Instance.CloseUI<UICtrlPopupDialog>();
+                }
             }
         }
 
@@ -44,7 +52,7 @@ namespace Sale
             _ctrlDialogsDic.Clear();
             base.OnClose();
         }
-   
+
         private void MessengerShowDialogHandler(string msg, string title, KeyValuePair<string, Action>[] btnParam)
         {
             if (!IsOpen)
@@ -53,6 +61,7 @@ namespace Sale
             }
 
             ShowDialog(msg, title, btnParam);
+            _justShow = true;
         }
 
         private void ShowDialog(string msg, string title, params KeyValuePair<string, Action>[] btnParam)

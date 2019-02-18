@@ -19,6 +19,24 @@ namespace Sale
             base.OnViewCreated();
             _cachedView.Guest.onClick.AddListener(GuestBtn);
             _cachedView.Login.onClick.AddListener(LoginBtn);
+            _cachedView.Name.onEndEdit.AddListener(OnNameEndEdit);
+            _cachedView.Pwd.onEndEdit.AddListener(OnPwdEndEdit);
+        }
+
+        private void OnNameEndEdit(string arg0)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SwitchFocusField();
+            }
+        }
+
+        private void OnPwdEndEdit(string arg0)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                LoginBtn();
+            }
         }
 
         protected override void OnOpen(object parameter)
@@ -48,26 +66,31 @@ namespace Sale
             SocialGUIManager.Instance.OpenUI<UICtrlMainApp>();
         }
 
+        private void SwitchFocusField()
+        {
+            switch (_focusType)
+            {
+                case EFocusType.None:
+                    _focusType = EFocusType.Name;
+                    break;
+                case EFocusType.Name:
+                    _focusType = EFocusType.Password;
+                    break;
+                case EFocusType.Password:
+                    _focusType = EFocusType.Name;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            RefreshFocus();
+        }
+
         public override void OnUpdate()
         {
             if (Input.GetKeyUp(KeyCode.Tab))
             {
-                switch (_focusType)
-                {
-                    case EFocusType.None:
-                        _focusType = EFocusType.Name;
-                        break;
-                    case EFocusType.Name:
-                        _focusType = EFocusType.Password;
-                        break;
-                    case EFocusType.Password:
-                        _focusType = EFocusType.Name;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                RefreshFocus();
+                SwitchFocusField();
             }
         }
 
