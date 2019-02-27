@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace UITools
@@ -7,7 +8,7 @@ namespace UITools
     {
         public static GameObject InstantiateObject(Object asset)
         {
-            return (GameObject)Object.Instantiate(asset);
+            return (GameObject) Object.Instantiate(asset);
         }
 
         public static void SetAllLayerIncludeHideObj(Transform root, int layer)
@@ -16,6 +17,7 @@ namespace UITools
             {
                 return;
             }
+
             int tmplayer = layer;
             //if (layer > (int)SceneLayer.Error || layer < 0)
             //{
@@ -31,6 +33,7 @@ namespace UITools
                 SetAllLayerIncludeHideObj(tmpObj, tmplayer);
             }
         }
+
         /// <summary>
         /// 初始化Transform
         /// </summary>
@@ -53,17 +56,19 @@ namespace UITools
             {
                 return;
             }
+
             trans.localPosition = Vector3.zero;
             trans.localRotation = Quaternion.identity;
             trans.localScale = Vector3.one;
         }
 
-        public static Transform FindChildDeep(Transform root,string name)
+        public static Transform FindChildDeep(Transform root, string name)
         {
             if (root == null)
             {
                 return null;
             }
+
             for (int i = 0; i < root.childCount; i++)
             {
                 var trans = root.GetChild(i);
@@ -71,8 +76,10 @@ namespace UITools
                 {
                     return trans;
                 }
+
                 FindChildDeep(trans, name);
             }
+
             return null;
         }
 
@@ -83,9 +90,10 @@ namespace UITools
             {
                 t = go.AddComponent<T>();
             }
+
             return t;
         }
-        
+
         public static void SetActiveEx(this GameObject go, bool value)
         {
             if (go != null && go.activeSelf != value)
@@ -109,6 +117,5 @@ namespace UITools
                 com.enabled = value;
             }
         }
-
     }
 }

@@ -4,7 +4,7 @@ namespace MyTools
 {
     public static class DictionayExtend
     {
-        public static TValue GetOrCreatValue<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key)
+        public static TValue GetOrCreateValue<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key)
             where TValue : new()
         {
             TValue value;

@@ -13,7 +13,6 @@ namespace UITools
         public const int UIGroupThickness = 100;
         protected Dictionary<string, UICtrlBase> _allUIs = new Dictionary<string, UICtrlBase>();
         protected Dictionary<string, GameObject> _cachedItemObjects = new Dictionary<string, GameObject>();
-        protected Transform _cachedUIItemParent;
         protected CanvasScaler _canvasScaler;
         protected GraphicRaycaster _graphicRaycaster;
         protected RectTransform _trans;
@@ -58,10 +57,6 @@ namespace UITools
                 _uiGroups[i] = g;
             }
 
-            //缓存Item
-            _cachedUIItemParent = new GameObject(_trans.name + "|CachedUIItemParent").transform;
-            _cachedUIItemParent.SetParent(parent);
-            _cachedUIItemParent.SetActiveEx(false);
         }
 
         protected virtual void InitUICanvas(int sortOrder)
@@ -297,8 +292,7 @@ namespace UITools
             GameObject prefab;
             if (isItem)
             {
-                GameObject go;
-                if (!_cachedItemObjects.TryGetValue(path, out go) || go == null)
+                if (!_cachedItemObjects.TryGetValue(path, out prefab) || prefab == null)
                 {
                     prefab = (GameObject) Resources.Load(UIConstDefine.UIItemPath + path);
                     if (prefab == null)
@@ -307,19 +301,12 @@ namespace UITools
                         return null;
                     }
 
-                    go = Instantiate(prefab);
-                    if (!go.activeSelf)
-                    {
-                        go.SetActive(true);
-                    }
-
-                    CommonTools.SetParent(go.transform, _cachedUIItemParent);
+                    _cachedItemObjects[path] = prefab;
                     ////释放掉prefab
                     //Resources.UnloadAsset(prefab);
                 }
 
-                _cachedItemObjects[path] = go;
-                return Instantiate(go);
+                return Instantiate(prefab);
             }
 
             prefab = (GameObject) Resources.Load(UIConstDefine.UIPath + path);

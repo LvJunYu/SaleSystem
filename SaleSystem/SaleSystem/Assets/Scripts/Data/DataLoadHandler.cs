@@ -17,6 +17,7 @@ namespace Sale
 
         private List<Room> _rooms = new List<Room>();
         private List<RoomRecord> _records = new List<RoomRecord>();
+        private Dictionary<int, RoomRecord> _id2Record = new Dictionary<int, RoomRecord>();
 
         public List<Room> Rooms
         {
@@ -31,6 +32,11 @@ namespace Sale
         public List<RoomRecord> RoomRecords
         {
             get { return _records; }
+        }
+
+        public Dictionary<int, RoomRecord> Id2Record
+        {
+            get { return _id2Record; }
         }
 
         public int RecordIndex
@@ -57,10 +63,17 @@ namespace Sale
             }
 
             _records.Clear();
+            _id2Record.Clear();
             _recordsData.RoomRecords.Sort((p, q) => p.Id - q.Id);
             for (int i = 0; i < _recordsData.RoomRecords.Count; i++)
             {
-                _records.Add(new RoomRecord(_recordsData.RoomRecords[i]));
+                var record = new RoomRecord(_recordsData.RoomRecords[i]);
+                foreach (var payRecord in record.PayRecords)
+                {
+                    payRecord.RecordId = record.Id;
+                }
+                _records.Add(record);
+                _id2Record.Add(record.Id, record);
             }
         }
 
@@ -141,6 +154,7 @@ namespace Sale
         {
             data.RecordPhase = ERecordPhase.Valid;
             _records.Add(data);
+            _id2Record.Add(data.Id, data);
             _recordsData.RoomRecords.Add(data.GetData());
             _recordsData.RecordIndex++;
             SaveRecordsData();
@@ -149,6 +163,7 @@ namespace Sale
         public void RemoveRecord(RoomRecord data)
         {
             _records.Remove(data);
+            _id2Record.Remove(data.Id);
             _recordsData.RoomRecords.Remove(_recordsData.RoomRecords.Find(record => record.Id == data.Id));
             SaveRecordsData();
         }

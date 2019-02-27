@@ -137,20 +137,17 @@ namespace Sale
 
         private void SearchByRecordId(int id)
         {
-            var records = SaleDataManager.Instance.RoomRecords;
-            for (int i = records.Count - 1; i >= 0; i--)
+            var record = SaleDataManager.Instance.GetRoomRecord(id);
+            if (record != null)
             {
-                var record = records[i];
-                if (record.Id == id)
-                {
-                    _records.Clear();
-                    _records.Add(record);
-                    RefreshView();
-                    return;
-                }
+                _records.Clear();
+                _records.Add(record);
+                RefreshView();
             }
-
-            SocialGUIManager.ShowPopupDialogFormat("没有订单号为{0}的订单", id);
+            else
+            {
+                SocialGUIManager.ShowPopupDialogFormat("没有订单号为{0}的订单", id);
+            }
         }
 
         private void SearchByRoomId(int id)

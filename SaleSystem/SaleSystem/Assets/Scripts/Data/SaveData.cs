@@ -42,6 +42,7 @@ namespace Sale
 
     public class PayRecord
     {
+        public int RecordId;
         public string PayType;
         public string PayDesc;
         public int PayNum;
@@ -51,16 +52,17 @@ namespace Sale
         {
         }
 
-        public PayRecord(int payNum, string payType, DateTime payTime)
+        public PayRecord(int payNum, string payType, DateTime payTime, int recordId)
         {
             PayNum = payNum;
             PayType = payType;
             PayTime = payTime;
+            RecordId = recordId;
         }
 
-        public static PayRecord CreateNew()
+        public static PayRecord CreateNew(int recordId)
         {
-            return new PayRecord(0, SaleDataManager.Instance.PayTypes[0], DateTime.Now);
+            return new PayRecord(0, SaleDataManager.Instance.PayTypes[0], DateTime.Now, recordId);
         }
     }
 }

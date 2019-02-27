@@ -1,79 +1,82 @@
-﻿using System.Collections.Generic;
-using UITools;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sale
 {
     public class UPCtrlCollectDay : UPCtrlCollectBase
     {
-        private List<DayData> _collectDatas;
+        private List<int> _dayNum = new List<int>(31);
+        private List<string> _dayStr = new List<string>(31);
+        private UMCtrlCollectData _collectCtrl;
 
         protected override void OnViewCreated()
         {
             base.OnViewCreated();
-            _cachedView.DayGridDataScroller.Set(OnRefreshItem, OnCreateItem);
-            InitPayTypes();
+            _collectCtrl = new UMCtrlCollectData();
+            _collectCtrl.Init(_cachedView.Pannels[Menu]);
+            _collectCtrl.SetLineName("日期", "收入");
         }
 
-        public override void Open()
+        public override void RefreshView()
         {
-            base.Open();
-            RefreshView();
-        }
-
-        public void InitPayTypes()
-        {
-            var payTypes = SaleDataManager.Instance.PayTypes;
-            var texts = _cachedView.PayTypeDock.GetComponentsInChildren<Text>(true);
-            for (int i = 0; i < texts.Length; i++)
+            var curDate = _mainCtrl.CurDate;
+            var monthPayData = SaleDataManager.Instance.CollectHandler.GetMonthPayData(curDate.GetMonths());
+            var days = DateTime.DaysInMonth(curDate.Year, curDate.Month);
+            SetDays(days);
+            if (monthPayData != null)
             {
-                if (i < payTypes.Count)
+                for (int i = 0; i < days; i++)
                 {
-                    texts[i].text = payTypes[i];
-                    texts[i].SetActiveEx(true);
+                    var payData = monthPayData.GetDayPayData(i + 1);
+                    if (payData != null)
+                    {
+                        foreach (var payRecord in payData)
+                        {
+                            _dayNum[i] += payRecord.PayNum;
+                        }
+                    }
+                }
+            }
+
+            var max = _dayNum.Max();
+            if (max == 0)
+            {
+                max = 100;
+            }
+
+            _collectCtrl.SetData(_dayStr, _dayNum, max);
+//            _collectCtrl.SetRaw(_dayStr.Count);
+        }
+
+        private void SetDays(int days)
+        {
+            for (int i = _dayStr.Count; i < days; i++)
+            {
+                _dayStr.Add((i + 1).ToString());
+            }
+
+            for (int i = 0; i < days; i++)
+            {
+                if (i < _dayNum.Count)
+                {
+                    _dayNum[i] = 0;
                 }
                 else
                 {
-                    texts[i].SetActiveEx(false);
+                    _dayNum.Add(0);
                 }
             }
-        }
 
-        private void RefreshView()
-        {
-            _collectDatas = SaleDataManager.Instance.CollectHandler.CollectDatas;
-            _cachedView.DayGridDataScroller.SetItemCount(_collectDatas.Count);
-        }
-
-        private IDataItemRenderer OnCreateItem(RectTransform arg1)
-        {
-            var item = new UMCtrlCollectItem();
-            item.Init(arg1);
-            return item;
-        }
-
-        private void OnRefreshItem(IDataItemRenderer item, int index)
-        {
-            if (_isOpen)
+            while (_dayStr.Count > days)
             {
-                if (index < _collectDatas.Count)
-                {
-                    item.Set(_collectDatas[index]);
-                }
+                _dayStr.RemoveAt(_dayStr.Count - 1);
             }
-        }
-    }
-    
-    public class DayData
-    {
-        public int Days;
-        public HashSet<PayRecord> PayRecords;
 
-        public DayData(int days, HashSet<PayRecord> payRecords)
-        {
-            Days = days;
-            PayRecords = payRecords;
+            while (_dayNum.Count > days)
+            {
+                _dayNum.RemoveAt(_dayNum.Count - 1);
+            }
         }
     }
 }

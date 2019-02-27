@@ -134,13 +134,11 @@ namespace Sale
 
         protected virtual void SaveData()
         {
-            var roomIndex = _roomCtrl.GetVal();
-            var room = SaleDataManager.Instance.Rooms[roomIndex];
             _data.Id = SaleDataManager.Instance.RecordIndex;
             _data.CreateDate = DateTime.Now;
             _data.CheckInDate = _checkInCtrl.GetDateTime();
             _data.CheckOutDate = _checkOutCtrl.GetDateTime();
-            _data.RoomIndex = room.Index;
+            _data.RoomIndex = _roomCtrl.GetVal();
             _data.RoommerName = _roomerCtrl.GetContent();
             _data.RoommerNum = _roomerNumCtrl.GetContent();
             _data.State = (ERoomerState) _stateCtrl.GetVal();
@@ -212,11 +210,14 @@ namespace Sale
             }
 
             var roomIndex = _roomCtrl.GetVal();
-            var room = SaleDataManager.Instance.Rooms[roomIndex];
-            if (room.CheckDateConflict(_data, checkInData, checkOutDate))
+            if (roomIndex < SaleDataManager.Instance.Rooms.Count)
             {
-                SocialGUIManager.ShowPopupDialogFormat("房间{0}已经被预定", room.Name);
-                return false;
+                var room = SaleDataManager.Instance.Rooms[roomIndex];
+                if (room.CheckDateConflict(_data, checkInData, checkOutDate))
+                {
+                    SocialGUIManager.ShowPopupDialogFormat("房间{0}已经被预定", room.Name);
+                    return false;
+                }
             }
 
             var roomerName = _roomerCtrl.GetContent();

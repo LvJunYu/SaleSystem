@@ -6,26 +6,12 @@ namespace Sale
 {
     public class DataCollectHandler
     {
-        private Dictionary<int, HashSet<RoomRecord>> _monthData = new Dictionary<int, HashSet<RoomRecord>>();
-        private Dictionary<int, HashSet<PayRecord>> _dayData = new Dictionary<int, HashSet<PayRecord>>();
-        private List<DayData> _collectDatas;
+        private Dictionary<int, HashSet<RoomRecord>> _monthRoomRecord = new Dictionary<int, HashSet<RoomRecord>>();
+        private Dictionary<int, MonthPayData> _monthPayDatas = new Dictionary<int, MonthPayData>();
         private List<RoomMonthData> _roomData = new List<RoomMonthData>();
         private bool _isDirty;
         private int _minDate;
         private int _minMonth;
-
-        public List<DayData> CollectDatas
-        {
-            get
-            {
-                if (_collectDatas == null || _isDirty)
-                {
-                    ProcessDayDatas();
-                }
-
-                return _collectDatas;
-            }
-        }
 
         public void Init(List<RoomRecord> roomRecords)
         {
@@ -45,23 +31,30 @@ namespace Sale
                 _minDate = days;
             }
 
-            var list = GetDayData(days, true);
-            if (!list.Contains(pay))
+            GetOrCreateMonthPayData(pay.PayTime).AddPayRecord(pay);
+        }
+
+        private MonthPayData GetOrCreateMonthPayData(DateTime date)
+        {
+            MonthPayData monthPayData;
+            if (!_monthPayDatas.TryGetValue(date.GetMonths(), out monthPayData))
             {
-                list.Add(pay);
+                monthPayData = new MonthPayData(date);
+                _monthPayDatas.Add(date.GetMonths(), monthPayData);
             }
+
+            return monthPayData;
         }
 
         private void RemovePayRecord(PayRecord pay)
         {
             _isDirty = true;
-            var days = pay.PayTime.GetDays();
-            GetDayData(days).Remove(pay);
+            GetOrCreateMonthPayData(pay.PayTime).RemovePayRecord(pay);
         }
 
         private void AddMonthData(RoomRecord data, int month)
         {
-            var monthData = GetMonthData(month, true);
+            var monthData = _monthRoomRecord.GetOrCreateValue(month);
             if (!monthData.Contains(data))
             {
                 monthData.Add(data);
@@ -91,7 +84,7 @@ namespace Sale
             var endMonth = data.CheckOutDate.GetMonths();
             for (int i = startMonth; i <= endMonth; i++)
             {
-                GetMonthData(i).Remove(data);
+                _monthRoomRecord[i].Remove(data);
             }
 
             foreach (var payRecord in data.PayRecords)
@@ -111,7 +104,7 @@ namespace Sale
             {
                 for (int i = oldStartMonth; i <= oldEndMonth; i++)
                 {
-                    GetMonthData(i).Remove(data);
+                    _monthRoomRecord[i].Remove(data);
                 }
                 
                 for (int i = newStartMonth; i <= newEndMonth; i++)
@@ -135,68 +128,14 @@ namespace Sale
             }
         }
 
-        private HashSet<RoomRecord> GetMonthData(int month, bool create = false)
-        {
-            HashSet<RoomRecord> records;
-            if (_monthData.TryGetValue(month, out records))
-            {
-                return records;
-            }
-
-            if (create)
-            {
-                records = new HashSet<RoomRecord>();
-                _monthData.Add(month, records);
-            }
-
-            return records;
-        }
-
-        private HashSet<PayRecord> GetDayData(int day, bool create = false)
-        {
-            HashSet<PayRecord> pays;
-            if (_dayData.TryGetValue(day, out pays))
-            {
-                return pays;
-            }
-
-            if (create)
-            {
-                pays = new HashSet<PayRecord>();
-                _dayData.Add(day, pays);
-            }
-
-            return pays;
-        }
-
-        private void ProcessDayDatas()
-        {
-            if (_collectDatas == null)
-            {
-                _collectDatas = new List<DayData>();
-            }
-            else
-            {
-                _collectDatas.Clear();
-            }
-
-            var now = DateTime.Now.GetDays();
-            for (int i = now; i >= _minDate; i--)
-            {
-                HashSet<PayRecord> list;
-                _dayData.TryGetValue(i, out list);
-                _collectDatas.Add(new DayData(i, list));
-            }
-        }
-
         public void Clear()
         {
             _minDate = DateTime.Now.GetDays();
-            _monthData.Clear();
-            _dayData.Clear();
+            _monthRoomRecord.Clear();
+            _monthPayDatas.Clear();
         }
 
-        public List<RoomMonthData> GetRoomMonthData(int curMonth)
+        public List<RoomMonthData> GetRoomMonthData(int month)
         {
             if (SaleDataManager.Instance.Rooms.Count != _roomData.Count)
             {
@@ -206,29 +145,33 @@ namespace Sale
             foreach (var monthData in _roomData)
             {
                 monthData.Clear();
-                monthData.SetCurMonth(curMonth);
+                monthData.SetCurMonth(month);
             }
 
-            var data = GetMonthData(curMonth);
-            if (data != null)
+            var data = _monthRoomRecord.GetOrCreateValue(month);
+            foreach (var roomRecordData in data)
             {
-                foreach (var roomRecordData in data)
+                var roomIndex = roomRecordData.RoomIndex;
+                if (roomIndex < _roomData.Count)
                 {
-                    var roomIndex = roomRecordData.RoomIndex;
-                    if (roomIndex < _roomData.Count)
-                    {
-                        _roomData[roomIndex].AddData(roomRecordData);
-                    }
-                    else
-                    {
-                        LogHelper.Warning("roomIndex {0} is out of range", roomIndex);
-                    }
+                    _roomData[roomIndex].AddData(roomRecordData);
+                }
+                else
+                {
+                    LogHelper.Warning("roomIndex {0} is out of range", roomIndex);
                 }
             }
 
             return _roomData;
         }
 
+        public MonthPayData GetMonthPayData(int month)
+        {
+            MonthPayData monthPayData;
+            _monthPayDatas.TryGetValue(month, out monthPayData);
+            return monthPayData;
+        }
+        
         private void RefreshRoomData()
         {
             var rooms = SaleDataManager.Instance.Rooms;
@@ -244,6 +187,53 @@ namespace Sale
             {
                 _roomData.RemoveAt(i);
             }
+        }
+    }
+
+    public class MonthPayData
+    {
+        public DateTime Date;
+        public Dictionary<int, HashSet<PayRecord>> _dayPayData = new Dictionary<int, HashSet<PayRecord>>();
+        public HashSet<PayRecord> _payDatas = new HashSet<PayRecord>();
+
+        public MonthPayData(DateTime date)
+        {
+            Date = date;
+        }
+
+        public HashSet<PayRecord> PayDatas
+        {
+            get { return _payDatas; }
+        }
+
+        public void AddPayRecord(PayRecord payRecord)
+        {
+            _dayPayData.GetOrCreateValue(payRecord.PayTime.Day).Add(payRecord);
+            _payDatas.Add(payRecord);
+        }
+
+        public void RemovePayRecord(PayRecord payRecord)
+        {
+            _dayPayData[payRecord.PayTime.Day].Remove(payRecord);
+            _payDatas.Remove(payRecord);
+        }
+
+        public HashSet<PayRecord> GetDayPayData(int day)
+        {
+            HashSet<PayRecord> payRecords;
+            _dayPayData.TryGetValue(day, out payRecords);
+            return payRecords;
+        }
+
+        public int GetTotalPay()
+        {
+            int sum = 0;
+            foreach (var pay in _payDatas)
+            {
+                sum += pay.PayNum;
+            }
+
+            return sum;
         }
     }
 }

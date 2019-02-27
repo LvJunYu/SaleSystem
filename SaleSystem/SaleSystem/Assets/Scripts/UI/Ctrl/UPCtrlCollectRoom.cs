@@ -1,66 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using UITools;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Sale
 {
-    public class UPCtrlCollectMonth : UPCtrlCollectBase
+    public class UPCtrlCollectRoom : UPCtrlCollectBase
     {
-        private DateTime _curDate;
-        private List<RoomMonthData> _dataList;
+        private List<int> _roomNum = new List<int>();
+        private List<string> _roomName = new List<string>();
+        private UMCtrlCollectData _collectCtrl;
 
         protected override void OnViewCreated()
         {
             base.OnViewCreated();
-            _cachedView.MonthGridDataScroller.Set(OnRefreshItem, OnCreateItem);
-            _cachedView.LeftBtn.onClick.AddListener(OnPreMonthBtn);
-            _cachedView.RightBtn.onClick.AddListener(OnNextMonthBtn);
+            _collectCtrl = new UMCtrlCollectData();
+            _collectCtrl.Init(_cachedView.Pannels[Menu]);
+            _collectCtrl.SetLineName("房间", "收入");
         }
 
-        public override void Open()
+        public override void RefreshView()
         {
-            base.Open();
-            _curDate = DateTime.Now;
-            RefreshView();
-        }
-
-        private void RefreshView()
-        {
-            _cachedView.YearTxt.text = _curDate.Year.ToString();
-            _cachedView.MonthTxt.text = _curDate.Month.ToString();
-            _dataList = SaleDataManager.Instance.CollectHandler.GetRoomMonthData(_curDate.GetMonths());
-            _cachedView.MonthGridDataScroller.SetItemCount(_dataList.Count);
-        }
-
-        private void OnPreMonthBtn()
-        {
-            _curDate = _curDate.AddMonths(-1);
-            RefreshView();
-        }
-
-        private void OnNextMonthBtn()
-        {
-            _curDate = _curDate.AddMonths(1);
-            RefreshView();
-        }
-
-        private IDataItemRenderer OnCreateItem(RectTransform arg1)
-        {
-            var item = new UMCtrlRoomCollect();
-            item.Init(arg1);
-            return item;
-        }
-
-        private void OnRefreshItem(IDataItemRenderer item, int index)
-        {
-            if (_isOpen)
+            var curDate = _mainCtrl.CurDate;
+            var monthPayData = SaleDataManager.Instance.CollectHandler.GetMonthPayData(curDate.GetMonths());
+            _roomNum.Clear();
+            _roomName.Clear();
+            var rooms = SaleDataManager.Instance.Rooms;
+            foreach (var room in rooms)
             {
-                if (index < _dataList.Count)
+                _roomName.Add(room.Name);
+                _roomNum.Add(0);
+            }
+
+            foreach (var payRecord in monthPayData.PayDatas)
+            {
+                var recordId = payRecord.RecordId;
+                var record = SaleDataManager.Instance.GetRoomRecord(recordId);
+                if (record != null && record.RoomIndex < rooms.Count)
                 {
-                    item.Set(_dataList[index]);
+                    _roomNum[record.RoomIndex] += payRecord.PayNum;
                 }
             }
+
+            var max = _roomNum.Max();
+            if (max == 0)
+            {
+                max = 100;
+            }
+
+            _collectCtrl.SetData(_roomName, _roomNum, max);
         }
     }
 

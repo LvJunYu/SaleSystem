@@ -9,13 +9,10 @@ namespace Sale
         public RectTransform PannelRtf;
         public RectTransform BGRtf;
         public Button CloseBtn;
-        public GridDataScroller DayGridDataScroller;
-        public GridDataScroller MonthGridDataScroller;
-        public RectTransform PayTypeDock;
-        public RectTransform RoomDock;
         public Button LeftBtn;
         public Button RightBtn;
         public Text MonthTxt;
         public Text YearTxt;
+        public Text TotalTxt;
     }
 }

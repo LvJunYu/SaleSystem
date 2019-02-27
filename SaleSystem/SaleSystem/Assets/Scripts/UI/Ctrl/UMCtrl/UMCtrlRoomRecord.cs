@@ -19,7 +19,8 @@ namespace Sale
         {
             if (_record == null) return;
             _infos[0].text = (_record.Id.ToString());
-            _infos[1].text = (SaleDataManager.Instance.Rooms[_record.RoomIndex].Name);
+            var room = SaleDataManager.Instance.GetRoomByIndex(_record.RoomIndex);
+            _infos[1].text = room == null ? string.Format("客房{0}", _record.RoomIndex + 1) : room.Name;
             _infos[2].text = (_record.RoommerName);
             _infos[3].text = (_record.CheckInDate.GetDateStr());
             _infos[4].text = (_record.CheckOutDate.GetDateStr());

@@ -42,15 +42,13 @@ namespace Sale
 
         protected override void SaveData()
         {
-            var roomIndex = _roomCtrl.GetVal();
-            var room = SaleDataManager.Instance.Rooms[roomIndex];
             var oldRoomIndex = _data.RoomIndex;
             var oldCheckInDate = _data.CheckInDate;
             var oldCheckOutDate = _data.CheckOutDate;
             var oldPayRecprds = _data.PayRecords;
             _data.CheckInDate = _checkInCtrl.GetDateTime();
             _data.CheckOutDate = _checkOutCtrl.GetDateTime();
-            _data.RoomIndex = room.Index;
+            _data.RoomIndex = _roomCtrl.GetVal();
             _data.RoommerName = _roomerCtrl.GetContent();
             _data.RoommerNum = _roomerNumCtrl.GetContent();
             _data.State = (ERoomerState) _stateCtrl.GetVal();
@@ -83,9 +81,12 @@ namespace Sale
 
         private void DeleteData()
         {
-            var room = SaleDataManager.Instance.Rooms[_data.RoomIndex];
+            var room = SaleDataManager.Instance.GetRoomByIndex(_data.RoomIndex);
             SaleDataManager.Instance.RemoveRoomRecord(_data);
-            room.RemoveRecord(_data);
+            if (room != null)
+            {
+                room.RemoveRecord(_data);
+            }
             Messenger.Broadcast(EMessengerType.OnRoomRecordChanged);
             SocialGUIManager.Instance.CloseUI<UICtrlUpdateRecord>();
         }

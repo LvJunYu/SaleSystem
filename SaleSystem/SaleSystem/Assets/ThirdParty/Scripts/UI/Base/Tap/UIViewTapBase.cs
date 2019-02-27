@@ -8,6 +8,6 @@ namespace UITools
         public UITabGroup TabGroup;
         public Button[] MenuButtonAry;
         public Button[] MenuSelectedButtonAry;
-        public GameObject[] Pannels;
+        public RectTransform[] Pannels;
     }
 }

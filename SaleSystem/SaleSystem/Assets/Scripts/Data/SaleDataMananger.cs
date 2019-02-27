@@ -86,7 +86,10 @@ namespace Sale
         {
             if (oldRoomIndex != data.RoomIndex)
             {
-                Rooms[oldRoomIndex].RemoveRecord(data);
+                if (oldRoomIndex < Rooms.Count)
+                {
+                    Rooms[oldRoomIndex].RemoveRecord(data);
+                }
                 Rooms[data.RoomIndex].AddRecord(data);
             }
 
@@ -109,6 +112,23 @@ namespace Sale
             _dataLoadHandler.ClearRecordsData();
             _dataCollectHandler.Clear();
             SocialGUIManager.ShowPopupDialog("房间订单数据已清空。");
+        }
+
+        public Room GetRoomByIndex(int index)
+        {
+            if (index < Rooms.Count)
+            {
+                return Rooms[index];
+            }
+
+            return null;
+        }
+
+        public RoomRecord GetRoomRecord(int recordId)
+        {
+            RoomRecord record;
+            _dataLoadHandler.Id2Record.TryGetValue(recordId, out record);
+            return record;
         }
     }
 }

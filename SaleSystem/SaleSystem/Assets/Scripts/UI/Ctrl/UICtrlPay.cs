@@ -130,7 +130,7 @@ namespace Sale
             if (!HasIdentity()) return;
             var item = GetItem(_curPayTypeCount);
             item.SetActive(true);
-            item.SetData(PayRecord.CreateNew());
+            item.SetData(PayRecord.CreateNew(_data.Id));
             _curPayTypeCount++;
             ScrollToEnd();
         }

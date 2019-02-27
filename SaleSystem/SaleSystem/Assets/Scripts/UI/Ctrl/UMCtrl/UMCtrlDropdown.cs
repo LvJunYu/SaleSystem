@@ -6,6 +6,21 @@ namespace Sale
 {
     public class UMCtrlDropdown : UMCtrlGenericBase<UMViewDropdown>
     {
+        private int _value;
+        private bool _onlyView;
+
+        protected override void OnViewCreated()
+        {
+            base.OnViewCreated();
+            _cachedView.Dropdown.onValueChanged.AddListener(val =>
+            {
+                if (!_onlyView)
+                {
+                    _value = val;
+                }
+            });
+        }
+
         public void SetOptions(List<string> options)
         {
             _cachedView.Dropdown.ClearOptions();
@@ -19,17 +34,26 @@ namespace Sale
 
         public void SetCurVal(int val)
         {
+            _onlyView = true;
             _cachedView.Dropdown.value = val;
+            _value = val;
+            _onlyView = false;
         }
 
         public void AddListener(UnityAction<int> onValChanged)
         {
-            _cachedView.Dropdown.onValueChanged.AddListener(onValChanged);
+            _cachedView.Dropdown.onValueChanged.AddListener(val =>
+            {
+                if (!_onlyView)
+                {
+                    onValChanged.Invoke(val);
+                }
+            });
         }
 
         public int GetVal()
         {
-            return _cachedView.Dropdown.value;
+            return _value;
         }
 
         public string GetContent()
